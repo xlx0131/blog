@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>网络运维大挑战</title>
+<style>
+:root {
+  --bg: #0a0c0f;
+  --surface: #11151a;
+  --surface-2: #161b22;
+  --border: #21262d;
+  --text: #c9d1d9;
+  --text-dim: #8b949e;
+  --green: #3fb950;
+  --green-dim: #2ea043;
+  --green-bg: rgba(63,185,80,0.08);
+  --red: #f85149;
+  --red-dim: #da3633;
+  --yellow: #d29922;
+  --orange: #db6d28;
+  --blue: #58a6ff;
+  --blue-dim: #1f6feb;
+  --purple: #a371f7;
+  --cyan: #39d2c0;
+  --font-mono: 'SF Mono','Cascadia Code','Fira Code','JetBrains Mono',monospace;
+  --font-ui: -apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-ui);
+  display:flex;flex-direction:column;
+  -webkit-tap-highlight-color:transparent;
+  -webkit-font-smoothing:antialiased;
+}
+#app{
+  display:flex;flex-direction:column;
+  height:100%;max-width:720px;margin:0 auto;
+  width:100%;
+}
+/* 顶部状态栏 */
+#topbar{
+  display:flex;align-items:center;
+  padding:10px 16px;gap:12px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;min-height:48px;
+}
+#topbar .level-badge{
+  font-family:var(--font-mono);font-size:11px;
+  padding:4px 10px;border-radius:4px;
+  background:var(--surface-2);color:var(--text-dim);
+  letter-spacing:.5px;
+}
+#topbar .level-badge.active{background:var(--blue-dim);color:#fff}
+#topbar .level-badge.done{background:var(--green-dim);color:#fff}
+#topbar .title-area{flex:1}
+#topbar .game-title{font-size:13px;font-weight:600;color:var(--text)}
+#topbar .game-subtitle{font-size:10px;color:var(--text-dim)}
+#topbar .hint-btn{
+  background:var(--surface-2);border:1px solid var(--border);
+  color:var(--yellow);border-radius:6px;
+  padding:6px 12px;font-size:12px;cursor:pointer;
+  font-family:var(--font-ui);transition:all .15s;
+}
+#topbar .hint-btn:active{background:var(--border)}
+
+/* 关卡信息区 */
+#level-info{
+  padding:12px 16px;background:var(--surface);
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+#level-info .scenario{
+  font-size:13px;color:var(--orange);font-weight:600;
+  margin-bottom:4px;
+}
+#level-info .desc{
+  font-size:12px;color:var(--text-dim);line-height:1.5;
+}
+#level-info .goal{
+  font-size:12px;color:var(--green);
+  margin-top:6px;display:flex;align-items:center;gap:6px;
+}
+#level-info .goal::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* 终端区 */
+#terminal-wrap{
+  flex:1;overflow-y:auto;overflow-x:hidden;
+  padding:12px 16px;
+  font-family:var(--font-mono);
+  font-size:13px;line-height:1.7;
+  -webkit-overflow-scrolling:touch;
+  scroll-behavior:smooth;
+}
+#terminal-wrap::-webkit-scrollbar{width:4px}
+#terminal-wrap::-webkit-scrollbar-track{background:transparent}
+#terminal-wrap::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+.terminal-line{margin-bottom:2px;word-break:break-all}
+.terminal-line .prompt{color:var(--green);margin-right:4px;user-select:none}
+.terminal-line .cmd{color:var(--text)}
+.terminal-line .output{color:var(--text-dim)}
+.terminal-line .error{color:var(--red)}
+.terminal-line .success{color:var(--green)}
+.terminal-line .warn{color:var(--yellow)}
+.terminal-line .highlight{color:var(--cyan)}
+.terminal-line .sys{color:var(--purple)}
+
+/* 输入区 */
+#input-wrap{
+  display:flex;align-items:center;
+  padding:10px 16px;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  flex-shrink:0;gap:8px;
+}
+#input-wrap .prompt-symbol{
+  color:var(--green);font-family:var(--font-mono);
+  font-size:14px;user-select:none;flex-shrink:0;
+}
+#cmd-input{
+  flex:1;background:transparent;border:none;
+  color:var(--text);font-family:var(--font-mono);
+  font-size:14px;outline:none;caret-color:var(--green);
+  padding:4px 0;
+}
+#cmd-input::placeholder{color:var(--text-dim);opacity:.4}
+#send-btn{
+  background:var(--surface-2);border:1px solid var(--border);
+  color:var(--text);border-radius:6px;
+  padding:6px 14px;font-size:12px;cursor:pointer;
+  flex-shrink:0;font-family:var(--font-ui);
+  transition:all .15s;
+}
+#send-btn:active{background:var(--green-dim);color:#fff;border-color:var(--green)}
+
+/* 快捷命令 */
+#quick-cmds{
+  display:flex;flex-wrap:nowrap;gap:6px;
+  padding:6px 16px;background:var(--surface-2);
+  border-top:1px solid var(--border);
+  overflow-x:auto;flex-shrink:0;
+  -webkit-overflow-scrolling:touch;
+}
+#quick-cmds::-webkit-scrollbar{height:0}
+.quick-cmd{
+  font-family:var(--font-mono);font-size:11px;
+  padding:5px 10px;border-radius:4px;
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--text-dim);white-space:nowrap;
+  cursor:pointer;transition:all .12s;flex-shrink:0;
+}
+.quick-cmd:active{background:var(--blue-dim);color:#fff;border-color:var(--blue)}
+
+/* 完成弹窗 */
+#overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.75);
+  display:flex;align-items:center;justify-content:center;
+  z-index:100;backdrop-filter:blur(4px);
+  display:none;
+}
+#overlay.show{display:flex}
+#modal{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:28px 24px;max-width:340px;width:90%;
+  text-align:center;
+}
+#modal .icon{font-size:40px;margin-bottom:12px}
+#modal .title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px}
+#modal .msg{font-size:13px;color:var(--text-dim);margin-bottom:16px;line-height:1.5}
+#modal .btn{
+  background:var(--green-dim);color:#fff;border:none;
+  padding:10px 32px;border-radius:8px;font-size:14px;
+  cursor:pointer;font-family:var(--font-ui);font-weight:600;
+  transition:all .15s;
+}
+#modal .btn:active{transform:scale(.96)}
+
+@media(max-width:400px){
+  #topbar{padding:8px 12px;gap:8px}
+  #level-info{padding:10px 12px}
+  #terminal-wrap{padding:10px 12px;font-size:12px}
+  #input-wrap{padding:8px 12px}
+  #cmd-input{font-size:13px}
+  #quick-cmds{padding:4px 12px}
+  .quick-cmd{font-size:10px;padding:4px 8px}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="topbar">
+    <span class="level-badge active" id="lvl1">L1</span>
+    <span class="level-badge" id="lvl2">L2</span>
+    <span class="level-badge" id="lvl3">L3</span>
+    <span class="level-badge" id="lvl4">L4</span>
+    <span class="level-badge" id="lvl5">L5</span>
+    <div class="title-area">
+      <div class="game-title">网络运维大挑战</div>
+      <div class="game-subtitle">Huawei CLI Simulator</div>
+    </div>
+    <button class="hint-btn" onclick="showHint()">提示</button>
+  </div>
+  <div id="level-info">
+    <div class="scenario" id="scenario"></div>
+    <div class="desc" id="desc"></div>
+    <div class="goal" id="goal"></div>
+  </div>
+  <div id="terminal-wrap"></div>
+  <div id="quick-cmds"></div>
+  <div id="input-wrap">
+    <span class="prompt-symbol">&lt;Huawei&gt;</span>
+    <input type="text" id="cmd-input" placeholder="输入命令..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <button id="send-btn" onclick="executeCmd()">回车</button>
+  </div>
+</div>
+<div id="overlay">
+  <div id="modal"></div>
+</div>
+
+<script>
+// ===== 游戏数据 =====
+const levels = [
+  {
+    id:1, name:'物理层·链路中断',
+    scenario:'【第一关】办公室全员断网',
+    desc:'销售部8台电脑全部无法上网。你赶到办公室，发现交换机所有端口灯都不亮。进入机房排查。',
+    goal:'目标：恢复端口物理链路 — 使用 display interface 查看状态，然后用 undo shutdown 开启端口',
+    hostname:'Sales-Switch',
+    interface:'GigabitEthernet0/0/10',
+    intfStatus:'down', // 初始状态
+    intfReason:'Administratively down',
+    fixCmd:'undo shutdown',
+    fixIntf:'GigabitEthernet0/0/10',
+    quickCmds:['display interface brief','display interface g0/0/10','undo shutdown'],
+    hints:['试试查看端口状态：display interface brief','端口是 shutdown 状态，需要开启：undo shutdown'],
+    sim: {
+      'display interface brief':`Interface                   PHY   Protocol Description
+GE0/0/1                    up    up       
+GE0/0/2                    up    up       
+GE0/0/10                   down  down      Sales-Office
+GE0/0/11                   up    up       
+`,
+      'display interface g0/0/10':`GigabitEthernet0/0/10 current state : Administratively DOWN
+Line protocol current state : DOWN
+Description: Sales-Office
+`,
+    }
+  },
+  {
+    id:2, name:'链路层·VLAN配置错误',
+    scenario:'【第二关】办公室内网不通',
+    desc:'新搬迁的财务部电脑已插好网线，灯亮但 ping 不通网关 192.168.20.1。机房交换机端口灯正常。',
+    goal:'目标：修正VLAN配置 — 查看VLAN状态，将端口加入正确的VLAN 20',
+    hostname:'Core-Switch',
+    interface:'GigabitEthernet0/0/5',
+    intfStatus:'up',
+    vlanCorrect:20,
+    fixCmd:'port default vlan 20',
+    fixIntf:'GigabitEthernet0/0/5',
+    quickCmds:['display vlan','display interface g0/0/5','port default vlan 20'],
+    hints:['查看当前VLAN分配：display vlan','端口被划到了VLAN 1，财务部应该在VLAN 20：进入接口后执行 port default vlan 20'],
+    sim: {
+      'display vlan':`VLAN ID  Type    Status  Ports
+1       common  enable  GE0/0/1 GE0/0/2 GE0/0/5 GE0/0/6
+10      common  enable  GE0/0/3 GE0/0/4
+20      common  enable  GE0/0/7 GE0/0/8
+30      common  enable  GE0/0/9 GE0/0/11
+`,
+      'display interface g0/0/5':`GigabitEthernet0/0/5 current state : UP
+Line protocol current state : UP
+PVID: 1
+`,
+      'ping 192.168.20.1':`PING 192.168.20.1: 56 data bytes
+Request time out
+Request time out
+--- 192.168.20.1 ping statistics ---
+5 packet(s) transmitted, 0 packet(s) received, 100.00% packet loss
+`,
+    }
+  },
+  {
+    id:3, name:'网络层·NAT缺失',
+    scenario:'【第三关】全公司上不了外网',
+    desc:'内网互通正常，但所有电脑打不开百度。你排查发现出口防火墙最近更新过配置。',
+    goal:'目标：用 ping -a 带源地址测试外网，用 display acl 查NAT规则，修复NAT配置',
+    hostname:'Gateway-Router',
+    interface:'GigabitEthernet0/0/1',
+    natMissing:true,
+    fixCmd:'rule 5 permit ip source 192.168.0.0 0.0.255.255',
+    fixIntf:'',
+    quickCmds:['ping -a 192.168.1.1 8.8.8.8','display acl 3000','display nat-policy'],
+    hints:['用源地址测试出网：ping -a 192.168.1.1 8.8.8.8','查看ACL规则：display acl 3000','ACL 3000里缺少内网网段，需要添加规则'],
+    sim: {
+      'ping 8.8.8.8':`PING 8.8.8.8: 56 data bytes
+Request time out
+--- 8.8.8.8 ping statistics ---
+5 packet(s) transmitted, 0 packet(s) received, 100.00% packet loss
+`,
+      'ping -a 192.168.1.1 8.8.8.8':`PING 8.8.8.8 from 192.168.1.1: 56 data bytes
+Request time out
+--- 8.8.8.8 ping statistics ---
+5 packet(s) transmitted, 0 packet(s) received, 100.00% packet loss
+`,
+      'display acl 3000':`Advanced ACL 3000, 3 rules
+rule 5 permit ip source 10.0.0.0 0.0.0.255   (active)
+rule 10 permit ip source 172.16.0.0 0.0.255.255 (active)  
+rule 15 deny ip (active)
+`,
+      'display acl all':`Advanced ACL 3000, 3 rules
+rule 5 permit ip source 10.0.0.0 0.0.0.255   (active)
+rule 10 permit ip source 172.16.0.0 0.0.255.255 (active)
+rule 15 deny ip (active)
+`,
+      'display nat-policy':`NAT Policy: office-nat
+  Source zone: trust
+  Destination zone: untrust
+  Source address: 10.0.0.0/24, 172.16.0.0/16
+  Action: source-nat easy-ip
+`,
+      'display ip routing-table':`Destination/Mask    Proto   Pre  Cost   NextHop         Interface
+0.0.0.0/0           Static  60   0      203.0.113.1     GE0/0/1
+192.168.1.0/24      Direct  0    0      192.168.1.254   GE0/0/0
+192.168.10.0/24     Direct  0    0      192.168.10.254  GE0/0/0
+`,
+    }
+  },
+  {
+    id:4, name:'安全策略·端口隔离',
+    scenario:'【第四关】单个部门被隔离',
+    desc:'研发部反映只能 ping 通网关，ping 不通其他部门的服务器。其他部门之间互通正常。',
+    goal:'目标：查看端口隔离配置，使用 undo port-isolate enable 取消端口隔离',
+    hostname:'Core-Switch',
+    interface:'GigabitEthernet0/0/3',
+    fixCmd:'undo port-isolate enable',
+    fixIntf:'GigabitEthernet0/0/3',
+    quickCmds:['display port-isolate group','display interface g0/0/3','undo port-isolate enable'],
+    hints:['查看端口隔离组：display port-isolate group','端口被加入了隔离组，取消：undo port-isolate enable'],
+    sim: {
+      'display port-isolate group':`Port-isolate group information:
+Group ID: 1
+  GigabitEthernet0/0/3  GigabitEthernet0/0/4  GigabitEthernet0/0/5
+`,
+      'display interface g0/0/3':`GigabitEthernet0/0/3 current state : UP
+Line protocol current state : UP
+Port-isolate: enabled group 1
+`,
+      'ping 192.168.10.100':`PING 192.168.10.100: 56 data bytes
+Request time out
+--- 192.168.10.100 ping statistics ---
+5 packet(s) transmitted, 0 packet(s) received, 100.00% packet loss
+`,
+      'display vlan':`VLAN ID  Type    Status  Ports
+10      common  enable  GE0/0/3 GE0/0/4 GE0/0/5 GE0/0/10
+`,
+      'display stp brief':`MSTID  Port              Role  STP State   Protection
+0       GE0/0/3           DESI  FORWARDING  NONE
+0       GE0/0/4           DESI  FORWARDING  NONE
+`,
+    }
+  },
+  {
+    id:5, name:'综合故障',
+    scenario:'【第五关】终极排障',
+    desc:'新上线业务系统后，运维部办公室网络时断时续。网线灯亮，有时能通有时不通。日志显示大量MAC地址漂移告警。',
+    goal:'目标：排查MAC漂移 → 发现环路 → 启用STP → 检查端口安全 → 恢复网络',
+    hostname:'Core-Switch',
+    interface:'GigabitEthernet0/0/12',
+    fixCmd:'stp enable',
+    fixIntf:'',
+    bonusFixCmd:'undo port-security enable',
+    quickCmds:['display mac-address flapping','display stp brief','display port-security','stp enable','undo port-security enable'],
+    hints:['有MAC漂移告警：display mac-address flapping record','STP未启用导致环路：stp enable','检查端口安全：display port-security'],
+    sim: {
+      'display mac-address flapping record':`MAC address flapping record:
+MAC: 5489-98d1-2a3c  VLAN: 10
+  Flapping between GE0/0/12 and GE0/0/13
+  Occurred 47 times in last 300 seconds
+  Last flapping time: 2026-06-29 14:32:15
+`,
+      'display mac-address flapping':`MAC address flapping record:
+MAC: 5489-98d1-2a3c  VLAN: 10
+  Flapping between GE0/0/12 and GE0/0/13
+  Occurred 47 times in last 300 seconds
+`,
+      'display stp brief':`MSTID  Port              Role  STP State   Protection
+Error: STP is not enabled globally
+`,
+      'display port-security':`Port Security Configuration:
+GE0/0/12:
+  Port-security: enabled
+  Max MAC address: 1
+  Current MAC: 1
+  Violation action: shutdown
+`,
+    }
+  }
+];
+
+// ===== 游戏状态 =====
+let currentLevel = 0;
+let levelState = {};
+let hintIndex = 0;
+let intfContext = null; // 当前 enter 进入的接口上下文
+let completedLevels = new Set();
+
+// 初始化关卡
+function initLevel(idx) {
+  currentLevel = idx;
+  hintIndex = 0;
+  intfContext = null;
+  const lv = levels[idx];
+  levelState = {
+    intfStatus: lv.intfStatus || 'up',
+    intfReason: lv.intfReason || '',
+    vlanCorrect: lv.vlanCorrect || null,
+    natMissing: lv.natMissing || false,
+    portIsolate: true,
+    stpEnabled: false,
+    portSecurity: idx===4,
+    macFlapping: idx===4,
+  };
+
+  document.getElementById('scenario').textContent = lv.scenario;
+  document.getElementById('desc').textContent = lv.desc;
+  document.getElementById('goal').textContent = lv.goal;
+
+  // 更新顶部关卡标识
+  for(let i=0;i<5;i++){
+    const badge = document.getElementById('lvl'+(i+1));
+    badge.classList.remove('active','done');
+    if(completedLevels.has(i)) badge.classList.add('done');
+    if(i===idx) badge.classList.add('active');
+  }
+
+  // 快捷命令
+  const qc = document.getElementById('quick-cmds');
+  qc.innerHTML = lv.quickCmds.map(c=>`<span class="quick-cmd" onclick="quickCmd('${c}')">${c}</span>`).join('');
+
+  // 清屏
+  const term = document.getElementById('terminal-wrap');
+  term.innerHTML = '';
+  printSys(`╔════════════════════════════════╗`);
+  printSys(`║    网络运维大挑战 · 第${idx+1}关     ║`);
+  printSys(`╚════════════════════════════════╝`);
+  printSys(``);
+  printSys(`已连接到 ${lv.hostname}，开始排查...`);
+  printSys(`输入命令或点击下方快捷按钮，输入 help 查看可用命令`);
+  printSys(``);
+
+  document.getElementById('cmd-input').value = '';
+  document.getElementById('cmd-input').focus();
+  document.getElementById('overlay').classList.remove('show');
+}
+
+function printSys(text) {
+  const term = document.getElementById('terminal-wrap');
+  const div = document.createElement('div');
+  div.className = 'terminal-line';
+  div.innerHTML = `<span class="sys">${escapeHtml(text)}</span>`;
+  term.appendChild(div);
+  term.scrollTop = term.scrollHeight;
+}
+
+function printOutput(text, cls='') {
+  const term = document.getElementById('terminal-wrap');
+  const lines = text.split('\n');
+  lines.forEach(line => {
+    const div = document.createElement('div');
+    div.className = 'terminal-line';
+    div.innerHTML = `<span class="output ${cls}">${escapeHtml(line)||'&nbsp;'}</span>`;
+    term.appendChild(div);
+  });
+  term.scrollTop = term.scrollHeight;
+}
+
+function printCmd(cmd) {
+  const term = document.getElementById('terminal-wrap');
+  const div = document.createElement('div');
+  div.className = 'terminal-line';
+  const hostname = levels[currentLevel].hostname;
+  const ctx = intfContext ? `-${intfContext}` : '';
+  div.innerHTML = `<span class="prompt">&lt;${hostname}${ctx}&gt;</span><span class="cmd">${escapeHtml(cmd)}</span>`;
+  term.appendChild(div);
+  term.scrollTop = term.scrollHeight;
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+// ===== 命令模拟 =====
+function simulateCommand(cmd) {
+  const lv = levels[currentLevel];
+  cmd = cmd.trim();
+  const lower = cmd.toLowerCase();
+
+  // 通用命令
+  if(lower === 'help'){
+    return [{
+      type:'output',
+      text:`可用命令:
+  ping <IP>                — 测试连通性
+  ping -a <src> <dst>      — 带源地址ping
+  tracert <IP>             — 路由跟踪
+  display interface [端口]  — 查看端口状态
+  display interface brief  — 端口摘要
+  display vlan             — 查看VLAN
+  display arp              — 查看ARP表
+  display acl [编号]        — 查看ACL
+  display ip routing-table — 查看路由表
+  display stp brief        — 生成树状态
+  display port-isolate group — 端口隔离组
+  display mac-address flapping record — MAC漂移
+  display port-security    — 端口安全
+  display nat-policy       — NAT策略
+  undo shutdown            — 开启端口
+  port default vlan <ID>   — 修改端口VLAN
+  undo port-isolate enable — 取消端口隔离
+  stp enable               — 启用生成树
+  undo port-security enable — 关闭端口安全
+  undo port-security enable — 关闭端口安全
+  help                     — 显示帮助
+  clear                    — 清屏
+`
+    }];
+  }
+
+  if(lower === 'clear'){
+    document.getElementById('terminal-wrap').innerHTML = '';
+    return [];
+  }
+
+  // 接口上下文切换
+  if(lower.startsWith('interface ') || lower.startsWith('int ')){
+    const iface = cmd.split(/\s+/)[1];
+    if(iface){
+      intfContext = iface;
+      return [{type:'sys',text:`已进入接口视图: ${iface}`}];
+    }
+  }
+
+  if(lower === 'quit' || lower === 'exit'){
+    if(intfContext){
+      intfContext = null;
+      return [{type:'sys',text:'已返回系统视图'}];
+    }
+    return [{type:'output',text:''}];
+  }
+
+  // 命令路由
+  const key = cmd.toLowerCase().replace(/\s+/g,' ');
+
+  // 修复命令检测
+  if(currentLevel===0 && key.startsWith('undo shutdown')){
+    if(intfContext === 'GigabitEthernet0/0/10' || key.includes('gigabitethernet0/0/10') || key.includes('g0/0/10')){
+      levelState.intfStatus = 'up';
+      levelState.intfReason = '';
+      return [
+        {type:'output',text:''},
+        {type:'success',text:'[INFO] 端口 GigabitEthernet0/0/10 已开启'},
+        {type:'success',text:''},
+        {type:'check',text:'PORT_UP'}
+      ];
+    }
+    if(!intfContext){
+      return [{type:'warn',text:'[提示] 请先进入接口视图: interface GigabitEthernet0/0/10'}];
+    }
+    levelState.intfStatus = 'up';
+    levelState.intfReason = '';
+    return [
+      {type:'output',text:''},
+      {type:'success',text:`[INFO] 端口 ${intfContext} 已开启`},
+      {type:'check',text:'PORT_UP_CHECK'}
+    ];
+  }
+
+  if(currentLevel===1 && key.startsWith('port default vlan')){
+    if(!intfContext){
+      return [{type:'warn',text:'[提示] 请先进入接口视图: interface GigabitEthernet0/0/5'}];
+    }
+    const vlan = parseInt(key.split(' ').pop());
+    if(vlan === 20){
+      return [
+        {type:'output',text:''},
+        {type:'success',text:`[INFO] 端口 ${intfContext} 已加入 VLAN 20`},
+        {type:'check',text:'VLAN_FIX'}
+      ];
+    }
+    return [{type:'output',text:`[INFO] 端口 ${intfContext} 已加入 VLAN ${vlan}`}];
+  }
+
+  if(currentLevel===2 && (key.includes('rule 5 permit ip source 192.168') || key.includes('rule permit ip source 192.168'))){
+    return [
+      {type:'output',text:`[INFO] ACL规则已添加`},
+      {type:'success',text:`rule 5 permit ip source 192.168.0.0 0.0.255.255`},
+      {type:'check',text:'ACL_FIX'}
+    ];
+  }
+
+  if(currentLevel===3 && key.startsWith('undo port-isolate enable')){
+    if(!intfContext){
+      return [{type:'warn',text:'[提示] 请先进入接口视图: interface GigabitEthernet0/0/3'}];
+    }
+    return [
+      {type:'output',text:''},
+      {type:'success',text:`[INFO] 端口 ${intfContext} 已取消端口隔离`},
+      {type:'check',text:'ISOLATE_FIX'}
+    ];
+  }
+
+  if(currentLevel===4 && key === 'stp enable'){
+    levelState.stpEnabled = true;
+    return [
+      {type:'output',text:''},
+      {type:'success',text:'[INFO] STP已全局启用'},
+    ];
+  }
+
+  if(currentLevel===4 && key.startsWith('undo port-security enable')){
+    if(!intfContext){
+      // 检查通用修复
+      levelState.portSecurity = false;
+      return [
+        {type:'output',text:''},
+        {type:'success',text:'[INFO] 端口安全已关闭'},
+      ];
+    }
+    levelState.portSecurity = false;
+    return [
+      {type:'output',text:''},
+      {type:'success',text:`[INFO] 端口 ${intfContext} 端口安全已关闭`},
+      {type:'check',text:'COMPLETE_CHECK'}
+    ];
+  }
+
+  // 模拟输出
+  const sim = lv.sim;
+  for(const [simKey, simVal] of Object.entries(sim)){
+    const simKeyNorm = simKey.toLowerCase().replace(/\s+/g,' ');
+    if(key === simKeyNorm || key.startsWith(simKeyNorm)){
+      return [{type:'output',text:simVal}];
+    }
+  }
+
+  // 模拟 ping
+  if(key.startsWith('ping ')){
+    const target = key.split(' ')[1];
+    if(target === '192.168.20.1' && currentLevel===1){
+      return [{type:'output',text:lv.sim['ping 192.168.20.1']}];
+    }
+    if(target === '8.8.8.8'){
+      if(currentLevel===2){
+        return [{type:'output',text:lv.sim['ping 8.8.8.8']}];
+      }
+      return [{type:'output',text:`PING 8.8.8.8: 56 data bytes
+Reply from 8.8.8.8: bytes=56 time=12ms
+--- 8.8.8.8 ping statistics ---
+5 packet(s) transmitted, 5 received, 0% loss`}];
+    }
+    if(target.startsWith('192.168') && currentLevel===3){
+      return [{type:'output',text:lv.sim['ping 192.168.10.100']}];
+    }
+    return [{type:'output',text:`PING ${target}: Request time out`}];
+  }
+
+  if(key.startsWith('ping -a')){
+    if(currentLevel===2){
+      return [{type:'output',text:lv.sim['ping -a 192.168.1.1 8.8.8.8']}];
+    }
+    return [{type:'output',text:`PING from source: success`}];
+  }
+
+  if(key === 'display interface brief'){
+    if(currentLevel===0){
+      const out = lv.sim['display interface brief'];
+      return [{type:'output',text:out}];
+    }
+    return [{type:'output',text:`Interface                   PHY   Protocol
+GE0/0/1                    up    up
+GE0/0/2                    up    up       
+GE0/0/3                    up    up       
+`}];
+  }
+
+  if(key.startsWith('display interface ') || key.startsWith('dis interface ')){
+    if(currentLevel===0 && (key.includes('g0/0/10') || key.includes('gigabitethernet0/0/10'))){
+      const status = levelState.intfStatus === 'up' ? 'UP' : 'Administratively DOWN';
+      const proto = levelState.intfStatus === 'up' ? 'UP' : 'DOWN';
+      return [{type:'output',text:`GigabitEthernet0/0/10 current state : ${status}
+Line protocol current state : ${proto}
+Description: Sales-Office
+${status.includes('DOWN')?'Reason: Administratively shutdown':''}`}];
+    }
+    if(currentLevel===1 && (key.includes('g0/0/5') || key.includes('gigabitethernet0/0/5'))){
+      return [{type:'output',text:lv.sim['display interface g0/0/5']}];
+    }
+    if(currentLevel===3 && (key.includes('g0/0/3') || key.includes('gigabitethernet0/0/3'))){
+      return [{type:'output',text:lv.sim['display interface g0/0/3']}];
+    }
+    return [{type:'output',text:`Interface state: UP, Line protocol: UP`}];
+  }
+
+  // 默认
+  if(cmd.length > 0){
+    return [{type:'error',text:`Unrecognized command: ${cmd}. Type help for available commands.`}];
+  }
+  return [];
+}
+
+// ===== 执行命令 =====
+function executeCmd() {
+  const input = document.getElementById('cmd-input');
+  const cmd = input.value.trim();
+  if(!cmd) return;
+  input.value = '';
+  document.getElementById('terminal-wrap').style.display='';
+
+  printCmd(cmd);
+
+  const results = simulateCommand(cmd);
+
+  let levelComplete = false;
+  let completeType = '';
+
+  results.forEach(r => {
+    if(r.type === 'output') printOutput(r.text);
+    else if(r.type === 'error') printOutput(r.text, 'error');
+    else if(r.type === 'success') printOutput(r.text, 'success');
+    else if(r.type === 'warn') printOutput(r.text, 'warn');
+    else if(r.type === 'sys') printSys(r.text);
+    else if(r.type === 'check'){
+      if(r.text === 'PORT_UP' || r.text === 'VLAN_FIX' || r.text === 'ACL_FIX' || r.text === 'ISOLATE_FIX'){
+        levelComplete = true;
+        completeType = r.text;
+      }
+      if(r.text === 'COMPLETE_CHECK' && levelState.stpEnabled){
+        levelComplete = true;
+        completeType = 'ALL_FIX';
+      }
+      if(r.text === 'PORT_UP_CHECK' && currentLevel===0){
+        levelComplete = true;
+        completeType = 'PORT_UP';
+      }
+    }
+  });
+
+  // 第五关特殊逻辑：STP开启+PortSecurity关闭=完成
+  if(currentLevel===4 && levelState.stpEnabled && !levelState.portSecurity){
+    levelComplete = true;
+    completeType = 'ALL_FIX';
+    // 做个检查标记
+    if(!results.some(r=>r.type==='check' && r.text==='COMPLETE_CHECK')){
+      printSys('');
+      printSys('✅ MAC漂移停止，端口安全已解除');
+    }
+  }
+
+  // 第五关取消端口安全后的验证
+  if(currentLevel===4 && cmd.toLowerCase().startsWith('undo port-security') && levelState.stpEnabled){
+    levelComplete = true;
+    completeType = 'ALL_FIX';
+  }
+
+  // 第五关启用STP后的引导
+  if(currentLevel===4 && cmd === 'stp enable' && !levelState.portSecurity){
+    levelComplete = true;
+    completeType = 'ALL_FIX';
+  }
+
+  if(levelComplete){
+    setTimeout(() => completeLevel(), 800);
+  }
+}
+
+function completeLevel() {
+  const lv = levels[currentLevel];
+  completedLevels.add(currentLevel);
+
+  // 更新徽章
+  const badge = document.getElementById('lvl'+(currentLevel+1));
+  badge.classList.remove('active');
+  badge.classList.add('done');
+
+  const term = document.getElementById('terminal-wrap');
+  printSys('');
+  printSys('════════════════════════════════');
+  printSys(`  ✅ 第${currentLevel+1}关通过！${lv.name}`);
+  printSys('════════════════════════════════');
+
+  if(currentLevel < 4){
+    showModal(
+      '✅',
+      '排障成功！',
+      `你已经成功修复了 <b>${lv.name}</b> 的故障。\n准备挑战下一关吗？`,
+      currentLevel < 4 ? '下一关 →' : '',
+      () => initLevel(currentLevel + 1)
+    );
+  } else {
+    showModal(
+      '🏆',
+      '恭喜通关！',
+      '你已通过全部5个关卡，掌握了从物理层到安全策略的完整排障流程。\n机房运维，你已入门！',
+      '重新挑战',
+      () => {
+        completedLevels.clear();
+        initLevel(0);
+      }
+    );
+  }
+}
+
+function showModal(icon, title, msg, btnText, callback) {
+  document.getElementById('modal').innerHTML = `
+    <div class="icon">${icon}</div>
+    <div class="title">${title}</div>
+    <div class="msg">${msg.replace(/\n/g,'<br>')}</div>
+    ${btnText?`<button class="btn" onclick="document.getElementById('overlay').classList.remove('show');(${callback.toString()})()">${btnText}</button>`:''}
+  `;
+  document.getElementById('overlay').classList.add('show');
+
+  // 最后一关特殊处理
+  if(currentLevel >= 4 && !btnText){
+    document.getElementById('modal').innerHTML += `<button class="btn" style="margin-top:8px" onclick="document.getElementById('overlay').classList.remove('show');completedLevels.clear();initLevel(0)">重新挑战</button>`;
+  }
+}
+
+function showHint() {
+  const lv = levels[currentLevel];
+  if(hintIndex < lv.hints.length){
+    printSys(`💡 提示：${lv.hints[hintIndex]}`);
+    hintIndex++;
+  } else {
+    printSys('💡 已经没有更多提示了，仔细看看目标描述吧');
+  }
+}
+
+function quickCmd(cmd) {
+  document.getElementById('cmd-input').value = cmd;
+  executeCmd();
+}
+
+// ===== 事件监听 =====
+document.getElementById('cmd-input').addEventListener('keydown', function(e){
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    executeCmd();
+  }
+});
+
+document.getElementById('terminal-wrap').addEventListener('click', function(){
+  document.getElementById('cmd-input').focus();
+});
+
+// ===== 启动游戏 =====
+initLevel(0);
+</script>
+</body>
+</html>
