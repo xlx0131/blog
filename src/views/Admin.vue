@@ -9,12 +9,12 @@ const password = ref('')
 const loginError = ref('')
 const activeTab = ref<'articles' | 'bookmarks'>('articles')
 
-function login() {
+async function login() {
   if (username.value === 'admin' && password.value === 'xlx1234') {
     loggedIn.value = true
     loginError.value = ''
-    loadArticles()
-    loadBookmarks()
+    await loadArticles()
+    await loadBookmarks()
   } else {
     loginError.value = '账号或密码错误'
   }
@@ -44,8 +44,8 @@ const emptyArticle = () => ({
 
 const newArticle = ref(emptyArticle())
 
-function loadArticles() {
-  articles.value = getArticles()
+async function loadArticles() {
+  articles.value = await getArticles()
 }
 
 function openNewArticle() {
@@ -60,17 +60,17 @@ function openEditArticle(article) {
   showArticleEditor.value = true
 }
 
-function saveArticleHandler() {
+async function saveArticleHandler() {
   if (!newArticle.value.title.trim()) return
-  saveArticle({ ...newArticle.value })
+  await saveArticle({ ...newArticle.value })
   showArticleEditor.value = false
-  loadArticles()
+  await loadArticles()
 }
 
-function removeArticle(id: number) {
+async function removeArticle(id) {
   if (confirm('确定删除这篇文章？')) {
-    deleteArticle(id)
-    loadArticles()
+    await deleteArticle(id)
+    await loadArticles()
   }
 }
 
@@ -87,26 +87,31 @@ const showBookmarkEditor = ref(false)
 const emptyBookmark = (): BookmarkItem => ({ id: Date.now(), name: '', url: '', desc: '', category: '' })
 const newBookmark = ref(emptyBookmark())
 
-function loadBookmarks() {
-  bookmarkCats.value = getBookmarkCats()
+async function loadBookmarks() {
+  bookmarkCats.value = await getBookmarkCats()
 }
 
-function addCategory() {
+async function addCategory() {
   const name = newCatName.value.trim()
   if (!name) return
-  const cats = getBookmarkCats()
-  cats.push({ name, items: [] })
-  saveBookmarkCats(cats)
-  loadBookmarks()
+  await addBookmark({ type: 'category', name })
+  await loadBookmarks()
   newCatName.value = ''
   showCatInput.value = false
 }
 
-function deleteCategory(name: string) {
+async function deleteCategory(name) {
   if (!confirm(`确定删除分类「${name}」及其所有收藏？`)) return
-  const cats = getBookmarkCats().filter(c => c.name !== name)
-  saveBookmarkCats(cats)
-  loadBookmarks()
+  const cats = await getBookmarkCats()
+  const cat = cats.find(c => c.name === name)
+  if (cat && cat.items) {
+    for (const item of cat.items) {
+      await deleteBookmark(item.id, 'bookmark')
+    }
+  }
+  const categoryId = cat?.id
+  if (categoryId) await deleteBookmark(categoryId, 'category')
+  await loadBookmarks()
 }
 
 function openNewBookmark(catName: string) {

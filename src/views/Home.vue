@@ -56,57 +56,17 @@ interface Post {
 
 const recentPosts = ref<Post[]>([
   {
-    title: '分布式系统中的反馈循环架构',
-    date: '2025-04-12',
-    category: '工程',
+    title: '从零开始：购买域名并部署到 Cloudflare 完整记录',
+    date: '2026-06-30',
+    category: '技术',
     excerpt:
-      '探索反馈模式如何在微服务中体现，以及理解这些模式如何改变你设计 API 的方式。',
+      '记录第一次购买域名、配置 DNS、连接 GitHub 仓库并部署到 Cloudflare Pages 的全过程。包括遇到的问题和解决方法。',
     slug: '/article/1',
     delay: 1,
   },
-  {
-    title: '用 Vue 3 重写作品集学到的经验',
-    date: '2025-03-28',
-    category: '前端',
-    excerpt:
-      '一次坦诚的迁移回顾——好的、痛苦的，以及那些意外浮现的优雅模式。',
-    slug: '/article/2',
-    delay: 2,
-  },
-  {
-    title: '为生产环境设计无障碍色彩系统',
-    date: '2025-03-10',
-    category: '设计',
-    excerpt:
-      '构建对所有人都适用的色彩调色板的实用技巧，同时不牺牲视觉吸引力。',
-    slug: '/article/3',
-    delay: 3,
-  },
-  {
-    title: '软件工艺的短暂之美',
-    date: '2025-02-22',
-    category: '随笔',
-    excerpt:
-      '为什么你今天写的最佳代码明天可能就过时了，以及为什么这是一件值得庆祝而非恐惧的事。',
-    slug: '/article/4',
-    delay: 4,
-  },
 ])
 
-const featured = [
-  {
-    title: '从零构建组件库',
-    description:
-      '深入探讨创建生产级设计系统过程中的决策、权衡和经验教训。',
-    slug: '/article/5',
-  },
-  {
-    title: '错误信息的隐形艺术',
-    description:
-      '周到的错误沟通如何改变用户体验并减少支持负担。',
-    slug: '/article/6',
-  },
-]
+const featured = []
 </script>
 
 <template>
