@@ -1,0 +1,21 @@
+name = "personal-blog"
+main = "dist/index.html"
+compatibility_date = "2026-06-01"
+
+# 使用 wrangler pages 部署静态站点
+# 详细教程：https://developers.cloudflare.com/pages/
+
+# ─── D1 数据库配置（部署后启用）───
+# 1. 创建数据库：npx wrangler d1 create blog-db
+# 2. 复制输出的 database_id 到下方
+# 3. 建立表结构：npx wrangler d1 execute blog-db --file=schema.sql
+# 4. 构建部署：npm run build && npx wrangler pages deploy dist
+
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "blog-db"
+# database_id = "your-database-id-here"
+
+# ─── D1 数据 API（通过 Pages Functions）───
+# 在 /functions 目录下创建 API 路由来操作数据库
+# 详见：https://developers.cloudflare.com/pages/functions/

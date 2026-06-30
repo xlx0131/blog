@@ -48,6 +48,11 @@ const router = createRouter({
       name: 'network-game',
       component: () => import('@/views/NetworkGame.vue'),
     },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('@/views/Admin.vue'),
+    },
   ],
 })
 

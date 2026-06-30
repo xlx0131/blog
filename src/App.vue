@@ -123,7 +123,7 @@ onBeforeUnmount(() => cleanup?.())
       <div class="max-w-[1400px] mx-auto px-6 lg:px-10 py-12">
         <div class="flex flex-col md:flex-row items-start justify-between gap-8">
           <div>
-            <p class="text-base font-semibold tracking-tight">Lionel</p>
+            <p class="text-base font-semibold tracking-tight">许立鑫</p>
             <p class="text-sm text-zinc-500 mt-1 max-w-xs leading-relaxed">
              写代码、做设计、思考人生。
             </p>
@@ -137,7 +137,7 @@ onBeforeUnmount(() => cleanup?.())
           </div>
         </div>
         <div class="border-t border-zinc-100 mt-8 pt-6 text-xs text-zinc-400">
-          &copy; {{ new Date().getFullYear() }} Lionel. All rights reserved.
+          &copy; {{ new Date().getFullYear() }} 许立鑫. All rights reserved.
         </div>
       </div>
     </footer>
