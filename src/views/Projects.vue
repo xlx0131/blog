@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { initTiltCards } from '@/composables/useInteractions'
 
 const router = useRouter()
+
+onMounted(() => {
+  setTimeout(() => initTiltCards(), 100)
+})
 
 interface Project {
   id: number
