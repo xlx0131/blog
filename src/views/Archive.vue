@@ -17,33 +17,11 @@ interface YearGroup {
   posts: PostItem[]
 }
 
-const archives = ref<YearGroup[]>([
+const archives = ref([
   {
     year: '2026',
     posts: [
-      { id: 1, title: '使用 Vue 3 和 TypeScript 构建设计系统', date: '2026-06-20', category: '工程' },
-      { id: 2, title: '利用 CSS Containment 优化网页性能', date: '2026-06-15', category: '性能' },
-      { id: 3, title: 'Git Worktrees 实用指南', date: '2026-06-10', category: '工具' },
-      { id: 4, title: '理解 React 服务端组件', date: '2026-05-28', category: '工程' },
-      { id: 5, title: '写好拉取请求描述', date: '2026-05-18', category: '文化' },
-      { id: 6, title: '调试 CI 流水线中的不稳定测试', date: '2026-05-08', category: '测试' },
-    ],
-  },
-  {
-    year: '2025',
-    posts: [
-      { id: 7, title: '我的 2025 年度总结', date: '2025-12-31', category: '写作' },
-      { id: 8, title: 'React 与 Vue：平衡对比', date: '2025-11-10', category: '工程' },
-      { id: 9, title: '生产环境中的 CSS Container Queries', date: '2025-09-22', category: '性能' },
-      { id: 10, title: '使用 Turborepo 搭建 Monorepo', date: '2025-08-05', category: '工具' },
-      { id: 11, title: '我如何准备技术面试', date: '2025-06-14', category: '职业' },
-    ],
-  },
-  {
-    year: '2024',
-    posts: [
-      { id: 12, title: '在 StackWave 的第一个月：我学到了什么', date: '2024-08-01', category: '职业' },
-      { id: 13, title: 'Playwright 端到端测试入门', date: '2024-06-20', category: '测试' },
+      { id: 1, title: '从零开始：购买域名并部署到 Cloudflare 完整记录', date: '2026-06-30', category: '技术' },
     ],
   },
 ])
