@@ -19,57 +19,68 @@ const projects: Record<number, {
   details: string
 }> = {
   1: {
-    title: '江彤 · 个人主页',
-    subtitle: '交互式个人品牌网站',
-    description: '为创作者江彤打造的沉浸式个人品牌站点。',
-    url: 'https://jtweb.pages.dev/',
-    tags: ['全栈开发', 'UI 设计'],
-    tech: ['Vue 3', 'Three.js', 'GSAP', 'Tailwind CSS', 'Cloudflare Pages'],
-    year: '2026',
+    title: '用户画像分析系统',
+    subtitle: '基于用户行为数据的标签体系构建',
+    description: '通过对用户行为数据、业务数据进行清洗、建模、分析，构建一套完整的用户标签体系。',
+    url: '',
+    tags: ['数据分析', '数据挖掘'],
+    tech: ['Python', 'SQL', 'Pandas', 'Scikit-learn', 'Matplotlib'],
+    year: '2025.12 - 2026.01',
     highlights: [
-      '3D 粒子星系交互 (Three.js)',
-      '沉浸式画廊空间',
-      '响应式设计与动画 (GSAP)',
-      'Cloudflare Pages 自动部署',
+      '全链路数据清洗与质量治理',
+      'RFM 模型算法构建用户标签',
+      '多源数据去重、缺失值填充与异常值过滤',
+      '生成可视化统计图片',
     ],
     details: `
-      <p>这是一个为创作者江彤量身定制的个人品牌网站，旨在通过沉浸式的交互体验展示其作品与个人故事。</p>
-      <p>网站采用 Vue 3 + Vite 构建，集成了多种前端技术：</p>
+      <p>通过对用户行为数据、业务数据进行清洗、建模、分析，构建一套完整的用户标签体系。</p>
+      <h3>主要技术</h3>
       <ul>
-        <li><strong>3D 粒子星系</strong> — 使用 Three.js 构建可交互的星尘粒子系统，用户触摸或拖拽即可与星系互动</li>
-        <li><strong>星环画廊</strong> — 沉浸式 3D 图片展览空间，鼠标悬停即可预览详情</li>
-        <li><strong>时光漂流瓶</strong> — 一个有趣的情感分享功能，用户可以把心事装进瓶子</li>
-        <li><strong>音乐推荐</strong> — 最近在听的歌和值得分享的旋律展示</li>
-        <li><strong>小游戏</strong> — 内置 2048 等小游戏增加趣味性</li>
+        <li><strong>SQL</strong> — 多源数据查询与整合</li>
+        <li><strong>Python (Pandas)</strong> — 数据清洗与预处理</li>
+        <li><strong>聚类算法</strong> — 用户分群与标签构建</li>
+        <li><strong>数据可视化</strong> — 统计图表生成</li>
       </ul>
-      <p>设计上以深色太空为主题，配合柔和的发光效果和流畅的 GSAP 动画，营造出沉浸式的浏览体验。网站部署在 Cloudflare Pages 上，通过 Git 自动构建部署。</p>
+      <h3>项目分工</h3>
+      <ul>
+        <li>数据来源与数据采集</li>
+        <li>数据清洗与预处理</li>
+        <li>利用 RFM 模型算法对用户构建标签</li>
+        <li>生成可视化统计图片</li>
+      </ul>
+      <h3>核心职责</h3>
+      <ul>
+        <li>负责全链路数据清洗与质量治理，使用 Pandas + SQL 实现多源数据（用户行为、业务日志、交易数据）的去重、缺失值填充与异常值过滤，构建标准化数据清洗流程，保障下游分析与建模数据准确性。</li>
+        <li>采用规则校验 + 统计检测相结合的方式，识别并处理重复数据、格式错误、逻辑异常等问题，结合自定义清洗脚本，将数据质量合格率提升，减少因脏数据导致的分析偏差。</li>
+      </ul>
     `,
   },
   2: {
-    title: '网络运维模拟器',
-    subtitle: '交互式网络排障闯关游戏',
-    description: '一个模拟真实网络故障排查场景的交互式游戏。',
-    url: '/network-game',
-    tags: ['前端开发', '游戏化学习'],
-    tech: ['Vue 3', 'SVG', 'GSAP', 'Tailwind CSS'],
+    title: '个人主页 · SimonAKing',
+    subtitle: 'Vue 3 + Vite 全栈个人站点',
+    description: '基于 Vue 3、Vite、Tailwind CSS 和 GSAP 构建的沉浸式个人主页。',
+    url: 'https://github.com/SimonAKing/HomePage',
+    tags: ['全栈开发', 'Web 前端'],
+    tech: ['Vue 3', 'Vite', 'TypeScript', 'GSAP', 'Tailwind CSS', 'Cloudflare Pages'],
     year: '2026',
     highlights: [
-      '6 个实战关卡（物理层→网络层→应用层）',
-      '可视化 SVG 网络拓扑图',
-      '终端命令模拟器',
-      '详细复盘与最优路径分析',
+      'GSAP 滚动动画与 ScrollTrigger 交互',
+      'Tailwind CSS v4 响应式设计',
+      'CLI 网络运维排障模拟器游戏',
+      'Cloudflare Pages 自动部署',
     ],
     details: `
-      <p>网络运维模拟器是一个交互式闯关游戏，旨在帮助网络运维新手通过实战场景学习故障排查技能。</p>
-      <p>游戏特色：</p>
+      <p>一个功能丰富的个人品牌站点，融合了项目展示、博客归档、收藏夹管理、网络运维模拟器等多个功能模块。</p>
+      <h3>技术亮点</h3>
       <ul>
-        <li><strong>真实场景还原</strong> — 从最简单的网线松动到 VLAN 配置错误，每个关卡都基于真实运维案例设计</li>
-        <li><strong>可视化拓扑</strong> — 使用 SVG 绘制的网络拓扑图，设备状态、链路连接一目了然</li>
-        <li><strong>终端模拟</strong> — 内置终端模拟器，支持 ping、ipconfig、tracert、nslookup 等多种排查命令</li>
-        <li><strong>诊断修复</strong> — 发现问题后定位故障原因并执行修复操作</li>
-        <li><strong>复盘机制</strong> — 每关结束后详细解释每一步的原理和更优的排查路径</li>
+        <li><strong>Vue 3 + Composition API</strong> — 采用 <code>&lt;script setup&gt;</code> 语法，以组合式 API 组织逻辑</li>
+        <li><strong>GSAP + ScrollTrigger</strong> — 实现丰富的滚动动画、文本分割特效、视差滚动和 count-up 效果</li>
+        <li><strong>Tailwind CSS v4</strong> — 最新的 Tailwind 版本，配合自定义设计令牌和 CSS 自定义属性</li>
+        <li><strong>自定义交互</strong> — 磁性按钮、3D 倾角卡片、涟漪点击、鼠标跟随光点、滚动进度条等</li>
+        <li><strong>网络运维排障游戏</strong> — 内置 CLI 模拟器游戏，覆盖物理层到安全策略的故障排查</li>
       </ul>
-      <p>适合网络运维新手、IT 支持人员以及对网络技术感兴趣的学习者。</p>
+      <h3>部署</h3>
+      <p>使用 Cloudflare Pages 托管，通过 Git 自动构建部署。支持 Cloudflare D1 数据库作为后端存储。</p>
     `,
   },
 }
@@ -105,7 +116,7 @@ function openUrl(url: string) {
         <!-- Left: cover -->
         <div class="w-full lg:w-1/2 aspect-video rounded-2xl bg-gradient-to-br from-emerald-50 via-white to-emerald-100 border border-neutral-200 flex items-center justify-center text-8xl relative overflow-hidden">
           <div class="absolute inset-0 opacity-[0.04]" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(0,0,0,0.03) 19px, rgba(0,0,0,0.03) 20px), repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(0,0,0,0.03) 19px, rgba(0,0,0,0.03) 20px);"></div>
-          <span class="relative z-10">🌐</span>
+          <span class="relative z-10">{{ id === 1 ? '📊' : '🌐' }}</span>
         </div>
 
         <!-- Right: info -->
@@ -117,20 +128,9 @@ function openUrl(url: string) {
           <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-neutral-900">{{ project.title }}</h1>
           <p class="mt-2 text-lg text-neutral-500">{{ project.subtitle }}</p>
 
-          <!-- Direct link -->
-          <RouterLink
-            v-if="project.url.startsWith('/')"
-            :to="project.url"
-            class="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition-all duration-300 magnetic-btn ripple-btn"
-            style="transition-timing-function: cubic-bezier(0.16,1,0.3,1)"
-          >
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-            </svg>
-            进入游戏
-          </RouterLink>
+          <!-- External link -->
           <a
-            v-else
+            v-if="project.url"
             :href="project.url"
             target="_blank"
             rel="noopener noreferrer"
@@ -140,7 +140,7 @@ function openUrl(url: string) {
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
             </svg>
-            访问项目
+            查看源码
           </a>
 
           <!-- Tech tags -->
@@ -170,25 +170,6 @@ function openUrl(url: string) {
         <div class="prose-custom" v-html="project.details" />
       </section>
       </ScrollReveal>
-
-      <!-- CTA link -->
-      <ScrollReveal>
-      <div class="mt-16 border-t border-neutral-200 pt-10 text-center">
-        <p class="text-sm text-neutral-500 mb-4">查看在线效果</p>
-        <a
-          :href="project.url"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-800 transition-all duration-300 ripple-btn magnetic-btn"
-          style="transition-timing-function: cubic-bezier(0.16,1,0.3,1)"
-        >
-          访问 {{ project.title }}
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-          </svg>
-        </a>
-      </div>
-      </ScrollReveal>
     </div>
   </div>
 
@@ -211,6 +192,13 @@ function openUrl(url: string) {
 .prose-custom p {
   margin-bottom: 1rem;
 }
+.prose-custom h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #18181b;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
 .prose-custom ul {
   padding-left: 1.5rem;
   margin-bottom: 1rem;
@@ -221,5 +209,11 @@ function openUrl(url: string) {
 .prose-custom strong {
   color: #18181b;
   font-weight: 600;
+}
+.prose-custom code {
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
 }
 </style>

@@ -25,38 +25,38 @@ interface Project {
 const projects = ref<Project[]>([
   {
     id: 1,
-    title: '江彤 · 个人主页',
-    subtitle: '交互式个人品牌网站',
+    title: '用户画像分析系统',
+    subtitle: '基于用户行为数据的标签体系构建',
     description:
-      '为创作者江彤打造的沉浸式个人品牌站点。融合了 3D 粒子星系、交互式画廊、音乐推荐、漂流瓶、小游戏等多个模块，以独特的视觉语言呈现个人作品与故事。',
-    url: 'https://jtweb.pages.dev/',
-    tags: ['全栈开发', 'UI 设计'],
-    tech: ['Vue 3', 'Three.js', 'GSAP', 'Tailwind CSS', 'Cloudflare Pages'],
-    cover: 'jtweb',
-    year: '2026',
+      '通过对用户行为数据、业务数据进行清洗、建模、分析，构建一套完整的用户标签体系。涵盖全链路数据清洗、RFM 模型分析和可视化展示。',
+    url: '/projects/1',
+    tags: ['数据分析', '数据挖掘'],
+    tech: ['Python', 'SQL', 'Pandas', 'Scikit-learn', 'Matplotlib'],
+    cover: 'profile',
+    year: '2025 - 2026',
     highlights: [
-      '3D 粒子星系交互 (Three.js)',
-      '沉浸式画廊空间',
-      '响应式设计与动画 (GSAP)',
-      'Cloudflare Pages 自动部署',
+      '全链路数据清洗与质量治理 (Pandas + SQL)',
+      'RFM 模型算法构建用户标签',
+      '多源数据去重、缺失值填充与异常过滤',
+      '生成可视化统计图片',
     ],
   },
   {
     id: 2,
-    title: '网络运维模拟器',
-    subtitle: '交互式网络排障闯关游戏',
+    title: '个人主页 · SimonAKing',
+    subtitle: 'Vue 3 + Vite 全栈个人站点',
     description:
-      '一个模拟真实网络故障排查场景的交互式游戏。从网线松动到 VLAN 配置错误，每个关卡都配有可视化的网络拓扑图、终端模拟器和详细的复盘解释。适合网络运维新手学习。',
-    url: '/network-game',
-    tags: ['前端开发', '游戏化学习'],
-    tech: ['Vue 3', 'SVG', 'GSAP', 'Tailwind CSS'],
-    cover: 'network',
+      '基于 Vue 3、Vite、Tailwind CSS 和 GSAP 构建的沉浸式个人主页。包含项目展示、博客归档、收藏夹、网络运维模拟器等多个功能模块。',
+    url: 'https://github.com/SimonAKing/HomePage',
+    tags: ['全栈开发', 'Web 前端'],
+    tech: ['Vue 3', 'Vite', 'TypeScript', 'GSAP', 'Tailwind CSS', 'Cloudflare Pages'],
+    cover: 'homepage',
     year: '2026',
     highlights: [
-      '6 个实战关卡（物理层→网络层→应用层）',
-      '可视化 SVG 网络拓扑',
-      '终端命令模拟器',
-      '详细复盘与最优路径分析',
+      'GSAP 滚动动画与 ScrollTrigger 交互',
+      'Tailwind CSS v4 响应式设计',
+      'CLI 网络运维排障模拟器游戏',
+      'Cloudflare Pages 自动部署',
     ],
   },
 ])
@@ -79,7 +79,7 @@ function viewProject(id: number) {
           作品集
         </h1>
         <p class="mt-2 text-base text-neutral-500 max-w-lg">
-          一些亲手打造的项目，从设计到开发。
+          亲手打造的项目，从数据到代码。
         </p>
       </div>
 
@@ -95,7 +95,7 @@ function viewProject(id: number) {
           <!-- Cover -->
           <div class="h-48 bg-gradient-to-br from-emerald-50 via-white to-emerald-100 flex items-center justify-center text-6xl relative overflow-hidden">
             <div class="absolute inset-0 opacity-[0.03]" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(0,0,0,0.03) 19px, rgba(0,0,0,0.03) 20px), repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(0,0,0,0.03) 19px, rgba(0,0,0,0.03) 20px);"></div>
-            <span class="relative z-10">🌐</span>
+            <span class="relative z-10">{{ project.cover === 'profile' ? '📊' : '🌐' }}</span>
           </div>
           <!-- Body -->
           <div class="p-5">

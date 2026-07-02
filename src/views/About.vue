@@ -4,7 +4,6 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import ScrollReveal from '@/components/ScrollReveal.vue'
 
-
 gsap.registerPlugin(ScrollTrigger)
 
 onMounted(() => {
@@ -16,25 +15,26 @@ onMounted(() => {
 })
 
 interface Skill { name: string; level: string; items: string[] }
-interface Experience { years: string; company: string; role: string; description: string }
-interface Education { school: string; degree: string; years: string }
+interface Advantage { title: string; description: string }
 
-const skills = [
-  { name: '前端', level: '核心能力', items: ['Vue 3 / Composition API', 'React 18 / Hooks', 'TypeScript', 'Tailwind CSS'] },
-  { name: '后端', level: '工作知识', items: ['Node.js / Express', 'PostgreSQL', 'Redis', 'REST & GraphQL APIs'] },
-  { name: '工具', level: '日常使用', items: ['Vite', 'Git / GitHub Actions', 'Docker', 'Playwright / Vitest'] },
-  { name: '设计', level: '协作', items: ['Figma handoff', 'Design systems', 'Responsive layout', 'Accessibility'] },
+const skills: Skill[] = [
+  { name: 'Python', level: '核心技能', items: ['数据处理 (Pandas/NumPy)', '网络爬虫', '数据可视化', '机器学习 (Scikit-learn)'] },
+  { name: 'SQL', level: '核心技能', items: ['数据库查询 (MySQL)', '多表联查与子查询', '索引优化', '存储过程'] },
+  { name: '大数据', level: '工作知识', items: ['HDFS', 'MapReduce', 'YARN', 'Spark 基础'] },
+  { name: '开发', level: '工作知识', items: ['Java / C 语言', 'Web 前端 (Vue)', 'Unity 小游戏开发', '办公自动化'] },
 ]
 
-const experience = [
-  { years: '2024 - Present', company: 'StackWave Technologies', role: '全栈工程师', description: '负责构建和维护 200 多个工程团队使用的核心产品面板。主导了从基于类的 Vue 2 代码库到 Vue 3 Composition API 和 TypeScript 的迁移，将打包体积减少了 34%。' },
-  { years: '2022 - 2024', company: 'Prism Labs', role: '初级前端开发', description: '使用 React 和 D3 为内部数据分析平台开发交互式数据可视化组件。与设计团队合作建立了模式库，将新功能的 UI 开发时间减少了约 40%。' },
-  { years: '2021 - 2022', company: 'Orion Digital Studio', role: '前端实习生', description: '为电商和 SaaS 领域的客户构建响应式落地页和邮件模板。向团队引入了规范的 Git 分支约定和代码审查实践。' },
+const advantages: Advantage[] = [
+  { title: '编程基础扎实', description: '学习了 C 语言、Java、Python、Web 等多种编程语言，具备良好的编程基础与逻辑思维能力。' },
+  { title: '数据处理能力', description: '掌握使用 Python、Spark、SQL 等技术进行数据处理、清洗、分析与建模。' },
+  { title: '学习能力强', description: '每学期均获得校奖学金，课程压力小、实习时间充足，能够快速学习新技术并应用到实践中。' },
+  { title: '组织沟通能力', description: '曾任学生会部门负责人、新生班级班主任助理，具备良好的团队协作与沟通协调能力。' },
+  { title: '自主学习探索', description: '课余时间跟随网课自学 Unity 游戏开发、Web 前端等技术，具备主动探索和解决问题的能力。' },
+  { title: '办公软件熟练', description: '能够熟练使用 Word、Excel、PowerPoint 等办公软件，满足日常文档处理和汇报需求。' },
 ]
 
 const education = [
-  { school: 'Metro State University', degree: '计算机科学学士', years: '2018 - 2022' },
-  { school: 'CodeBridge Academy', degree: '全栈网页开发训练营', years: '2021' },
+  { school: '江西农业大学', degree: '数据科学与大数据技术 本科', years: '2023 - 2027' },
 ]
 </script>
 
@@ -45,11 +45,13 @@ const education = [
       <div class="col-span-3 flex flex-col justify-center px-6 py-16 sm:px-10 lg:px-16">
         <span class="text-xs font-semibold tracking-[0.2em] text-emerald-600 uppercase">关于</span>
         <h1 class="mt-4 text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl">许立鑫</h1>
-        <p class="mt-2 text-lg font-medium tracking-tight text-neutral-500">全栈工程师</p>
-        <p class="mt-6 max-w-lg text-base leading-relaxed text-neutral-600">我构建精确、高性能且令人愉悦的界面。</p>
+        <p class="mt-2 text-lg font-medium tracking-tight text-neutral-500">数据分析 · 开发</p>
+        <p class="mt-6 max-w-lg text-base leading-relaxed text-neutral-600">
+          江西农业大学 数据科学与大数据技术专业 2023 级本科生。对数据分析与开发充满热情，善于从数据中发现价值，用技术解决问题。
+        </p>
         <div class="mt-8 flex flex-wrap gap-4">
-          <a href="mailto:xulixin@example.com" class="btn-tactile magnetic-btn ripple-btn inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:bg-emerald-700">发送邮件</a>
-          <a href="https://github.com/lionelchen" class="btn-tactile inline-flex items-center gap-2 rounded-lg border border-neutral-300 bg-white px-5 py-2.5 text-sm font-medium text-neutral-700 transition-all duration-300 hover:border-emerald-200 hover:text-emerald-600">GitHub</a>
+          <a href="mailto:1211288810@qq.com" class="btn-tactile magnetic-btn ripple-btn inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:bg-emerald-700">发送邮件</a>
+          <a href="https://github.com/SimonAKing" class="btn-tactile inline-flex items-center gap-2 rounded-lg border border-neutral-300 bg-white px-5 py-2.5 text-sm font-medium text-neutral-700 transition-all duration-300 hover:border-emerald-200 hover:text-emerald-600">GitHub</a>
         </div>
       </div>
     </section>
@@ -58,8 +60,8 @@ const education = [
     <div class="mx-auto max-w-5xl px-6 pb-24 sm:px-10 lg:px-16">
       <ScrollReveal :threshold="0.1">
       <section class="mt-20">
-        <h2 class="text-2xl font-bold tracking-tight text-neutral-900">技能</h2>
-        <p class="mt-1 text-sm text-neutral-500">我日常使用的技术和领域。</p>
+        <h2 class="text-2xl font-bold tracking-tight text-neutral-900">专业技能</h2>
+        <p class="mt-1 text-sm text-neutral-500">日常使用的技术与工具。</p>
         <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div v-for="skill in skills" :key="skill.name" class="border-l-2 border-emerald-600 bg-white pl-4 pt-0.5 transition-all">
             <h3 class="text-base font-semibold tracking-tight text-neutral-800">{{ skill.name }}</h3>
@@ -71,13 +73,12 @@ const education = [
 
       <ScrollReveal :threshold="0.1">
       <section class="mt-20">
-        <h2 class="text-2xl font-bold tracking-tight text-neutral-900">经历</h2>
-        <p class="mt-1 text-sm text-neutral-500">我曾担任的职位及成果。</p>
-        <div class="timeline mt-8 space-y-10">
-          <div v-for="exp in experience" :key="exp.company" class="timeline-item border-l-2 border-emerald-600 pl-5">
-            <span class="inline-block rounded-full bg-emerald-600/10 px-3 py-0.5 text-[11px] font-semibold tracking-wide text-emerald-700">{{ exp.years }}</span>
-            <h3 class="mt-2 text-lg font-semibold tracking-tight text-neutral-900">{{ exp.role }} <span class="font-normal text-neutral-500">于 {{ exp.company }}</span></h3>
-            <p class="mt-2 max-w-prose text-sm leading-relaxed text-neutral-600">{{ exp.description }}</p>
+        <h2 class="text-2xl font-bold tracking-tight text-neutral-900">个人优势</h2>
+        <p class="mt-1 text-sm text-neutral-500">我的核心竞争力。</p>
+        <div class="timeline mt-8 space-y-6">
+          <div v-for="(item, idx) in advantages" :key="idx" class="timeline-item border-l-2 border-emerald-600 pl-5">
+            <h3 class="text-base font-semibold tracking-tight text-neutral-900">{{ item.title }}</h3>
+            <p class="mt-1 max-w-prose text-sm leading-relaxed text-neutral-600">{{ item.description }}</p>
           </div>
         </div>
       </section></ScrollReveal>
@@ -96,10 +97,11 @@ const education = [
       <ScrollReveal :threshold="0.1">
       <section class="mt-20 rounded-xl bg-white border border-neutral-200 p-8">
         <h2 class="text-2xl font-bold tracking-tight text-neutral-900">联系方式</h2>
-        <p class="mt-1 text-sm text-neutral-500">我正在积极寻找机会。随时联系。</p>
+        <p class="mt-1 text-sm text-neutral-500">求职中 · 数据分析 / 开发 · 期望城市：南昌 · 薪资：3-7K</p>
         <div class="mt-6 flex flex-wrap gap-6">
-          <a href="mailto:xulixin@example.com" class="group flex items-center gap-2 text-sm font-medium text-neutral-600 transition-all">xulixin@example.com</a>
-          <a href="https://github.com/lionelchen" class="group flex items-center gap-2 text-sm font-medium text-neutral-600 transition-all">github.com/lionelchen</a>
+          <a href="tel:15179493671" class="group flex items-center gap-2 text-sm font-medium text-neutral-600 transition-all hover:text-emerald-600">📞 15179493671</a>
+          <a href="mailto:1211288810@qq.com" class="group flex items-center gap-2 text-sm font-medium text-neutral-600 transition-all hover:text-emerald-600">📧 1211288810@qq.com</a>
+          <a href="https://github.com/SimonAKing" class="group flex items-center gap-2 text-sm font-medium text-neutral-600 transition-all hover:text-emerald-600">🐙 github.com/SimonAKing</a>
         </div>
       </section></ScrollReveal>
 

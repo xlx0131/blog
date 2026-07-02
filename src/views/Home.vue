@@ -1,91 +1,518 @@
 <script setup lang="ts">
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
-import { RouterLink } from 'vue-router'
-import { PhArrowRight, PhRss } from '@phosphor-icons/vue'
-import ScrollReveal from '@/components/ScrollReveal.vue'
-import ParallaxHero from '@/components/ParallaxHero.vue'
+import { animate } from 'animejs'
+import FluidBackground from '@/components/FluidBackground.vue'
+import GridBackground from '@/components/GridBackground.vue'
 
 const router = useRouter()
 
-function openAgent() {
-  // @ts-ignore
-  const agent = window.pageAgent
-  if (agent && agent.panel) {
-    // @ts-ignore
-    if (agent.panel.wrapper && document.body.contains(agent.panel.wrapper)) {
-      agent.panel.show()
-      return
-    }
-    // @ts-ignore
-    window.pageAgent = null
+const introRef = ref<HTMLElement | null>(null)
+const wrapRef = ref<HTMLElement | null>(null)
+const subtitleRef = ref<HTMLElement | null>(null)
+const pathRef = ref<SVGPathElement | null>(null)
+const shapeRef = ref<SVGSVGElement | null>(null)
+const enterRef = ref<HTMLElement | null>(null)
+const cardInnerRef = ref<HTMLElement | null>(null)
+
+const showFluid = ref(true)
+const showMain = ref(false)
+let switched = false
+
+const isPhone = /Mobile|Android|iOS|iPhone|iPad|iPod|Windows Phone|KFAPWI/i.test(navigator.userAgent)
+const hiddenProperty = 'hidden' in document ? 'hidden' : 'webkitHidden' in document ? 'webkitHidden' : 'mozHidden' in document ? 'mozHidden' : null
+const visibilityChangeEvent = hiddenProperty?.replace(/hidden/i, 'visibilitychange') ?? 'visibilitychange'
+
+function loadIntro() {
+  if (document[hiddenProperty as keyof Document] || !wrapRef.value) return
+  wrapRef.value.classList.add('in')
+  if (subtitleRef.value) {
+    const text = subtitleRef.value.textContent || ''
+    subtitleRef.value.innerHTML = `<span>${[...text].join('</span><span>')}</span>`
   }
-  // @ts-ignore
-  const PageAgentClass = window.PageAgent
-  if (!PageAgentClass) return
-  // @ts-ignore
-  window.pageAgent = new PageAgentClass({
-    language: 'zh-CN',
-    model: 'qwen3.5-plus',
-    baseURL: 'https://page-ag-testing-ohftxirgbn.cn-shanghai.fcapp.run',
-    apiKey: 'NA',
-  })
-  setTimeout(() => {
-    // @ts-ignore
-    window.pageAgent?.panel?.show?.()
-  }, 100)
 }
+
+function switchPage() {
+  if (switched || !introRef.value || !pathRef.value || !shapeRef.value) return
+  switched = true
+
+  const pathId = pathRef.value.getAttribute('pathdata:id')
+  shapeRef.value.style.transformOrigin = '50% 0%'
+
+  animate(introRef.value, {
+    translateY: '-200vh',
+    duration: 1100,
+    easing: 'easeInOutSine',
+  })
+
+  animate(shapeRef.value, {
+    scaleY: { from: 0.8, to: 1.8 },
+    duration: 550,
+    easing: 'easeInQuad',
+  }).then(() => {
+    if (shapeRef.value) {
+      animate(shapeRef.value, {
+        scaleY: 1,
+        duration: 550,
+        easing: 'easeOutQuad',
+      })
+    }
+  })
+
+  animate(pathRef.value, {
+    d: pathId,
+    duration: 1100,
+    easing: 'easeOutQuad',
+  }).then(() => {
+    showFluid.value = false
+  })
+}
+
+function loadMain() {
+  if (showMain.value) return
+  setTimeout(() => {
+    showMain.value = true
+    setTimeout(() => {
+      cardInnerRef.value?.classList.add('in')
+    }, 50)
+  }, 400)
+}
+
+function loadAll() {
+  switchPage()
+  loadMain()
+}
+
+function handleScroll(e: Event) {
+  const de = e as WheelEvent & { wheelDelta?: number }
+  const deltaY = de.deltaY || (de.wheelDelta !== undefined ? -de.wheelDelta : 0)
+  if (deltaY > 0) loadAll()
+}
+
+let touchStartHandler: ((e: TouchEvent) => void) | null = null
+let touchEndHandler: ((e: TouchEvent) => void) | null = null
+
+onMounted(() => {
+  loadIntro()
+
+  enterRef.value?.addEventListener('click', loadAll)
+  window.addEventListener('wheel', handleScroll, { passive: true })
+
+  if (isPhone) {
+    touchStartHandler = (e: TouchEvent) => {
+      ;(window as any).startx = e.touches[0].pageX
+      ;(window as any).starty = e.touches[0].pageY
+    }
+    touchEndHandler = (e: TouchEvent) => {
+      const endx = e.changedTouches[0].pageX
+      const endy = e.changedTouches[0].pageY
+      const angx = endx - ((window as any).startx || 0)
+      const angy = endy - ((window as any).starty || 0)
+      if (Math.abs(angx) < 2 && Math.abs(angy) < 2) return
+      const angle = (Math.atan2(angy, angx) * 180) / Math.PI
+      if (angle >= -135 && angle <= -45) loadAll()
+    }
+    document.addEventListener('touchstart', touchStartHandler, { passive: true })
+    document.addEventListener('touchend', touchEndHandler, { passive: true })
+  }
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('wheel', handleScroll)
+  if (touchStartHandler) document.removeEventListener('touchstart', touchStartHandler)
+  if (touchEndHandler) document.removeEventListener('touchend', touchEndHandler)
+})
 </script>
 
 <template>
-  <div>
-    <ParallaxHero>
-      <section class="min-h-[100dvh] flex items-center hero-gradient hero-section" aria-label="Hero">
-        <div id="hero-particles" class="absolute inset-0 overflow-hidden" aria-hidden="true" />
-        <div class="flex flex-col justify-center px-6 sm:px-10 lg:px-20 py-20 lg:py-0 w-full">
-          <div class="max-w-[1400px] mx-auto w-full">
-            <div class="max-w-[65ch]">
-              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 text-xs font-medium text-zinc-600 tracking-wide uppercase mb-6 animate-fade-up">
-                <PhRss :size="14" weight="duotone" class="text-emerald-600" />
-                博客
-              </div>
-              <h1 class="text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-zinc-900 leading-[1.05] mb-6 animate-fade-up hero-title">
-                记录 <span class="gradient-text">代码、设计</span><br />与生活
-              </h1>
-              <p class="text-base sm:text-lg text-zinc-500 leading-relaxed max-w-[50ch] mb-10 animate-fade-up hero-subtitle">
-                关于软件工程、产品设计和创作过程的思考。由许立鑫撰写。
-              </p>
-              <div class="flex flex-wrap gap-4 animate-fade-up">
-                <RouterLink to="/archive" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-zinc-900 text-white text-sm font-medium hover:bg-zinc-800 transition-all duration-300 hero-cta magnetic-btn">
-                  浏览文章
-                  <PhArrowRight :size="16" weight="bold" />
-                </RouterLink>
-                <RouterLink to="/about" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-zinc-100 text-zinc-700 text-sm font-medium hover:bg-zinc-200 transition-all duration-300 hero-cta magnetic-btn">
-                  关于我
-                </RouterLink>
-              </div>
-            </div>
-          </div>
+  <div class="page-wrapper">
+    <!-- Main Section (dark background base) -->
+    <div class="content-main">
+      <div id="card">
+        <div class="card-inner" ref="cardInnerRef">
+          <header>
+            <svg class="avatar-placeholder" viewBox="0 0 80 80" width="80" height="80">
+              <circle cx="40" cy="40" r="40" fill="rgba(255,255,255,0.08)" />
+              <text x="40" y="45" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="28" font-family="sans-serif" dy=".35em">许</text>
+            </svg>
+            <h1>许立鑫</h1>
+            <h2 id="signature">写代码 · 做设计 · 思考人生</h2>
+          </header>
+          <ul>
+            <li>
+              <router-link to="/archive" aria-label="归档">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4h16v16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/></svg>
+                <span>归档</span>
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/projects" aria-label="项目">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                <span>项目</span>
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/about" aria-label="关于">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 10-16 0"/></svg>
+                <span>关于</span>
+              </router-link>
+            </li>
+          </ul>
         </div>
-      </section>
-    </ParallaxHero>
+      </div>
+    </div>
 
-    <ScrollReveal>
-      <section class="reveal-up max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-20 py-24 lg:py-32 border-t border-zinc-100" aria-label="AI Agent">
-        <div class="animate-fade-up text-center glass-panel rounded-2xl p-10 md:p-14 max-w-2xl mx-auto gradient-border">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-xs font-medium text-emerald-700 tracking-wide uppercase mb-6">AI Agent</div>
-          <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight text-zinc-900 mb-4">立即体验网页专属 AI Agent</h2>
-          <p class="text-base text-zinc-500 leading-relaxed max-w-[50ch] mx-auto mb-10">用自然语言操控网页——点击下方按钮，试试对 AI 说"帮我找篇文章"或"介绍一下博主"。</p>
-          <button class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-zinc-900 text-white text-sm font-medium hover:bg-zinc-800 transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] ripple-btn" @click="openAgent">
-            打开 AI 助手
-            <PhArrowRight :size="16" weight="bold" />
-          </button>
+    <!-- Grid Snake Background (paints above dark bg, below card) -->
+    <GridBackground />
+
+    <!-- Intro Section (200vh, scrollable, z-index 100) -->
+    <div class="content-intro" ref="introRef">
+      <div class="content-inner">
+        <FluidBackground v-if="showFluid" />
+        <div class="wrap" ref="wrapRef">
+          <h2 class="content-title">许立鑫</h2>
+          <h3 class="content-subtitle" ref="subtitleRef">写代码 · 做设计 · 思考人生</h3>
+          <a class="enter" ref="enterRef">ENTER</a>
+          <div class="arrow arrow-1"></div>
+          <div class="arrow arrow-2"></div>
         </div>
-      </section>
-    </ScrollReveal>
+      </div>
+      <div class="shape-wrap">
+        <svg class="shape" ref="shapeRef" width="100%" height="100vh" preserveAspectRatio="none" viewBox="0 0 1440 800">
+          <path ref="pathRef" d="M -44,-50 C -52.71,28.52 15.86,8.186 184,14.69 383.3,22.39 462.5,12.58 638,14 835.5,15.6 987,6.4 1194,13.86 1661,30.68 1652,-36.74 1582,-140.1 1512,-243.5 15.88,-589.5 -44,-50 Z" pathdata:id="M -44,-50 C -137.1,117.4 67.86,445.5 236,452 435.3,459.7 500.5,242.6 676,244 873.5,245.6 957,522.4 1154,594 1593,753.7 1793,226.3 1582,-126 1371,-478.3 219.8,-524.2 -44,-50 Z" />
+        </svg>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.iai-illustration { margin: 24px 0; border-radius: 12px; overflow: hidden; }
-.iai-illustration svg { display: block; width: 100%; height: auto; max-width: 400px; }
+/* ── Page Wrapper ── */
+.page-wrapper {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  background: #060606;
+}
+
+/* ── Intro Section ── */
+.content-intro {
+  position: relative;
+  z-index: 100;
+  height: 200vh;
+  background: transparent;
+}
+
+.content-inner {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  background: transparent;
+}
+
+.wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(200px);
+  transition: all 1s;
+  z-index: 10;
+  pointer-events: none;
+}
+.wrap.in {
+  opacity: 1;
+  transform: none;
+}
+
+.content-title {
+  font-family: 'Comic Sans MS', 'Helvetica Neue', 'Microsoft Yahei', -apple-system, sans-serif;
+  font-size: 4.7rem;
+  font-weight: 200;
+  color: #fff;
+  line-height: 1;
+  margin-top: 0.8em;
+  margin-bottom: 0.3em;
+  animation: whiteShadow 1.5s ease-in-out infinite alternate;
+  text-shadow: rgb(69, 45, 45) 0 0 1px, rgb(255, 255, 251) 0 0 1px, rgb(255, 255, 251) 0 0 2px;
+  pointer-events: auto;
+}
+
+@keyframes whiteShadow {
+  from {
+    text-shadow: 0 0 1px #fff, 0 0 2px #fff, 0 0 3px #fff, 0 0 5px #333, 0 0 8px #333, 0 0 9px #333, 0 0 10px #333, 0 0 15px #333;
+  }
+  to {
+    text-shadow: 0 0 0.5px #fff, 0 0 1px #fff, 0 0 1.5px #fff, 0 0 2px #333, 0 0 4px #333, 0 0 5px #333, 0 0 6px #333, 0 0 8px #333;
+  }
+}
+
+.content-subtitle {
+  color: #fff;
+  font-family: 'Comic Sans MS', 'Helvetica Neue', 'Microsoft Yahei', -apple-system, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 200;
+  margin-bottom: 2em;
+  text-shadow: 0 0 4px #ffffff;
+  pointer-events: auto;
+}
+
+.content-subtitle span {
+  animation: letter-glow 0.7s 0s ease both;
+}
+
+@keyframes letter-glow {
+  0% {
+    opacity: 0;
+    text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+  66% {
+    opacity: 1;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
+  }
+  77% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* Generate delays for subtitle letters */
+.content-subtitle span:nth-child(1) { animation-delay: 0.05s; }
+.content-subtitle span:nth-child(2) { animation-delay: 0.10s; }
+.content-subtitle span:nth-child(3) { animation-delay: 0.15s; }
+.content-subtitle span:nth-child(4) { animation-delay: 0.20s; }
+.content-subtitle span:nth-child(5) { animation-delay: 0.25s; }
+.content-subtitle span:nth-child(6) { animation-delay: 0.30s; }
+.content-subtitle span:nth-child(7) { animation-delay: 0.35s; }
+.content-subtitle span:nth-child(8) { animation-delay: 0.40s; }
+.content-subtitle span:nth-child(9) { animation-delay: 0.45s; }
+.content-subtitle span:nth-child(10) { animation-delay: 0.50s; }
+.content-subtitle span:nth-child(11) { animation-delay: 0.55s; }
+.content-subtitle span:nth-child(12) { animation-delay: 0.60s; }
+.content-subtitle span:nth-child(13) { animation-delay: 0.65s; }
+.content-subtitle span:nth-child(14) { animation-delay: 0.70s; }
+.content-subtitle span:nth-child(15) { animation-delay: 0.75s; }
+.content-subtitle span:nth-child(16) { animation-delay: 0.80s; }
+.content-subtitle span:nth-child(17) { animation-delay: 0.85s; }
+
+.enter {
+  color: #fff;
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  white-space: pre;
+  pointer-events: auto;
+  transition: all 0.4s;
+  z-index: 999;
+  position: relative;
+  cursor: pointer;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 2s linear infinite;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% center; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+  50% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.6); }
+  100% { background-position: -200% center; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+}
+
+.arrow {
+  position: absolute;
+  left: 49.5%;
+  top: 95%;
+  transform-origin: 50% 50%;
+  transform: translate3d(-50%, 0%, 0);
+  cursor: pointer;
+  pointer-events: auto;
+}
+.arrow-1 {
+  animation: arrow-movement 2s ease-in-out infinite;
+}
+.arrow-2 {
+  animation: arrow-movement 2s 1s ease-in-out infinite;
+}
+.arrow:before,
+.arrow:after {
+  background: #fff;
+  content: '';
+  display: block;
+  height: 3px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 13px;
+  box-shadow: 1px 1px 20px 0px #fff;
+}
+.arrow:before {
+  transform: rotate(45deg) translateX(-10%);
+  transform-origin: top left;
+}
+.arrow:after {
+  transform: rotate(-45deg) translateX(10%);
+  transform-origin: top right;
+}
+
+@keyframes arrow-movement {
+  0% { opacity: 0; top: 92%; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ── SVG Shape ── */
+.shape-wrap {
+  position: relative;
+  z-index: 0;
+  margin: -5px 0 0 0;
+  will-change: scroll-position;
+  background: transparent;
+}
+.shape {
+  display: block;
+  background: transparent;
+}
+.shape path {
+  fill: #151515;
+}
+
+/* ── Main Section ── */
+.content-main {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: #060606;
+  pointer-events: none;
+}
+
+#card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  color: #93979e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+#card a {
+  pointer-events: auto;
+}
+
+.card-inner {
+  padding: 0;
+  border: 0;
+  width: 100%;
+  max-width: 700px;
+  opacity: 0;
+  transform: translateY(200px);
+  transition: all 1s;
+}
+.card-inner.in {
+  opacity: 1;
+  transform: none;
+}
+
+.card-inner header {
+  margin-bottom: 40px;
+}
+
+.card-inner header img,
+.card-inner header .avatar-placeholder {
+  border: 3px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.3);
+  transition: 0.4s ease-in-out;
+  z-index: 2;
+  position: relative;
+}
+
+.card-inner header h1 {
+  margin: 15px 15px 0px;
+  color: #fff;
+  font-size: 2rem;
+  line-height: 1.2em;
+  font-weight: 300;
+  z-index: 2;
+  position: relative;
+  letter-spacing: -0.02em;
+}
+
+.card-inner header h2 {
+  color: #ccc;
+  letter-spacing: 3px;
+  font-size: 0.8rem;
+  font-weight: lighter;
+  z-index: 2;
+  position: relative;
+}
+
+.card-inner ul {
+  position: relative;
+  margin: 0;
+  list-style-type: none;
+  display: inline-flex;
+  width: 100%;
+  justify-content: space-around;
+  padding-bottom: 40px;
+}
+
+.card-inner ul li {
+  z-index: 2;
+  position: relative;
+  display: inline-block;
+  transition: all 0.2s;
+  width: 100%;
+  height: 100%;
+}
+
+.card-inner ul li a {
+  color: #b6b6b6;
+  transition: all 0.2s;
+  text-decoration: none;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.card-inner ul li a:hover {
+  color: #f6f6f6;
+  text-shadow: 0 0 2px #f6f6f6;
+}
+
+@media screen and (max-width: 540px) {
+  .content-title {
+    font-size: 2rem !important;
+  }
+  .content-subtitle {
+    font-size: 1rem !important;
+  }
+  .card-inner header h1 {
+    font-size: 1rem !important;
+  }
+  .card-inner header h2 {
+    font-size: 0.8rem !important;
+  }
+  .card-inner ul li a {
+    font-size: 0.8rem !important;
+  }
+}
 </style>

@@ -132,6 +132,17 @@ h1, h2, h3, h4 {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-4px); }
 }
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes orbs-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(10px, -15px) scale(1.05); }
+  50% { transform: translate(-5px, -25px) scale(0.95); }
+  75% { transform: translate(-15px, -10px) scale(1.02); }
+}
 
 .animate-fade-up {
   animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -201,7 +212,42 @@ h1, h2, h3, h4 {
 }
 
 .hero-gradient {
-  background: linear-gradient(135deg, #f0fdf4 0%, #fafafa 40%, #ecfdf5 100%);
+  background: linear-gradient(135deg, #f0fdf4 0%, #fafafa 25%, #ecfdf5 50%, #f0fdf4 75%, #fafafa 100%);
+  background-size: 400% 400%;
+  animation: gradient-shift 15s ease infinite;
+}
+
+.hero-orbs {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.hero-orbs::before,
+.hero-orbs::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.3;
+  animation: orbs-float 20s ease-in-out infinite;
+}
+.hero-orbs::before {
+  width: 400px;
+  height: 400px;
+  background: rgba(5, 150, 105, 0.15);
+  top: -100px;
+  right: -100px;
+  animation-delay: 0s;
+}
+.hero-orbs::after {
+  width: 300px;
+  height: 300px;
+  background: rgba(52, 211, 153, 0.1);
+  bottom: -50px;
+  left: -80px;
+  animation-delay: -7s;
+  animation-duration: 25s;
 }
 
 ::selection {

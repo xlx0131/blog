@@ -186,7 +186,7 @@ function getCommands(level: any, ctx: string): Record<string, (args: string) => 
       return ''
     },
     diagnose: (args: string) => {
-      if (!foundFault) {
+      if (!foundFault.value) {
         foundFault.value = true
         return '已记录诊断结果。请在操作面板确认你的诊断。'
       }

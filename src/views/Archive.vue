@@ -6,13 +6,23 @@ const router = useRouter()
 const articles = [
   {
     id: 1,
-    title: '从零开始：购买域名并部署到 Cloudflare 完整记录',
-    date: '2026-06-30',
+    title: '从零搭建个人主页：Vue 3 + Vite + Cloudflare Pages 实战记录',
+    date: '2026-07-01',
     category: '技术',
-    readingTime: '8 min',
-    words: '1,200',
-    summary: '记录第一次购买域名、配置 DNS、连接 GitHub 仓库并部署到 Cloudflare Pages 的全过程。',
-    tags: ['域名', 'Cloudflare', '部署'],
+    readingTime: '10 min',
+    words: '1,500',
+    summary: '记录使用 Vue 3、Vite、Tailwind CSS 和 GSAP 从零搭建个人主页，并部署到 Cloudflare Pages 的全过程。',
+    tags: ['Vue 3', 'Cloudflare', '部署'],
+  },
+  {
+    id: 2,
+    title: '用户画像分析：从数据清洗到 RFM 模型构建',
+    date: '2026-01-15',
+    category: '数据分析',
+    readingTime: '12 min',
+    words: '2,000',
+    summary: '基于用户行为数据，使用 Python + SQL 进行全链路数据清洗，利用 RFM 模型构建用户标签体系。',
+    tags: ['Python', '数据分析', 'RFM'],
   },
 ]
 
@@ -64,13 +74,6 @@ function viewArticle(id: number) {
         </div>
       </div>
 
-      <!-- Empty state -->
-      <div v-if="articles.length === 0" class="text-center py-24">
-        <p class="text-5xl mb-4">📝</p>
-        <p class="text-base text-zinc-500">还没有文章</p>
-        <p class="text-sm text-zinc-400 mt-1">通过管理后台新增文章</p>
-      </div>
-
       <!-- Stats -->
       <div class="mt-16 border-t border-zinc-200 pt-10">
         <div class="grid grid-cols-3 gap-6 max-w-md mx-auto text-center">
@@ -79,11 +82,11 @@ function viewArticle(id: number) {
             <p class="text-xs text-zinc-500 mt-0.5">文章</p>
           </div>
           <div>
-            <p class="text-2xl font-bold text-zinc-900 tabular-nums">2026</p>
-            <p class="text-xs text-zinc-500 mt-0.5">起始年份</p>
+            <p class="text-2xl font-bold text-zinc-900 tabular-nums">{{ articles.reduce((sum, a) => sum + parseInt(a.words.replace(',','')), 0) }}</p>
+            <p class="text-xs text-zinc-500 mt-0.5">总字数</p>
           </div>
           <div>
-            <p class="text-2xl font-bold text-zinc-900 tabular-nums">{{ articles.reduce((s, a) => s + a.tags.length, 0) }}</p>
+            <p class="text-2xl font-bold text-zinc-900 tabular-nums">{{ [...new Set(articles.flatMap(a => a.tags))].length }}</p>
             <p class="text-xs text-zinc-500 mt-0.5">标签</p>
           </div>
         </div>
