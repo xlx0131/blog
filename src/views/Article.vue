@@ -13,43 +13,6 @@ const articles: Record<string, {
   category: string
   content: string
 }> = {
-  '1': {
-    id: 1,
-    title: '从零搭建个人主页：Vue 3 + Vite + Cloudflare Pages 实战记录',
-    date: '2026-07-01',
-    category: '技术',
-    content: `
-      <p>这篇文章记录了我使用 Vue 3、Vite、Tailwind CSS 和 GSAP 从零搭建个人主页，并部署到 Cloudflare Pages 的全过程。</p>
-
-      <h2>技术选型</h2>
-      <p>选择技术栈时主要考虑了以下几点：</p>
-      <ul>
-        <li><strong>Vue 3</strong> — 轻量且高效的前端框架，Composition API 让逻辑组织更清晰</li>
-        <li><strong>Vite</strong> — 极速的开发服务器和构建工具，原生 ESM 支持</li>
-        <li><strong>Tailwind CSS v4</strong> — 最新的 Tailwind 版本，零配置即可使用</li>
-        <li><strong>GSAP</strong> — 专业级动画库，ScrollTrigger 插件实现滚动动画</li>
-        <li><strong>Cloudflare Pages</strong> — 免费托管，全球 CDN 加速，支持自动部署</li>
-      </ul>
-
-      <h2>项目结构</h2>
-      <p>采用 SPA 单页应用架构，vue-router 实现客户端路由，所有页面组件延迟加载。</p>
-      <p>主要功能模块包括：首页 Hero、项目展示、博客归档、收藏夹、网络运维模拟器和管理后台。</p>
-
-      <h2>动画系统</h2>
-      <p>GSAP 是项目的动画核心，配合 ScrollTrigger 实现了丰富的滚动动画效果：</p>
-      <ul>
-        <li>Hero 区域的文字分割动画</li>
-        <li>滚动到视口的渐入动画</li>
-        <li>卡片 3D 倾角效果</li>
-        <li>磁性按钮和涟漪点击效果</li>
-        <li>数字递增动画</li>
-      </ul>
-
-      <h2>部署</h2>
-      <p>项目使用 Cloudflare Pages 托管。只需将代码推送到 GitHub 仓库，Cloudflare Pages 会自动检测并执行构建命令，将 dist 目录部署到全球 CDN 节点。</p>
-      <p>整个过程无需服务器，无需配置域名证书，极致简单。</p>
-    `,
-  },
   '2': {
     id: 2,
     title: '用户画像分析：从数据清洗到 RFM 模型构建',
@@ -94,11 +57,11 @@ function goBack() {
 </script>
 
 <template>
-  <div class="min-h-[100dvh] bg-[#fafafa] pt-24 pb-20" v-if="article">
+  <div class="min-h-[100dvh] bg-[#0d1117] pt-24 pb-20" v-if="article">
     <div class="max-w-[720px] mx-auto px-6 sm:px-10">
       <!-- Back -->
       <button
-        class="inline-flex items-center gap-1.5 text-sm text-neutral-500 hover:text-emerald-600 transition-colors duration-300 mb-8"
+        class="inline-flex items-center gap-1.5 text-sm text-[#8b949e] hover:text-[#34d399] transition-colors duration-300 mb-8"
         @click="goBack"
       >
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -109,8 +72,8 @@ function goBack() {
 
       <ScrollReveal>
       <article>
-        <span class="inline-flex items-center gap-2 text-xs font-semibold text-emerald-700 bg-emerald-50 rounded-full px-3 py-1 mb-4">{{ article.category }} · {{ article.date }}</span>
-        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-neutral-900 leading-[1.15]">{{ article.title }}</h1>
+        <span class="inline-flex items-center gap-2 text-xs font-semibold text-[#34d399] bg-[#059669]/10 rounded-full px-3 py-1 mb-4">{{ article.category }} · {{ article.date }}</span>
+        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-[#e6edf3] leading-[1.15]">{{ article.title }}</h1>
 
         <div class="mt-10 prose-custom" v-html="article.content" />
       </article>
@@ -119,11 +82,11 @@ function goBack() {
   </div>
 
   <!-- Not found -->
-  <div v-else class="min-h-[100dvh] bg-[#fafafa] pt-24 pb-20 flex items-center justify-center">
+  <div v-else class="min-h-[100dvh] bg-[#0d1117] pt-24 pb-20 flex items-center justify-center">
     <div class="text-center">
       <p class="text-6xl mb-4">🔍</p>
-      <h1 class="text-2xl font-bold text-neutral-900">文章未找到</h1>
-      <button class="mt-4 text-sm text-emerald-600 hover:text-emerald-700" @click="goBack">返回归档</button>
+      <h1 class="text-2xl font-bold text-[#e6edf3]">文章未找到</h1>
+      <button class="mt-4 text-sm text-[#34d399] hover:text-[#34d399]/80" @click="goBack">返回归档</button>
     </div>
   </div>
 </template>
@@ -132,7 +95,7 @@ function goBack() {
 .prose-custom {
   font-size: 1rem;
   line-height: 1.8;
-  color: #52525b;
+  color: #8b949e;
 }
 .prose-custom p {
   margin-bottom: 1.25rem;
@@ -140,7 +103,7 @@ function goBack() {
 .prose-custom h2 {
   font-size: 1.35rem;
   font-weight: 700;
-  color: #18181b;
+  color: #e6edf3;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
 }
@@ -152,7 +115,7 @@ function goBack() {
   margin-bottom: 0.5rem;
 }
 .prose-custom strong {
-  color: #18181b;
+  color: #e6edf3;
   font-weight: 600;
 }
 </style>
