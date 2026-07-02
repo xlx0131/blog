@@ -97,7 +97,7 @@ const education = [
       <ScrollReveal :threshold="0.1">
       <section class="mt-20 rounded-xl bg-[#161b22] border border-[#30363d] p-8">
         <h2 class="text-2xl font-bold tracking-tight text-[#e6edf3]">联系方式</h2>
-        <p class="mt-1 text-sm text-[#8b949e]">求职中 · 数据分析 / 开发 · 期望城市：南昌 · 薪资：3-7K</p>
+        <p class="mt-1 text-sm text-[#8b949e]">求职中 · 数据分析 / 开发 · 期望城市：南昌 · 薪资：6-9K</p>
         <div class="mt-6 flex flex-wrap gap-6">
           <a href="tel:15179493671" class="group flex items-center gap-2 text-sm font-medium text-[#8b949e] transition-all hover:text-[#34d399]">📞 15179493671</a>
           <a href="mailto:1211288810@qq.com" class="group flex items-center gap-2 text-sm font-medium text-[#8b949e] transition-all hover:text-[#34d399]">📧 1211288810@qq.com</a>
