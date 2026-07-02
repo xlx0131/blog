@@ -13,6 +13,60 @@ const articles: Record<string, {
   category: string
   content: string
 }> = {
+  '1': {
+    id: 1,
+    title: '从零购买域名并配置 Cloudflare：许立鑫.site 实战记录',
+    date: '2026-07-02',
+    category: '运维',
+    content: `
+      <p>一个属于自己的域名，是个人网站的"门牌号"。本文记录了我在阿里云购买域名「许立鑫.site」，并将其配置到 Cloudflare 的全流程。</p>
+
+      <h2>为什么需要自定义域名</h2>
+      <p>Cloudflare Pages 部署后会分配一个 <code>*.pages.dev</code> 的二级域名，虽然可以直接访问，但自定义域名更有专业感，也更方便记忆和传播。</p>
+
+      <h2>在阿里云购买域名</h2>
+      <p>阿里云是国内主流的域名注册商，购买流程非常便捷：</p>
+      <ul>
+        <li>进入阿里云官网，搜索"域名注册"</li>
+        <li>输入想要的域名「许立鑫.site」，检查可用性</li>
+        <li><strong>.site</strong> 后缀价格实惠，适合个人站点</li>
+        <li>完成实名认证后即可下单购买</li>
+      </ul>
+      <p>购买完成后，在"域名控制台"可以管理已注册的域名。</p>
+
+      <h2>将 DNS 迁移到 Cloudflare</h2>
+      <p>Cloudflare 提供免费的 DNS 托管服务，解析速度快且自带 DDoS 防护：</p>
+      <ul>
+        <li>在 Cloudflare 控制台添加站点，输入「许立鑫.site」</li>
+        <li>Cloudflare 会自动扫描现有 DNS 记录</li>
+        <li>复制 Cloudflare 分配的 DNS 服务器地址（如 <code>alice.ns.cloudflare.com</code>）</li>
+        <li>回到阿里云域名控制台，将 DNS 服务器修改为 Cloudflare 的地址</li>
+      </ul>
+      <p>DNS 修改通常需要几分钟到几小时生效，Cloudflare 会实时检测状态。</p>
+
+      <h2>配置 Cloudflare Pages 自定义域名</h2>
+      <p>DNS 生效后，就可以将域名绑定到 Pages 项目了：</p>
+      <ul>
+        <li>进入 Cloudflare Pages 项目 → 自定义域</li>
+        <li>输入「许立鑫.site」，点击继续</li>
+        <li>Cloudflare 会自动添加一条 CNAME 记录指向 Pages 项目</li>
+        <li>开启 <strong>SSL/TLS 加密</strong>，选择 Full(strict) 模式</li>
+        <li>开启 <strong>自动 HTTPS 重写</strong>，确保所有访问走 HTTPS</li>
+      </ul>
+      <p>配置完成后，访问「许立鑫.site」就能看到个人主页了。</p>
+
+      <h2>优化建议</h2>
+      <ul>
+        <li>开启 Cloudflare 的 <strong>Auto Minify</strong> 自动压缩 HTML/CSS/JS</li>
+        <li>配置 <strong>页面规则</strong> 实现 301 重定向（如 www 到根域名）</li>
+        <li>开启 <strong>Brotli 压缩</strong> 提升页面加载速度</li>
+        <li>配置 <strong>缓存规则</strong> 提高静态资源命中率</li>
+      </ul>
+
+      <h2>总结</h2>
+      <p>从阿里云购买域名到配置 Cloudflare 托管，全程不需要服务器，所有操作在网页控制台即可完成。有了自己的域名，个人主页才算真正拥有了独立的身份标识。</p>
+    `,
+  },
   '2': {
     id: 2,
     title: '用户画像分析：从数据清洗到 RFM 模型构建',

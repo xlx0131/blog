@@ -5,6 +5,16 @@ const router = useRouter()
 
 const articles = [
   {
+    id: 1,
+    title: '从零购买域名并配置 Cloudflare：许立鑫.site 实战记录',
+    date: '2026-07-02',
+    category: '运维',
+    readingTime: '8 min',
+    words: '1,200',
+    summary: '记录在阿里云购买域名「许立鑫.site」，并将 DNS 解析迁移到 Cloudflare，配置 Pages 自定义域名与 SSL 的全过程。',
+    tags: ['域名', 'Cloudflare', '阿里云', '部署'],
+  },
+  {
     id: 2,
     title: '用户画像分析：从数据清洗到 RFM 模型构建',
     date: '2026-01-15',
