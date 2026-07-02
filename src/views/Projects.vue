@@ -41,24 +41,6 @@ const projects = ref<Project[]>([
       '生成可视化统计图片',
     ],
   },
-  {
-    id: 2,
-    title: '个人主页 · SimonAKing',
-    subtitle: 'Vue 3 + Vite 全栈个人站点',
-    description:
-      '基于 Vue 3、Vite、Tailwind CSS 和 GSAP 构建的沉浸式个人主页。包含项目展示、博客归档、收藏夹、网络运维模拟器等多个功能模块。',
-    url: 'https://github.com/SimonAKing/HomePage',
-    tags: ['全栈开发', 'Web 前端'],
-    tech: ['Vue 3', 'Vite', 'TypeScript', 'GSAP', 'Tailwind CSS', 'Cloudflare Pages'],
-    cover: 'homepage',
-    year: '2026',
-    highlights: [
-      'GSAP 滚动动画与 ScrollTrigger 交互',
-      'Tailwind CSS v4 响应式设计',
-      'CLI 网络运维排障模拟器游戏',
-      'Cloudflare Pages 自动部署',
-    ],
-  },
 ])
 
 function viewProject(id: number) {
@@ -67,18 +49,18 @@ function viewProject(id: number) {
 </script>
 
 <template>
-  <div class="min-h-[100dvh] bg-[#fafafa] pt-24 pb-20">
+  <div class="min-h-[100dvh] bg-[#0d1117] pt-24 pb-20">
     <div class="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-20">
       <!-- Header -->
       <div class="animate-fade-up">
-        <span class="inline-flex items-center gap-2 text-xs font-medium text-zinc-400 tracking-[0.15em] uppercase">
-          <span class="w-6 h-px bg-zinc-300" />
+        <span class="inline-flex items-center gap-2 text-xs font-medium text-[#6e7681] tracking-[0.15em] uppercase">
+          <span class="w-6 h-px bg-[#30363d]" />
           项目
         </span>
-        <h1 class="mt-4 text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl">
+        <h1 class="mt-4 text-4xl font-bold tracking-tight text-[#e6edf3] sm:text-5xl">
           作品集
         </h1>
-        <p class="mt-2 text-base text-neutral-500 max-w-lg">
+        <p class="mt-2 text-base text-[#8b949e] max-w-lg">
           亲手打造的项目，从数据到代码。
         </p>
       </div>
@@ -88,30 +70,30 @@ function viewProject(id: number) {
         <article
           v-for="project in projects"
           :key="project.id"
-          class="group cursor-pointer bg-white rounded-xl border border-neutral-200 overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_12px_40px_-12px_rgba(0,0,0,0.12)] tilt-card"
+          class="group cursor-pointer bg-[#161b22] rounded-xl border border-[#30363d] overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_12px_40px_-12px_rgba(0,0,0,0.5)] tilt-card"
           style="transition-timing-function: cubic-bezier(0.16,1,0.3,1)"
           @click="viewProject(project.id)"
         >
           <!-- Cover -->
-          <div class="h-48 bg-gradient-to-br from-emerald-50 via-white to-emerald-100 flex items-center justify-center text-6xl relative overflow-hidden">
-            <div class="absolute inset-0 opacity-[0.03]" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(0,0,0,0.03) 19px, rgba(0,0,0,0.03) 20px), repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(0,0,0,0.03) 19px, rgba(0,0,0,0.03) 20px);"></div>
+          <div class="h-48 bg-gradient-to-br from-[#059669]/10 via-[#161b22] to-[#059669]/10 flex items-center justify-center text-6xl relative overflow-hidden">
+            <div class="absolute inset-0 opacity-[0.03]" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255,255,255,0.03) 19px, rgba(255,255,255,0.03) 20px), repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(255,255,255,0.03) 19px, rgba(255,255,255,0.03) 20px);"></div>
             <span class="relative z-10">{{ project.cover === 'profile' ? '📊' : '🌐' }}</span>
           </div>
           <!-- Body -->
           <div class="p-5">
             <div class="flex items-center gap-2 mb-2">
-              <span class="text-xs font-medium text-emerald-700 bg-emerald-50 rounded-full px-2.5 py-0.5">{{ project.year }}</span>
-              <span v-for="tag in project.tags" :key="tag" class="text-xs text-neutral-400">· {{ tag }}</span>
+              <span class="text-xs font-medium text-[#34d399] bg-[#059669]/10 rounded-full px-2.5 py-0.5">{{ project.year }}</span>
+              <span v-for="tag in project.tags" :key="tag" class="text-xs text-[#6e7681]">· {{ tag }}</span>
             </div>
-            <h2 class="text-lg font-bold tracking-tight text-neutral-900 group-hover:text-emerald-600 transition-colors">
+            <h2 class="text-lg font-bold tracking-tight text-[#e6edf3] group-hover:text-[#34d399] transition-colors">
               {{ project.title }}
             </h2>
-            <p class="mt-1 text-sm text-neutral-500 line-clamp-2">{{ project.subtitle }}</p>
+            <p class="mt-1 text-sm text-[#8b949e] line-clamp-2">{{ project.subtitle }}</p>
             <div class="mt-3 flex flex-wrap gap-1.5">
-              <span v-for="t in project.tech.slice(0, 3)" :key="t" class="text-[11px] font-medium text-neutral-500 bg-neutral-100 rounded-md px-2 py-0.5">
+              <span v-for="t in project.tech.slice(0, 3)" :key="t" class="text-[11px] font-medium text-[#8b949e] bg-[#21262d] rounded-md px-2 py-0.5">
                 {{ t }}
               </span>
-              <span v-if="project.tech.length > 3" class="text-[11px] text-neutral-400">+{{ project.tech.length - 3 }}</span>
+              <span v-if="project.tech.length > 3" class="text-[11px] text-[#6e7681]">+{{ project.tech.length - 3 }}</span>
             </div>
           </div>
         </article>

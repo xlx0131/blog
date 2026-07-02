@@ -55,34 +55,6 @@ const projects: Record<number, {
       </ul>
     `,
   },
-  2: {
-    title: '个人主页 · SimonAKing',
-    subtitle: 'Vue 3 + Vite 全栈个人站点',
-    description: '基于 Vue 3、Vite、Tailwind CSS 和 GSAP 构建的沉浸式个人主页。',
-    url: 'https://github.com/SimonAKing/HomePage',
-    tags: ['全栈开发', 'Web 前端'],
-    tech: ['Vue 3', 'Vite', 'TypeScript', 'GSAP', 'Tailwind CSS', 'Cloudflare Pages'],
-    year: '2026',
-    highlights: [
-      'GSAP 滚动动画与 ScrollTrigger 交互',
-      'Tailwind CSS v4 响应式设计',
-      'CLI 网络运维排障模拟器游戏',
-      'Cloudflare Pages 自动部署',
-    ],
-    details: `
-      <p>一个功能丰富的个人品牌站点，融合了项目展示、博客归档、收藏夹管理、网络运维模拟器等多个功能模块。</p>
-      <h3>技术亮点</h3>
-      <ul>
-        <li><strong>Vue 3 + Composition API</strong> — 采用 <code>&lt;script setup&gt;</code> 语法，以组合式 API 组织逻辑</li>
-        <li><strong>GSAP + ScrollTrigger</strong> — 实现丰富的滚动动画、文本分割特效、视差滚动和 count-up 效果</li>
-        <li><strong>Tailwind CSS v4</strong> — 最新的 Tailwind 版本，配合自定义设计令牌和 CSS 自定义属性</li>
-        <li><strong>自定义交互</strong> — 磁性按钮、3D 倾角卡片、涟漪点击、鼠标跟随光点、滚动进度条等</li>
-        <li><strong>网络运维排障游戏</strong> — 内置 CLI 模拟器游戏，覆盖物理层到安全策略的故障排查</li>
-      </ul>
-      <h3>部署</h3>
-      <p>使用 Cloudflare Pages 托管，通过 Git 自动构建部署。支持 Cloudflare D1 数据库作为后端存储。</p>
-    `,
-  },
 }
 
 const project = computed(() => projects[id.value])
@@ -97,11 +69,11 @@ function openUrl(url: string) {
 </script>
 
 <template>
-  <div class="min-h-[100dvh] bg-[#fafafa] pt-24 pb-20" v-if="project">
+  <div class="min-h-[100dvh] bg-[#0d1117] pt-24 pb-20" v-if="project">
     <div class="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-20">
       <!-- Back -->
       <button
-        class="inline-flex items-center gap-1.5 text-sm text-neutral-500 hover:text-emerald-600 transition-colors duration-300 mb-8"
+        class="inline-flex items-center gap-1.5 text-sm text-[#8b949e] hover:text-[#34d399] transition-colors duration-300 mb-8"
         @click="goBack"
       >
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -114,19 +86,19 @@ function openUrl(url: string) {
       <ScrollReveal>
       <div class="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
         <!-- Left: cover -->
-        <div class="w-full lg:w-1/2 aspect-video rounded-2xl bg-gradient-to-br from-emerald-50 via-white to-emerald-100 border border-neutral-200 flex items-center justify-center text-8xl relative overflow-hidden">
-          <div class="absolute inset-0 opacity-[0.04]" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(0,0,0,0.03) 19px, rgba(0,0,0,0.03) 20px), repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(0,0,0,0.03) 19px, rgba(0,0,0,0.03) 20px);"></div>
+        <div class="w-full lg:w-1/2 aspect-video rounded-2xl bg-gradient-to-br from-[#059669]/10 via-[#161b22] to-[#059669]/10 border border-[#30363d] flex items-center justify-center text-8xl relative overflow-hidden">
+          <div class="absolute inset-0 opacity-[0.04]" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255,255,255,0.03) 19px, rgba(255,255,255,0.03) 20px), repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(255,255,255,0.03) 19px, rgba(255,255,255,0.03) 20px);"></div>
           <span class="relative z-10">{{ id === 1 ? '📊' : '🌐' }}</span>
         </div>
 
         <!-- Right: info -->
         <div class="w-full lg:w-1/2">
           <div class="flex items-center gap-3 mb-3">
-            <span class="text-xs font-medium text-emerald-700 bg-emerald-50 rounded-full px-2.5 py-0.5">{{ project.year }}</span>
-            <span v-for="tag in project.tags" :key="tag" class="text-xs text-neutral-400">· {{ tag }}</span>
+            <span class="text-xs font-medium text-[#34d399] bg-[#059669]/10 rounded-full px-2.5 py-0.5">{{ project.year }}</span>
+            <span v-for="tag in project.tags" :key="tag" class="text-xs text-[#6e7681]">· {{ tag }}</span>
           </div>
-          <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-neutral-900">{{ project.title }}</h1>
-          <p class="mt-2 text-lg text-neutral-500">{{ project.subtitle }}</p>
+          <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-[#e6edf3]">{{ project.title }}</h1>
+          <p class="mt-2 text-lg text-[#8b949e]">{{ project.subtitle }}</p>
 
           <!-- External link -->
           <a
@@ -134,7 +106,7 @@ function openUrl(url: string) {
             :href="project.url"
             target="_blank"
             rel="noopener noreferrer"
-            class="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition-all duration-300 magnetic-btn ripple-btn"
+            class="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#059669] text-white text-sm font-medium hover:bg-[#059669]/90 transition-all duration-300 magnetic-btn ripple-btn"
             style="transition-timing-function: cubic-bezier(0.16,1,0.3,1)"
           >
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -145,7 +117,7 @@ function openUrl(url: string) {
 
           <!-- Tech tags -->
           <div class="mt-6 flex flex-wrap gap-2">
-            <span v-for="t in project.tech" :key="t" class="text-xs font-medium text-neutral-600 bg-neutral-100 rounded-full px-3 py-1">{{ t }}</span>
+            <span v-for="t in project.tech" :key="t" class="text-xs font-medium text-[#8b949e] bg-[#21262d] rounded-full px-3 py-1">{{ t }}</span>
           </div>
         </div>
       </div>
@@ -154,10 +126,10 @@ function openUrl(url: string) {
       <!-- Highlights -->
       <ScrollReveal>
       <section class="mt-16">
-        <h2 class="text-xl font-bold tracking-tight text-neutral-900 mb-6">亮点</h2>
+        <h2 class="text-xl font-bold tracking-tight text-[#e6edf3] mb-6">亮点</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div v-for="h in project.highlights" :key="h" class="border-l-2 border-emerald-500 pl-4 py-1">
-            <p class="text-sm text-neutral-700">{{ h }}</p>
+          <div v-for="h in project.highlights" :key="h" class="border-l-2 border-[#34d399] pl-4 py-1">
+            <p class="text-sm text-[#8b949e]">{{ h }}</p>
           </div>
         </div>
       </section>
@@ -166,7 +138,7 @@ function openUrl(url: string) {
       <!-- Details -->
       <ScrollReveal>
       <section class="mt-16 max-w-[65ch]">
-        <h2 class="text-xl font-bold tracking-tight text-neutral-900 mb-6">项目介绍</h2>
+        <h2 class="text-xl font-bold tracking-tight text-[#e6edf3] mb-6">项目介绍</h2>
         <div class="prose-custom" v-html="project.details" />
       </section>
       </ScrollReveal>
@@ -174,11 +146,11 @@ function openUrl(url: string) {
   </div>
 
   <!-- Not found -->
-  <div v-else class="min-h-[100dvh] bg-[#fafafa] pt-24 pb-20 flex items-center justify-center">
+  <div v-else class="min-h-[100dvh] bg-[#0d1117] pt-24 pb-20 flex items-center justify-center">
     <div class="text-center">
       <p class="text-6xl mb-4">🔍</p>
-      <h1 class="text-2xl font-bold text-neutral-900">项目未找到</h1>
-      <button class="mt-4 text-sm text-emerald-600 hover:text-emerald-700" @click="goBack">返回项目列表</button>
+      <h1 class="text-2xl font-bold text-[#e6edf3]">项目未找到</h1>
+      <button class="mt-4 text-sm text-[#34d399] hover:text-[#34d399]/80" @click="goBack">返回项目列表</button>
     </div>
   </div>
 </template>
@@ -187,7 +159,7 @@ function openUrl(url: string) {
 .prose-custom {
   font-size: 1rem;
   line-height: 1.75;
-  color: #52525b;
+  color: #8b949e;
 }
 .prose-custom p {
   margin-bottom: 1rem;
@@ -195,7 +167,7 @@ function openUrl(url: string) {
 .prose-custom h3 {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #18181b;
+  color: #e6edf3;
   margin-top: 1.5rem;
   margin-bottom: 0.75rem;
 }
@@ -207,11 +179,11 @@ function openUrl(url: string) {
   margin-bottom: 0.5rem;
 }
 .prose-custom strong {
-  color: #18181b;
+  color: #e6edf3;
   font-weight: 600;
 }
 .prose-custom code {
-  background: #f1f5f9;
+  background: #21262d;
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 0.9em;

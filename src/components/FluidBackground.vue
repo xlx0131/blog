@@ -9,6 +9,15 @@ onMounted(() => {
   if (!containerRef.value) return
 
   fluid = new WebGLFluidEnhanced(containerRef.value)
+
+  // 覆盖库设置的内联样式（position: relative → absolute, display: flex → block）
+  // 确保容器用 inset: 0 铺满父元素，而非按 canvas 宽高比缩放
+  const el = containerRef.value
+  el.style.position = 'absolute'
+  el.style.display = 'block'
+  el.style.justifyContent = ''
+  el.style.alignItems = ''
+
   fluid.setConfig({
     transparent: false,
     bloom: true,

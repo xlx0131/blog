@@ -77,8 +77,16 @@ export async function onRequest(context) {
 
     // DELETE /api/bookmarks — 删除收藏或分类
     if (method === 'DELETE') {
-      const id = url.searchParams.get('id')
       const type = url.searchParams.get('type') || 'bookmark'
+
+      // 清空全部数据
+      if (type === 'all') {
+        await env.DB.prepare('DELETE FROM bookmarks').run()
+        await env.DB.prepare('DELETE FROM bookmark_categories').run()
+        return Response.json({ success: true, message: '全部收藏和分类已清空' }, { headers: corsHeaders })
+      }
+
+      const id = url.searchParams.get('id')
       if (!id) {
         return Response.json({ success: false, error: '缺少 id' }, { status: 400, headers: corsHeaders })
       }
