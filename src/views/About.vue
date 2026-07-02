@@ -51,7 +51,7 @@ const education = [
         </p>
         <div class="mt-8 flex flex-wrap gap-4">
           <a href="mailto:1211288810@qq.com" class="btn-tactile magnetic-btn ripple-btn inline-flex items-center gap-2 rounded-lg bg-[#059669] px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:bg-emerald-700">发送邮件</a>
-          <a href="https://github.com/SimonAKing" class="btn-tactile inline-flex items-center gap-2 rounded-lg border border-[#30363d] bg-[#161b22] px-5 py-2.5 text-sm font-medium text-[#e6edf3] transition-all duration-300 hover:border-emerald-400 hover:text-[#34d399]">GitHub</a>
+          <a href="https://github.com/xlx0131" class="btn-tactile inline-flex items-center gap-2 rounded-lg border border-[#30363d] bg-[#161b22] px-5 py-2.5 text-sm font-medium text-[#e6edf3] transition-all duration-300 hover:border-emerald-400 hover:text-[#34d399]">GitHub</a>
         </div>
       </div>
     </section>
@@ -101,7 +101,7 @@ const education = [
         <div class="mt-6 flex flex-wrap gap-6">
           <a href="tel:15179493671" class="group flex items-center gap-2 text-sm font-medium text-[#8b949e] transition-all hover:text-[#34d399]">📞 15179493671</a>
           <a href="mailto:1211288810@qq.com" class="group flex items-center gap-2 text-sm font-medium text-[#8b949e] transition-all hover:text-[#34d399]">📧 1211288810@qq.com</a>
-          <a href="https://github.com/SimonAKing" class="group flex items-center gap-2 text-sm font-medium text-[#8b949e] transition-all hover:text-[#34d399]">🐙 github.com/SimonAKing</a>
+          <a href="https://github.com/xlx0131" class="group flex items-center gap-2 text-sm font-medium text-[#8b949e] transition-all hover:text-[#34d399]">🐙 github.com/xlx0131</a>
         </div>
       </section></ScrollReveal>
 

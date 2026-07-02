@@ -130,7 +130,7 @@ onBeforeUnmount(() => cleanup?.())
             </p>
           </div>
           <div class="flex gap-8 text-sm text-[#8b949e]">
-            <a href="https://github.com" target="_blank" rel="noopener" class="hover:text-[#e6edf3] transition-colors">GitHub</a>
+            <a href="https://github.com/xlx0131" target="_blank" rel="noopener" class="hover:text-[#e6edf3] transition-colors">GitHub</a>
             <a href="mailto:hello@xulixin.dev" class="hover:text-[#e6edf3] transition-colors">邮箱</a>
             <RouterLink to="/about" class="hover:text-[#e6edf3] transition-colors">关于</RouterLink>
             <span class="opacity-25 font-light" aria-hidden="true">·</span>
