@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { levels } from '@/data/network-levels.js'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 // ─── 登录状态 ───
 const loggedIn = ref(false)
@@ -168,7 +171,7 @@ function onLoginSuccess() {
 </script>
 
 <template>
-  <div class="min-h-[100dvh] bg-[#0d1117] text-[#c9d1d9]">
+  <div class="min-h-[100dvh] bg-background text-foreground">
     <!-- ═══ 登录页 ═══ -->
     <div v-if="!loggedIn" class="flex items-center justify-center min-h-screen px-4">
       <div class="w-full max-w-sm">
@@ -177,33 +180,28 @@ function onLoginSuccess() {
           <h1 class="text-xl font-bold">管理后台</h1>
           <p class="text-sm text-[#8b949e] mt-1">请登录以管理内容</p>
         </div>
-        <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-6 space-y-4" @keydown="handleKeydown">
+        <div class="bg-card border border-border rounded-xl p-6 space-y-4" @keydown="handleKeydown">
           <div>
-            <label class="text-xs text-[#8b949e] block mb-1.5">账号</label>
+            <label class="text-xs text-muted-foreground block mb-1.5">账号</label>
             <input
               v-model="username"
               type="text"
-              class="w-full bg-[#0d1117] border border-[#30363d] rounded-lg px-3 py-2.5 text-sm text-[#c9d1d9] outline-none focus:border-[#58a6ff] transition-colors"
+              class="w-full bg-background border border-border rounded-lg px-3 py-2.5 text-sm text-foreground outline-none focus:border-ring transition-colors"
               placeholder="admin"
             />
           </div>
           <div>
-            <label class="text-xs text-[#8b949e] block mb-1.5">密码</label>
+            <label class="text-xs text-muted-foreground block mb-1.5">密码</label>
             <input
               v-model="password"
               type="password"
-              class="w-full bg-[#0d1117] border border-[#30363d] rounded-lg px-3 py-2.5 text-sm text-[#c9d1d9] outline-none focus:border-[#58a6ff] transition-colors"
+              class="w-full bg-background border border-border rounded-lg px-3 py-2.5 text-sm text-foreground outline-none focus:border-ring transition-colors"
               placeholder="••••••••"
               @keydown.enter="login"
             />
           </div>
-          <p v-if="loginError" class="text-xs text-[#f85149]">{{ loginError }}</p>
-          <button
-            class="w-full bg-[#238636] hover:bg-[#2ea043] text-white rounded-lg py-2.5 text-sm font-medium transition-colors"
-            @click="login"
-          >
-            登 录
-          </button>
+          <p v-if="loginError" class="text-xs text-destructive">{{ loginError }}</p>
+          <Button class="w-full" @click="login">登 录</Button>
         </div>
       </div>
     </div>
@@ -213,26 +211,21 @@ function onLoginSuccess() {
       <!-- Top bar -->
       <div class="flex items-center justify-between mb-8">
         <div>
-          <h1 class="text-xl font-bold">管理后台</h1>
-          <p class="text-sm text-[#8b949e]">管理文章和收藏夹</p>
+          <h1 class="text-xl font-bold text-foreground">管理后台</h1>
+          <p class="text-sm text-muted-foreground">管理文章和收藏夹</p>
         </div>
-        <button
-          class="text-xs text-[#8b949e] hover:text-[#f85149] transition-colors border border-[#30363d] rounded-lg px-4 py-2"
-          @click="logout"
-        >
-          退出登录
-        </button>
+        <Button variant="outline" size="sm" @click="logout">退出登录</Button>
       </div>
 
       <!-- Tabs -->
-      <div class="flex gap-1 mb-6 bg-[#161b22] rounded-lg p-1 border border-[#30363d] w-fit">
+      <div class="flex gap-1 mb-6 bg-card rounded-lg p-1 border border-border w-fit">
         <button
-          :class="activeTab === 'articles' ? 'bg-[#1f6feb] text-white' : 'text-[#8b949e] hover:text-[#c9d1d9]'"
+          :class="activeTab === 'articles' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'"
           class="px-5 py-2 text-sm rounded-md transition-colors font-medium"
           @click="activeTab = 'articles'"
         >📝 文章管理</button>
         <button
-          :class="activeTab === 'bookmarks' ? 'bg-[#1f6feb] text-white' : 'text-[#8b949e] hover:text-[#c9d1d9]'"
+          :class="activeTab === 'bookmarks' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'"
           class="px-5 py-2 text-sm rounded-md transition-colors font-medium"
           @click="activeTab = 'bookmarks'"
         >🔖 收藏夹管理</button>
@@ -241,30 +234,26 @@ function onLoginSuccess() {
       <!-- ═══ 文章管理 ═══ -->
       <div v-if="activeTab === 'articles'">
         <div class="flex items-center justify-between mb-4">
-          <p class="text-sm text-[#8b949e]">共 {{ articles.length }} 篇文章</p>
-          <button
-            class="bg-[#238636] hover:bg-[#2ea043] text-white text-sm px-4 py-2 rounded-lg transition-colors font-medium"
-            @click="openNewArticle"
-          >＋ 新建文章</button>
+          <p class="text-sm text-muted-foreground">共 {{ articles.length }} 篇文章</p>
+          <Button size="sm" @click="openNewArticle">＋ 新建文章</Button>
         </div>
 
-        <!-- Article list -->
         <div class="space-y-2">
           <div
             v-for="article in articles"
             :key="article.id"
-            class="bg-[#161b22] border border-[#30363d] rounded-lg p-4 flex items-center justify-between group hover:border-[#58a6ff] transition-colors"
+            class="bg-card border border-border rounded-lg p-4 flex items-center justify-between group hover:border-ring transition-colors"
           >
             <div class="flex-1 min-w-0">
-              <h3 class="text-sm font-semibold truncate">{{ article.title }}</h3>
-              <p class="text-xs text-[#8b949e] mt-0.5">{{ article.date }} · {{ article.category }}</p>
+              <h3 class="text-sm font-semibold text-foreground truncate">{{ article.title }}</h3>
+              <p class="text-xs text-muted-foreground mt-0.5">{{ article.date }} · {{ article.category }}</p>
             </div>
             <div class="flex gap-2 ml-4 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button class="text-xs text-[#58a6ff] hover:underline px-2" @click="openEditArticle(article)">编辑</button>
-              <button class="text-xs text-[#f85149] hover:underline px-2" @click="removeArticle(article.id)">删除</button>
+              <Button variant="ghost" size="sm" class="text-xs" @click="openEditArticle(article)">编辑</Button>
+              <Button variant="ghost" size="sm" class="text-xs text-destructive hover:text-destructive" @click="removeArticle(article.id)">删除</Button>
             </div>
           </div>
-          <div v-if="articles.length === 0" class="text-center py-12 text-[#8b949e] text-sm">
+          <div v-if="articles.length === 0" class="text-center py-12 text-muted-foreground text-sm">
             暂无文章，点击"新建文章"开始
           </div>
         </div>

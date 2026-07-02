@@ -4,6 +4,9 @@ import { useRouter } from 'vue-router'
 import { levels } from '@/data/network-levels.js'
 import TopoGraph from '@/components/TopoGraph.vue'
 import Terminal from '@/components/Terminal.vue'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 
 const router = useRouter()
 const currentLevel = ref<any>(null)
@@ -243,7 +246,7 @@ function submitDiagnosis(answer: string) {
 </script>
 
 <template>
-  <div class="min-h-[100dvh] bg-[#0d1117] pt-24 pb-16">
+  <div class="min-h-[100dvh] bg-background pt-24 pb-16">
     <div class="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-20">
 
       <!-- ═══ 关卡选择页 ═══ -->
@@ -255,29 +258,28 @@ function submitDiagnosis(answer: string) {
           </button>
         </div>
         <div class="animate-fade-up">
-          <span class="inline-flex items-center gap-2 text-xs font-medium text-[#8b949e] tracking-[0.15em] uppercase">
-            <span class="w-6 h-px bg-[#30363d]" />
-            网络运维模拟器
-          </span>
-          <h1 class="mt-4 text-4xl font-bold tracking-tight text-[#e6edf3] sm:text-5xl">关卡选择</h1>
-          <p class="mt-2 text-base text-[#8b949e]">选择一个关卡开始学习网络故障排查</p>
+          <Badge variant="outline" class="mb-4 w-fit text-xs tracking-[0.15em]">网络运维模拟器</Badge>
+          <h1 class="mt-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">关卡选择</h1>
+          <p class="mt-2 text-base text-muted-foreground">选择一个关卡开始学习网络故障排查</p>
         </div>
 
         <!-- Level Grid -->
         <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          <div
+          <Card
             v-for="level in levels"
             :key="level.id"
-            class="rounded-xl border border-[#30363d] bg-[#161b22] p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_24px_-8px_rgba(0,0,0,0.4)] cursor-pointer tilt-card"
+            class="cursor-pointer transition-all duration-300 hover:-translate-y-1 tilt-card"
             @click="startLevel(level)"
           >
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-medium text-[#34d399] bg-[#059669]/10 rounded-full px-2.5 py-0.5">{{ level.difficulty }}</span>
-              <span class="text-[11px] text-[#6e7681]">{{ level.category }}</span>
-            </div>
-            <h2 class="text-base font-bold tracking-tight text-[#e6edf3]">第{{ level.id }}关：{{ level.title }}</h2>
-            <p class="mt-2 text-xs text-[#8b949e] line-clamp-2">{{ level.description }}</p>
-          </div>
+            <CardContent class="p-5">
+              <div class="flex items-center justify-between mb-3">
+                <Badge variant="secondary" class="text-[11px]">{{ level.difficulty }}</Badge>
+                <span class="text-[11px] text-muted-foreground">{{ level.category }}</span>
+              </div>
+              <h2 class="text-base font-bold tracking-tight text-foreground">第{{ level.id }}关：{{ level.title }}</h2>
+              <p class="mt-2 text-xs text-muted-foreground line-clamp-2">{{ level.description }}</p>
+            </CardContent>
+          </Card>
         </div>
       </template>
 
@@ -343,13 +345,13 @@ function submitDiagnosis(answer: string) {
       <!-- ═══ 复盘界面 ═══ -->
       <template v-if="gamePhase === 'review' && currentLevel">
         <div class="animate-fade-up max-w-3xl mx-auto">
-          <button @click="enterReview" class="text-sm text-[#8b949e] hover:text-[#34d399] transition-colors mb-6">← 返回游戏</button>
+          <button @click="enterReview" class="text-sm text-muted-foreground hover:text-[#34d399] transition-colors mb-6">← 返回游戏</button>
           <div class="flex items-center gap-3 mb-2">
-            <span class="text-xs font-medium text-[#34d399] bg-[#059669]/10 rounded-full px-2.5 py-0.5">{{ currentLevel.difficulty }}</span>
-            <span class="text-[11px] text-[#6e7681]">{{ currentLevel.category }}</span>
+            <Badge variant="secondary" class="text-[11px]">{{ currentLevel.difficulty }}</Badge>
+            <span class="text-[11px] text-muted-foreground">{{ currentLevel.category }}</span>
           </div>
-          <h1 class="text-3xl font-bold tracking-tight text-[#e6edf3]">复盘：{{ currentLevel.title }}</h1>
-          <p class="mt-1 text-sm text-[#8b949e]">故障类型：{{ currentLevel.fault.detail }}</p>
+          <h1 class="text-3xl font-bold tracking-tight text-foreground">复盘：{{ currentLevel.title }}</h1>
+          <p class="mt-1 text-sm text-muted-foreground">故障类型：{{ currentLevel.fault.detail }}</p>
 
           <!-- Summary -->
           <div class="mt-8 rounded-xl bg-[#34d399]/10 border border-[#34d399]/20 p-5">
@@ -359,18 +361,18 @@ function submitDiagnosis(answer: string) {
 
           <!-- Step-by-step -->
           <div class="mt-8 space-y-4">
-            <h2 class="text-sm font-bold text-[#e6edf3]">排查步骤详解</h2>
+            <h2 class="text-sm font-bold text-foreground">排查步骤详解</h2>
             <div
               v-for="(step, i) in currentLevel.review.steps"
               :key="i"
-              class="rounded-xl bg-[#161b22] border border-[#30363d] p-4"
+              class="rounded-xl bg-card border border-border p-4"
             >
               <div class="flex items-center gap-2 mb-2">
                 <span class="w-6 h-6 rounded-full bg-[#059669] text-white text-xs flex items-center justify-center font-bold">{{ i + 1 }}</span>
-                <code class="text-sm font-mono bg-[#21262d] px-2 py-0.5 rounded text-[#34d399]">{{ step.command }}</code>
-                <span class="text-xs text-[#8b949e]">→ {{ step.result }}</span>
+                <code class="text-sm font-mono bg-muted px-2 py-0.5 rounded text-[#34d399]">{{ step.command }}</code>
+                <span class="text-xs text-muted-foreground">→ {{ step.result }}</span>
               </div>
-              <p class="text-sm text-[#8b949e] leading-relaxed pl-8">{{ step.explanation }}</p>
+              <p class="text-sm text-muted-foreground leading-relaxed pl-8">{{ step.explanation }}</p>
             </div>
           </div>
 
