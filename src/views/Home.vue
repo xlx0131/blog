@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { animate } from 'animejs'
 import FluidBackground from '@/components/FluidBackground.vue'
 import GridBackground from '@/components/GridBackground.vue'
+import avatar from '@/assets/头像.jpg'
 
 const router = useRouter()
 
@@ -17,7 +18,7 @@ const cardInnerRef = ref<HTMLElement | null>(null)
 
 const showFluid = ref(true)
 const showMain = ref(false)
-let switched = false
+const switched = ref(false)
 
 const isPhone = /Mobile|Android|iOS|iPhone|iPad|iPod|Windows Phone|KFAPWI/i.test(navigator.userAgent)
 const hiddenProperty = 'hidden' in document ? 'hidden' : 'webkitHidden' in document ? 'webkitHidden' : 'mozHidden' in document ? 'mozHidden' : null
@@ -33,8 +34,8 @@ function loadIntro() {
 }
 
 function switchPage() {
-  if (switched || !introRef.value || !pathRef.value || !shapeRef.value) return
-  switched = true
+  if (switched.value || !introRef.value || !pathRef.value || !shapeRef.value) return
+  switched.value = true
 
   const pathId = pathRef.value.getAttribute('pathdata:id')
   shapeRef.value.style.transformOrigin = '50% 0%'
@@ -131,10 +132,7 @@ onBeforeUnmount(() => {
       <div id="card">
         <div class="card-inner" ref="cardInnerRef">
           <header>
-            <svg class="avatar-placeholder" viewBox="0 0 80 80" width="80" height="80">
-              <circle cx="40" cy="40" r="40" fill="rgba(255,255,255,0.08)" />
-              <text x="40" y="45" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="28" font-family="sans-serif" dy=".35em">许</text>
-            </svg>
+            <img :src="avatar" alt="头像" class="avatar-img" width="80" height="80" />
             <h1>许立鑫</h1>
             <h2 id="signature">写代码 · 做设计 · 思考人生</h2>
           </header>
@@ -162,10 +160,10 @@ onBeforeUnmount(() => {
       </div>
     </div>
 
-    <!-- Grid Snake Background (paints above dark bg, below card) -->
+    <!-- Grid Snake Background -->
     <GridBackground />
 
-    <!-- Intro Section (200vh, scrollable, z-index 100) -->
+    <!-- Intro Section -->
     <div class="content-intro" ref="introRef">
       <div class="content-inner">
         <FluidBackground v-if="showFluid" />
@@ -173,9 +171,10 @@ onBeforeUnmount(() => {
           <h2 class="content-title">许立鑫</h2>
           <h3 class="content-subtitle" ref="subtitleRef">写代码 · 做设计 · 思考人生</h3>
           <a class="enter" ref="enterRef">ENTER</a>
-          <div class="arrow arrow-1"></div>
-          <div class="arrow arrow-2"></div>
         </div>
+        <!-- 向下滑动提示箭头：放在流体区域内底部 -->
+        <div class="arrow arrow-1"></div>
+        <div class="arrow arrow-2"></div>
       </div>
       <div class="shape-wrap">
         <svg class="shape" ref="shapeRef" width="100%" height="100vh" preserveAspectRatio="none" viewBox="0 0 1440 800">
@@ -208,6 +207,7 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100vh;
   position: relative;
+  overflow: hidden;
   background: transparent;
 }
 
@@ -284,7 +284,6 @@ onBeforeUnmount(() => {
   }
 }
 
-/* Generate delays for subtitle letters */
 .content-subtitle span:nth-child(1) { animation-delay: 0.05s; }
 .content-subtitle span:nth-child(2) { animation-delay: 0.10s; }
 .content-subtitle span:nth-child(3) { animation-delay: 0.15s; }
@@ -336,6 +335,7 @@ onBeforeUnmount(() => {
   transform: translate3d(-50%, 0%, 0);
   cursor: pointer;
   pointer-events: auto;
+  z-index: 20;
 }
 .arrow-1 {
   animation: arrow-movement 2s ease-in-out infinite;
@@ -374,8 +374,6 @@ onBeforeUnmount(() => {
 .shape-wrap {
   position: relative;
   z-index: 0;
-  margin: -5px 0 0 0;
-  will-change: scroll-position;
   background: transparent;
 }
 .shape {
@@ -430,6 +428,12 @@ onBeforeUnmount(() => {
 
 .card-inner header {
   margin-bottom: 40px;
+  text-align: center;
+}
+
+.card-inner header .avatar-img {
+  display: block;
+  margin: 0 auto;
 }
 
 .card-inner header img,

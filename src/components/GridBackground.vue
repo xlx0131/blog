@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<{
   vibrationEnabled?: boolean
 }>(), {
   direction: 'diagonal',
-  speed: undefined, // set in init based on device
+  speed: undefined,
   borderColor: undefined,
   squareSize: undefined,
   hoverFillColor: 'rgba(255, 255, 255, 0.8)',
@@ -80,6 +80,38 @@ function resizeCanvas() {
   canvas.style.height = `${displayHeight}px`
 
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+}
+
+function isInsideCanvas(clientX: number, clientY: number): boolean {
+  const canvas = canvasRef.value
+  if (!canvas) return false
+  const rect = canvas.getBoundingClientRect()
+  return clientX >= rect.left && clientX <= rect.right &&
+         clientY >= rect.top && clientY <= rect.bottom
+}
+
+function handleCanvasMouseLeave() {
+  if (hoveredSquare) {
+    const startX = Math.floor(gridOffset.x / options.squareSize) * options.squareSize
+    const startY = Math.floor(gridOffset.y / options.squareSize) * options.squareSize
+    trailSquares.set(`${hoveredSquare.x},${hoveredSquare.y}`, {
+      x: hoveredSquare.x * options.squareSize + startX,
+      y: hoveredSquare.y * options.squareSize + startY,
+      opacity: 0.6,
+    })
+  }
+  hoveredSquare = null
+  targetOpacity = 0
+}
+
+function handleGlobalMouseMove(e: MouseEvent) {
+  if (isInsideCanvas(e.clientX, e.clientY)) {
+    const canvas = canvasRef.value!
+    const rect = canvas.getBoundingClientRect()
+    handleHover(e.clientX - rect.left, e.clientY - rect.top, 0.6)
+  } else if (hoveredSquare) {
+    handleCanvasMouseLeave()
+  }
 }
 
 function createSpecialBlock() {
@@ -265,73 +297,56 @@ function updateAnimation(timestamp: number) {
   animationFrame = requestAnimationFrame(updateAnimation)
 }
 
-onMounted(() => {
+// ─── 文档级事件处理（Canvas pointer-events: none 后仍可追踪鼠标/触摸） ───
+
+function handleGlobalTouchStart(e: TouchEvent) {
+  if (!isPhone) return
   const canvas = canvasRef.value
   if (!canvas) return
-  ctx = canvas.getContext('2d')
-
-  resizeCanvas()
-  createSpecialBlock()
-
-  canvas.addEventListener('mousemove', (e) => {
-    const rect = canvas.getBoundingClientRect()
-    handleHover(e.clientX - rect.left, e.clientY - rect.top, 0.6)
-  })
-
-  canvas.addEventListener('mouseleave', () => {
-    if (hoveredSquare) {
-      const startX = Math.floor(gridOffset.x / options.squareSize) * options.squareSize
-      const startY = Math.floor(gridOffset.y / options.squareSize) * options.squareSize
-      trailSquares.set(`${hoveredSquare.x},${hoveredSquare.y}`, {
-        x: hoveredSquare.x * options.squareSize + startX,
-        y: hoveredSquare.y * options.squareSize + startY,
-        opacity: 0.6,
-      })
-    }
-    hoveredSquare = null
-    targetOpacity = 0
-  })
-
-  if (isPhone) {
-    canvas.addEventListener('touchstart', (e) => {
-      e.preventDefault()
-      const touch = e.touches[0]
-      const rect = canvas.getBoundingClientRect()
-      handleHover(touch.clientX - rect.left, touch.clientY - rect.top, 0.8 * options.touchSensitivity)
-      if (options.vibrationEnabled && navigator.vibrate) navigator.vibrate(10)
-    }, { passive: false })
-
-    canvas.addEventListener('touchmove', (e) => {
-      e.preventDefault()
-      if (e.touches.length === 1) {
-        const touch = e.touches[0]
-        const rect = canvas.getBoundingClientRect()
-        handleHover(touch.clientX - rect.left, touch.clientY - rect.top, 0.8 * options.touchSensitivity)
-      }
-    }, { passive: false })
-
-    canvas.addEventListener('touchend', (e) => {
-      e.preventDefault()
-      if (hoveredSquare) {
-        const startX = Math.floor(gridOffset.x / options.squareSize) * options.squareSize
-        const startY = Math.floor(gridOffset.y / options.squareSize) * options.squareSize
-        trailSquares.set(`${hoveredSquare.x},${hoveredSquare.y}`, {
-          x: hoveredSquare.x * options.squareSize + startX,
-          y: hoveredSquare.y * options.squareSize + startY,
-          opacity: 0.8,
-        })
-      }
-      targetOpacity = 0.4
-    }, { passive: false })
-
-    canvas.addEventListener('touchcancel', (e) => e.preventDefault(), { passive: false })
+  const rect = canvas.getBoundingClientRect()
+  const touch = e.touches[0]
+  const x = touch.clientX - rect.left
+  const y = touch.clientY - rect.top
+  if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+    e.preventDefault()
+    handleHover(x, y, 0.8 * options.touchSensitivity)
+    if (options.vibrationEnabled && navigator.vibrate) navigator.vibrate(10)
   }
+}
 
-  window.addEventListener('resize', resizeCanvas)
-  document.addEventListener(visibilityChangeEvent, handleVisibility)
+function handleGlobalTouchMove(e: TouchEvent) {
+  if (!isPhone || e.touches.length !== 1) return
+  const canvas = canvasRef.value
+  if (!canvas) return
+  const rect = canvas.getBoundingClientRect()
+  const touch = e.touches[0]
+  const x = touch.clientX - rect.left
+  const y = touch.clientY - rect.top
+  if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+    e.preventDefault()
+    handleHover(x, y, 0.8 * options.touchSensitivity)
+  }
+}
 
-  animationFrame = requestAnimationFrame(updateAnimation)
-})
+function handleGlobalTouchEnd(e: TouchEvent) {
+  if (!isPhone) return
+  e.preventDefault()
+  if (hoveredSquare) {
+    const startX = Math.floor(gridOffset.x / options.squareSize) * options.squareSize
+    const startY = Math.floor(gridOffset.y / options.squareSize) * options.squareSize
+    trailSquares.set(`${hoveredSquare.x},${hoveredSquare.y}`, {
+      x: hoveredSquare.x * options.squareSize + startX,
+      y: hoveredSquare.y * options.squareSize + startY,
+      opacity: 0.8,
+    })
+  }
+  targetOpacity = 0.4
+}
+
+function handleGlobalTouchCancel(e: TouchEvent) {
+  if (!isPhone) return
+  e.preventDefault()
+}
 
 function handleVisibility() {
   const canvas = canvasRef.value
@@ -349,8 +364,39 @@ function handleVisibility() {
   }
 }
 
+onMounted(() => {
+  const canvas = canvasRef.value
+  if (!canvas) return
+  ctx = canvas.getContext('2d')
+
+  resizeCanvas()
+  createSpecialBlock()
+
+  // 使用 document 级事件，Canvas 的 pointer-events: none 不影响追踪
+  document.addEventListener('mousemove', handleGlobalMouseMove)
+
+  if (isPhone) {
+    document.addEventListener('touchstart', handleGlobalTouchStart, { passive: false })
+    document.addEventListener('touchmove', handleGlobalTouchMove, { passive: false })
+    document.addEventListener('touchend', handleGlobalTouchEnd, { passive: false })
+    document.addEventListener('touchcancel', handleGlobalTouchCancel, { passive: false })
+  }
+
+  window.addEventListener('resize', resizeCanvas)
+  document.addEventListener(visibilityChangeEvent, handleVisibility)
+
+  animationFrame = requestAnimationFrame(updateAnimation)
+})
+
 onBeforeUnmount(() => {
   if (animationFrame) cancelAnimationFrame(animationFrame)
+  document.removeEventListener('mousemove', handleGlobalMouseMove)
+  if (isPhone) {
+    document.removeEventListener('touchstart', handleGlobalTouchStart)
+    document.removeEventListener('touchmove', handleGlobalTouchMove)
+    document.removeEventListener('touchend', handleGlobalTouchEnd)
+    document.removeEventListener('touchcancel', handleGlobalTouchCancel)
+  }
   window.removeEventListener('resize', resizeCanvas)
   document.removeEventListener(visibilityChangeEvent, handleVisibility)
 })
@@ -367,7 +413,7 @@ onBeforeUnmount(() => {
   z-index: 0;
   width: 100%;
   height: 100%;
-  pointer-events: auto;
+  pointer-events: none;
   display: block;
 }
 </style>
