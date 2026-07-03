@@ -7,6 +7,7 @@ const props = defineProps<{
   devices: Device[]
   connections: Connection[]
   highlight?: string
+  deviceStates?: Record<string, any>
 }>()
 
 const emit = defineEmits<{
@@ -300,6 +301,7 @@ function getConnColor(status: string): string {
               <component :is="getDeviceIcon(dev.type)" :size="24" :color="getDeviceColor(dev.type)" />
             </div>
             <div class="device-label">{{ dev.label }}</div>
+            <div v-if="deviceStates?.[dev.id]" class="device-indicator" :class="deviceStates[dev.id].cableStatus === 'connected' && deviceStates[dev.id].isOnline ? 'online' : (deviceStates[dev.id].cableStatus === 'unplugged' ? 'offline' : 'faulty')"></div>
             <div class="status-dot" />
           </div>
         </foreignObject>
@@ -545,4 +547,18 @@ function getConnColor(status: string): string {
     box-shadow: 0 0 15px rgba(255, 71, 87, 0.6), 0 0 30px rgba(255, 71, 87, 0.3);
   }
 }
+
+.device-indicator {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+}
+.device-indicator.online { background: #00ff88; box-shadow: 0 0 6px rgba(0,255,136,0.6); }
+.device-indicator.offline { background: #ff4757; box-shadow: 0 0 6px rgba(255,71,87,0.6); }
+.device-indicator.faulty { background: #ffaa00; box-shadow: 0 0 6px rgba(255,170,0,0.6); }
 </style>

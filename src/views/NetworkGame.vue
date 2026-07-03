@@ -46,9 +46,21 @@ import {
   Gauge,
   Sparkles,
   Trash2,
+  Wrench,
+  RefreshCw,
 } from '@lucide/vue'
 
+import { useDeviceEngine, executeCommand, executeDeviceOperation, checkVerifyCondition } from '@/composables/useDeviceEngine'
+import type { FixAction, VerifyCondition } from '@/composables/useDeviceEngine'
+import { useGameFlow } from '@/composables/useGameFlow'
+import FixSheet from '@/components/FixSheet.vue'
+import DevicePanel from '@/components/DevicePanel.vue'
+import VerificationPanel from '@/components/VerificationPanel.vue'
+
 const router = useRouter()
+const deviceEngine = useDeviceEngine()
+const gameFlow = useGameFlow()
+const showFixSheet = ref(false)
 const currentLevel = ref<any>(null)
 const gamePhase = ref<'select' | 'playing' | 'review'>('select')
 const foundFault = ref(false)
@@ -678,6 +690,19 @@ function onCommandExecuted(cmd: string, args: string) {
 
 function startLevel(level: any) {
   currentLevel.value = level
+  gameFlow.reset()
+  const devs = level.topology.devices.map((d: any) => ({
+    ...d,
+    ipAddress: '',
+    subnetMask: '255.255.255.0',
+    dnsServer: '8.8.8.8',
+  }))
+  deviceEngine.initDevices(devs)
+  if (level.deviceState) {
+    Object.entries(level.deviceState).forEach(([id, state]: [string, any]) => {
+      deviceEngine.updateDevice(id, state)
+    })
+  }
   resetState()
   gamePhase.value = 'playing'
   startTimer()
@@ -721,18 +746,13 @@ function submitDiagnosis(answer: string) {
   if (excludedDiagnoses.value.includes(answer)) return
   if (answer === currentLevel.value.fault.type) {
     foundFault.value = true
-    fixed.value = true
-    commandHistory.value.push({
-      time: Date.now(),
-      cmd: 'diagnose',
-      args: answer,
-      result: '诊断正确',
-      type: 'diagnose',
-    })
     showDiagnosisSheet.value = false
-    triggerComplete('normal')
+    gameFlow.logInvestigation(answer, getAnswerLabel ? getAnswerLabel(answer) : answer, 'correct')
+    gameFlow.setSubPhase('repairing')
+    showFixSheet.value = true
   } else {
     diagnosisAttempts.value++
+    gameFlow.logInvestigation(answer, getAnswerLabel ? getAnswerLabel(answer) : answer, 'wrong')
     errorCount.value++
     diagnosisShake.value = true
     setTimeout(() => { diagnosisShake.value = false }, 500)
@@ -745,6 +765,56 @@ function submitDiagnosis(answer: string) {
     })
     if (diagnosisAttempts.value >= 3) {
       terminalRef.value?.addLine('提示：已经错了3次了，可以看看提示或者执行更多命令收集信息', 'system')
+    }
+  }
+}
+
+function handleFixSelect(action: FixAction) {
+  showFixSheet.value = false
+  gameFlow.selectedFixAction = action.type
+}
+
+function handleDeviceOperation(operation: string, value?: string) {
+  if (!selectedDeviceId.value && operation !== 'view-config') return
+  const deviceId = selectedDeviceId.value || ''
+  const result = executeDeviceOperation(operation, deviceId, deviceEngine.deviceStates.value, value)
+  terminalRef.value?.addLine(result.output, result.success ? 'success' : 'error')
+
+  if (gameFlow.subPhase.value === 'repairing' && currentLevel.value?.fixActions) {
+    const fixAction = currentLevel.value.fixActions.find((a: FixAction) => a.type === operation)
+    if (fixAction) {
+      if (!fixAction.to || value === fixAction.to) {
+        gameFlow.setSubPhase('verifying')
+        terminalRef.value?.addLine('修复操作已完成！请执行验证命令检验修复效果。', 'system')
+      } else {
+        gameFlow.fixAttempts++
+        terminalRef.value?.addLine('修复值不匹配，请检查配置。', 'warning')
+      }
+    }
+  }
+}
+
+function handleCommandExecuted(cmd: string, args: string) {
+  const contextDeviceId = selectedDeviceId.value
+  const result = executeCommand(cmd, args, contextDeviceId, deviceEngine.deviceStates.value)
+  if (result.output) {
+    terminalRef.value?.addLine(result.output, result.type || 'output')
+  }
+
+  if (gameFlow.subPhase.value === 'verifying' && currentLevel.value?.verifyConditions) {
+    currentLevel.value.verifyConditions.forEach((cond: VerifyCondition) => {
+      const condId = cond.type + ':' + cond.target
+      if (!gameFlow.verifiedItems.value.includes(condId)) {
+        if (result.success && cmd === cond.type && args.includes(cond.target)) {
+          gameFlow.markVerified(condId)
+          terminalRef.value?.addLine('✅ ' + cond.label, 'success')
+        }
+      }
+    })
+
+    if (gameFlow.verifiedItems.value.length >= currentLevel.value.verifyConditions.length) {
+      gameFlow.setSubPhase('completed')
+      triggerComplete('normal')
     }
   }
 }
@@ -968,6 +1038,14 @@ watch(gamePhase, (newPhase) => {
 
     <!-- ═══ 游戏主界面 ═══ -->
     <template v-if="gamePhase === 'playing' && currentLevel">
+      <FixSheet
+        :show="showFixSheet"
+        :fix-actions="currentLevel?.fixActions || []"
+        :fault-type="currentLevel?.fault?.type || ''"
+        :fault-device="currentLevel?.fault?.device || ''"
+        @select="handleFixSelect"
+        @close="showFixSheet = false"
+      />
       <div class="game-layout">
         <!-- 顶部状态栏 -->
         <header class="top-bar">
@@ -1074,6 +1152,7 @@ watch(gamePhase, (newPhase) => {
                     :devices="currentLevel.topology.devices"
                     :connections="currentLevel.topology.connections"
                     :highlight="selectedDeviceId || undefined"
+                    :device-states="deviceEngine.deviceStates.value"
                     @click-device="handleDeviceClick"
                   />
                 </template>
@@ -1135,6 +1214,14 @@ watch(gamePhase, (newPhase) => {
               >
                 <Info :size="16" />
                 <span>设备详情</span>
+              </button>
+              <button
+                class="panel-tab"
+                :class="{ active: rightPanelTab === 'operation' }"
+                @click="rightPanelTab = 'operation'"
+              >
+                <Wrench :size="16" />
+                <span>设备操作</span>
               </button>
               <button
                 class="panel-tab"
@@ -1245,6 +1332,15 @@ watch(gamePhase, (newPhase) => {
                 </template>
               </div>
 
+              <!-- 设备操作 -->
+              <div v-if="rightPanelTab === 'operation'" class="device-operation">
+                <DevicePanel
+                  :device="selectedDevice"
+                  :device-type="selectedDevice?.type || null"
+                  @operate="handleDeviceOperation"
+                />
+              </div>
+
               <!-- 告警列表 -->
               <div v-if="rightPanelTab === 'alert'" class="alert-list">
                 <div
@@ -1339,19 +1435,31 @@ watch(gamePhase, (newPhase) => {
                 <Stethoscope :size="16" />
                 <span>故障诊断</span>
               </div>
-              <div v-if="!foundFault" class="diagnose-actions">
+              <template v-if="gameFlow.subPhase.value === 'investigating' && !foundFault">
                 <button class="diagnose-btn" @click="openDiagnosisSheet">
                   <Stethoscope :size="16" />
-                  开始诊断
+                  <span>开始诊断</span>
                 </button>
-                <div class="attempts-info">
-                  错误: {{ diagnosisAttempts }}/3
+                <div class="diagnose-errors">错误: {{ diagnosisAttempts }}/3</div>
+              </template>
+              <template v-else-if="gameFlow.subPhase.value === 'repairing'">
+                <div class="phase-badge repairing">
+                  <Wrench :size="16" />
+                  <span>修复中 — 请在「设备操作」面板执行修复</span>
                 </div>
-              </div>
-              <div v-else class="diagnose-result">
-                <CheckCircle2 :size="18" />
-                <span>{{ fixed ? '故障已修复' : '故障已定位' }}</span>
-              </div>
+              </template>
+              <template v-else-if="gameFlow.subPhase.value === 'verifying'">
+                <div class="phase-badge verifying">
+                  <RefreshCw :size="16" />
+                  <span>验证中 — 用终端命令验证修复效果</span>
+                </div>
+              </template>
+              <template v-else-if="foundFault">
+                <div class="phase-badge done">
+                  <CheckCircle2 :size="16" />
+                  <span>已完成</span>
+                </div>
+              </template>
             </div>
           </aside>
         </div>
@@ -4194,5 +4302,23 @@ watch(gamePhase, (newPhase) => {
   .right-panel {
     display: none;
   }
+}
+
+/* 阶段标识 */
+.phase-badge {
+  display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+  border-radius: 8px; font-size: 12px; font-weight: 500;
+}
+.phase-badge.repairing { background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.3); color: #00d4ff; }
+.phase-badge.verifying { background: rgba(255,170,0,0.1); border: 1px solid rgba(255,170,0,0.3); color: #ffaa00; }
+.phase-badge.done { background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); color: #00ff88; }
+.verify-section { padding: 12px; border-top: 1px solid #1e3a5f; }
+
+@media (max-width: 768px) {
+  .verify-section { padding: 8px; }
+  .fix-sheet { width: 95vw; padding: 20px; }
+  .fix-option { padding: 12px 14px; }
+  .device-panel { gap: 12px; }
+  .op-btn { padding: 8px 10px; font-size: 12px; }
 }
 </style>

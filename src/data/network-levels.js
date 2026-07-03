@@ -126,6 +126,15 @@ export const levels = [
       ],
     },
     fault: { type: 'cable-unplugged', device: 'pc1', detail: '网线从电脑端脱落' },
+    deviceState: {
+      'pc1': { cableStatus: 'unplugged', ipAddress: '192.168.1.15' },
+    },
+    fixActions: [
+      { type: 'plug-cable', device: 'pc1', label: '插紧电脑网线' },
+    ],
+    verifyConditions: [
+      { type: 'ping', target: '192.168.1.1', expect: 'success', label: 'ping 通网关' },
+    ],
     expectedSteps: [
       { type: 'ping', target: '192.168.1.1', expectedResult: '请求超时' },
       { type: 'ipconfig', target: '', expectedResult: '媒体状态: 媒体已断开' },
@@ -162,6 +171,17 @@ export const levels = [
       ],
     },
     fault: { type: 'port-disabled', device: 'sw2', detail: '交换机 5 号端口处于 shutdown 状态' },
+    deviceState: {
+      'pc2': { cableStatus: 'connected', ipAddress: '0.0.0.0' },
+      'sw2': { portStatus: { '5': 'disabled' } },
+    },
+    fixActions: [
+      { type: 'enable-port', device: 'sw2', target: '5', label: '在交换机上启用端口 5' },
+      { type: 'restart-device', device: 'sw2', label: '重启交换机' },
+    ],
+    verifyConditions: [
+      { type: 'ping', target: '192.168.1.1', expect: 'success', label: 'ping 通网关' },
+    ],
     expectedSteps: [
       { type: 'ping', target: '192.168.1.1', expectedResult: '请求超时' },
       { type: 'ipconfig', target: '', expectedResult: '自动配置 IPv4: 169.254.x.x' },
@@ -202,6 +222,17 @@ export const levels = [
       ],
     },
     fault: { type: 'ip-conflict', device: 'pc3a', detail: '小张和小李的 IP 都设为 192.168.1.15' },
+    deviceState: {
+      'pc3a': { cableStatus: 'connected', ipAddress: '192.168.1.15' },
+      'pc3b': { cableStatus: 'connected', ipAddress: '192.168.1.15' },
+    },
+    fixActions: [
+      { type: 'change-ip', device: 'pc3b', from: '192.168.1.15', to: '192.168.1.16', label: '修改小李电脑 IP 为 192.168.1.16' },
+    ],
+    verifyConditions: [
+      { type: 'ping', target: '192.168.1.1', expect: 'success', label: 'ping 通网关' },
+      { type: 'ping', target: '192.168.1.16', expect: 'success', label: 'ping 通另一台电脑' },
+    ],
     expectedSteps: [
       { type: 'ipconfig', target: 'pc3a', expectedResult: 'IPv4: 192.168.1.15' },
       { type: 'ipconfig', target: 'pc3b', expectedResult: 'IPv4: 192.168.1.15' },
@@ -243,6 +274,17 @@ export const levels = [
       ],
     },
     fault: { type: 'vlan-mismatch', device: 'sw4a', detail: '研发部电脑插在了 VLAN 20 的端口上，而服务器在 VLAN 10' },
+    deviceState: {
+      'pc4a': { cableStatus: 'connected', ipAddress: '192.168.10.5' },
+      'svr4': { cableStatus: 'connected', ipAddress: '192.168.10.100' },
+      'sw4a': { portStatus: { '5': 'up', '24': 'up' } },
+    },
+    fixActions: [
+      { type: 'change-vlan', device: 'sw4a', from: '20', to: '10', label: '将电脑端口从 VLAN 20 改到 VLAN 10' },
+    ],
+    verifyConditions: [
+      { type: 'ping', target: '192.168.10.100', expect: 'success', label: 'ping 通财务部服务器' },
+    ],
     expectedSteps: [
       { type: 'ping', target: '服务器 IP', expectedResult: '请求超时' },
       { type: 'ipconfig', target: '', expectedResult: 'IPv4: 192.168.20.x (VLAN 20 网段)' },
@@ -283,6 +325,18 @@ export const levels = [
       ],
     },
     fault: { type: 'dns-down', device: 'dns5', detail: 'DNS 服务未启动或 DNS 指向错误' },
+    deviceState: {
+      'pc5': { cableStatus: 'connected', ipAddress: '192.168.1.50', dnsServer: '错误的DNS地址' },
+      'dns5': { cableStatus: 'connected', isOnline: false },
+    },
+    fixActions: [
+      { type: 'change-dns', device: 'pc5', from: '错误的DNS地址', to: '114.114.114.114', label: '将 DNS 改为 114.114.114.114' },
+      { type: 'restart-device', device: 'dns5', label: '重启 DNS 服务器' },
+    ],
+    verifyConditions: [
+      { type: 'nslookup', target: 'www.baidu.com', expect: 'resolve', label: 'DNS 解析百度' },
+      { type: 'ping', target: '114.114.114.114', expect: 'success', label: 'ping 通 DNS 服务器' },
+    ],
     expectedSteps: [
       { type: 'ping', target: 'baidu.com', expectedResult: 'ping 请求找不到主机' },
       { type: 'ping', target: '8.8.8.8', expectedResult: '成功' },
@@ -329,6 +383,19 @@ export const levels = [
       ],
     },
     fault: { type: 'uplink-down', device: 'sw6a', detail: '楼层交换机到核心路由器的光纤链路中断' },
+    deviceState: {
+      'pc6a': { cableStatus: 'connected', ipAddress: '192.168.1.10' },
+      'pc6b': { cableStatus: 'connected', ipAddress: '192.168.1.11' },
+      'sw6a': { cableStatus: 'connected' },
+    },
+    fixActions: [
+      { type: 'replace-cable', device: 'sw6a', label: '更换上联光纤' },
+      { type: 'restart-device', device: 'sw6a', label: '重启楼层交换机' },
+    ],
+    verifyConditions: [
+      { type: 'ping', target: '192.168.1.1', expect: 'success', label: 'ping 通核心路由器' },
+      { type: 'ping', target: '10.0.0.1', expect: 'success', label: 'ping 通外网网关' },
+    ],
     expectedSteps: [
       { type: 'ping', target: '192.168.1.1', expectedResult: '请求超时' },
       { type: 'tracert', target: '8.8.8.8', expectedResult: '第一跳就超时' },
@@ -369,6 +436,17 @@ export const levels = [
       ],
     },
     fault: { type: 'port-mapping', device: 'sw10', detail: '配线架端口 3 对应的跳线插到了交换机端口 12，但该端口属于 VLAN 99(管理 VLAN)，而销售部在 VLAN 10' },
+    deviceState: {
+      'pc10': { cableStatus: 'unplugged', ipAddress: '0.0.0.0' },
+      'patch10': { portStatus: { '3': 'up' } },
+      'sw10': { portStatus: { '10': 'up', '12': 'disabled' } },
+    },
+    fixActions: [
+      { type: 'plug-cable', device: 'pc10', label: '插好 A-03 工位网线' },
+    ],
+    verifyConditions: [
+      { type: 'ping', target: '192.168.1.1', expect: 'success', label: 'ping 通网关' },
+    ],
     expectedSteps: [
       { type: 'show', target: 'switch vlan brief', expectedResult: 'VLAN 10: Gi0/1-11,13-24 / VLAN 99: Gi0/12' },
       { type: 'show', target: 'switch mac-address-table', expectedResult: 'A-03 工位 MAC 在 Gi0/12 上' },
@@ -408,6 +486,16 @@ export const levels = [
       ],
     },
     fault: { type: 'ip-config', device: 'pc11', detail: '设计师电脑的子网掩码被设成了 255.255.0.0 (应该为 255.255.255.0)' },
+    deviceState: {
+      'pc11': { cableStatus: 'connected', ipAddress: '192.168.2.50', subnetMask: '255.255.0.0', defaultGateway: '192.168.2.1' },
+    },
+    fixActions: [
+      { type: 'change-subnet', device: 'pc11', from: '255.255.0.0', to: '255.255.255.0', label: '将子网掩码改为 255.255.255.0' },
+    ],
+    verifyConditions: [
+      { type: 'ping', target: '192.168.2.100', expect: 'success', label: 'ping 通打印机' },
+      { type: 'ping', target: '192.168.2.1', expect: 'success', label: 'ping 通网关' },
+    ],
     expectedSteps: [
       { type: 'ipconfig', target: '', expectedResult: 'IPv4: 192.168.2.50 / 掩码: 255.255.0.0' },
       { type: 'ping', target: '192.168.2.100', expectedResult: '请求超时 (跨子网)' },
@@ -450,6 +538,18 @@ export const levels = [
       ],
     },
     fault: { type: 'sfp-fault', device: 'core12', detail: '核心交换机上连接汇聚的万兆光模块光衰过大，CRC 错误包激增' },
+    deviceState: {
+      'pc12a': { cableStatus: 'connected', ipAddress: '10.0.10.5' },
+      'pc12b': { cableStatus: 'connected', ipAddress: '10.0.20.5' },
+      'core12': { portStatus: { '1': 'up', '2': 'up' }, cableStatus: 'faulty' },
+    },
+    fixActions: [
+      { type: 'replace-cable', device: 'core12', label: '清洁光纤接口并更换光模块' },
+    ],
+    verifyConditions: [
+      { type: 'ping', target: '10.0.0.1', expect: 'success', label: 'ping 通出口路由器' },
+      { type: 'ping', target: '10.0.10.1', expect: 'success', label: '客服部 ping 通网关' },
+    ],
     expectedSteps: [
       { type: 'show', target: 'interface gigabitethernet 1/0/1', expectedResult: '大量 CRC 错误, 输入错误' },
       { type: 'show', target: 'interface gigabitethernet 1/0/2', expectedResult: '同样有 CRC 错误' },
@@ -491,6 +591,18 @@ export const levels = [
       ],
     },
     fault: { type: 'acl-misconfig', device: 'fw13', detail: '防火墙 ACL 第 5 条规则 deny 了 10.0.0.0/16 段的所有访问，但前面有一条 permit 规则只允许了特定 IP' },
+    deviceState: {
+      'pc13a': { cableStatus: 'connected', ipAddress: '10.0.10.10' },
+      'pc13b': { cableStatus: 'connected', ipAddress: '10.0.10.11' },
+      'fw13': { cableStatus: 'connected' },
+      'svr13': { cableStatus: 'connected', ipAddress: '10.0.10.50' },
+    },
+    fixActions: [
+      { type: 'change-dns', device: 'fw13', label: '调整 ACL 规则顺序' },
+    ],
+    verifyConditions: [
+      { type: 'ping', target: '10.0.10.50', expect: 'success', label: 'ping 通 HR 服务器' },
+    ],
     expectedSteps: [
       { type: 'telnet', target: '防火墙', expectedResult: '进入防火墙 CLI' },
       { type: 'show', target: 'access-list', expectedResult: 'ACL 规则顺序有误' },
