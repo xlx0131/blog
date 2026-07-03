@@ -1,1 +1,78 @@
-﻿[]
+[
+  {
+    "name": "开发工具",
+    "items": [
+      { "id": 1, "name": "CodePen", "url": "https://codepen.io", "desc": "在线前端代码编辑器与社区，支持 HTML/CSS/JavaScript 实时预览，探索海量用户创作的前端作品。", "detail": "CodePen 是一个全球知名的在线前端开发 playground 平台。支持多种预处理器、作品集展示、代码分享、团队协作。适合快速原型验证、学习前端技术、获取设计灵感。" },
+      { "id": 2, "name": "Pure CSS Wait", "url": "https://codepen.io/rauldronca/pen/qaEGMb", "desc": "一个纯 CSS 实现的等待加载动画，设计精巧，适合作为网站加载状态参考。", "detail": "纯 CSS 实现的等待加载动画作品，无需 JS，可直接复制代码集成到自己的项目中。" },
+      { "id": 12, "name": "MDN HTML 基础", "url": "https://developer.mozilla.org/zh-CN/docs/Learn_web_development/Core/Structuring_content/Basic_HTML_syntax", "desc": "MDN Web 文档 — HTML 基本语法教程，适合前端入门学习。", "detail": "MDN 官方 HTML 入门教程，涵盖基础语法、文档结构、文本标记、多媒体嵌入、表单构建、语义化 HTML。免费，支持中文。" },
+      { "id": 18, "name": "Framework Ninja", "url": "https://frameronin.com/", "desc": "前端框架对比工具，直观比较 React、Vue、Angular、Svelte 等框架的特性与差异。", "detail": "多维度对比主流前端框架，覆盖学习曲线、性能、生态、类型支持等，适合技术选型阶段参考。" },
+      { "id": 7, "name": "MasterGo", "url": "https://mastergo.com/files/home", "desc": "国产在线 UI/UX 设计协作工具，支持矢量编辑、原型制作和团队协作。", "detail": "国产在线设计协作平台，对标 Figma。矢量编辑、原型制作、多人实时协作、组件库管理、设计规范生成。国内访问快，完全免费。" },
+      { "id": 21, "name": "vue-element-admin", "url": "https://panjiachen.github.io/vue-element-admin-site/zh/guide/", "desc": "基于 Vue 3 + Element Plus 的后台管理系统完整解决方案与中文文档。", "detail": "花裤衩开源的后台前端解决方案。权限验证、多 Tab 页、动态路由、国际化、Mock 数据，适合快速搭建企业级后台。" },
+      { "id": 22, "name": "Font Awesome", "url": "https://fontawesome.com/icons", "desc": "最流行的图标字体库，提供数千个免费和付费图标，支持 CSS 和 SVG 方式使用。", "detail": "全球最广泛使用的图标库。免费版 2000+ 图标，专业版 30000+。支持 CSS 类名、SVG 框架、React/Vue 组件等多种使用方式。" },
+      { "id": 30, "name": "Iconfont 阿里巴巴", "url": "https://www.iconfont.cn/?lang=zh-cn", "desc": "阿里巴巴矢量图标库，海量开源图标资源，支持自定义颜色、大小和格式。", "detail": "国内最大开源图标平台。数百万矢量图标，支持在线搜索、项目管理、自定义编辑、多格式导出（SVG/PNG/字体图标），可生成 CDN 链接直接引用。" },
+      { "id": 23, "name": "Element Plus", "url": "https://element-plus.org/en-US/guide/quickstart", "desc": "Element Plus 官方文档 — 基于 Vue 3 的企业级 UI 组件库，提供快速上手指南。", "detail": "Vue 3 企业级 UI 组件库。完善的 TypeScript 支持、国际化、可定制主题。涵盖基础组件、数据展示、反馈组件、导航组件等。" },
+      { "id": 29, "name": "Easings.net", "url": "https://easings.net/zh-cn", "desc": "CSS/JS 缓动函数速查表，可视化展示各种缓动效果，支持在线预览和代码复制。", "detail": "缓动函数可视化参考网站。每个函数配有动画示意图，支持一键复制 CSS/JS 代码，中文界面。" },
+      { "id": 31, "name": "Web Gradients", "url": "https://webgradients.com/", "desc": "渐变配色参考站，提供 180 个精美渐变方案，支持一键复制 CSS 代码。", "detail": "180 个精选渐变配色方案，一键复制 CSS 代码，支持下载 PSD/Sketch 格式。适合 UI 设计师和前端开发者。" }
+    ]
+  },
+  {
+    "name": "AI 工具",
+    "items": [
+      { "id": 10, "name": "海螺AI 编程", "url": "https://www.haisnap.com/code?type=add&appid=304587048822505472", "desc": "海螺AI 在线编程助手，支持多种编程语言的代码生成与调试。", "detail": "AI 编程助手，支持代码生成、多语言、代码解释、Bug 修复、代码优化、单元测试生成。适合各阶段开发者。" },
+      { "id": 11, "name": "工课 AI 编程", "url": "https://gongke.net/categories/ai-coding", "desc": "工课网 AI 编程分类教程，学习利用 AI 工具提升开发效率。", "detail": "AI 编程教程合集。涵盖 Cursor、Copilot、Trae 等工具的上手指南和实战案例。" },
+      { "id": 35, "name": "txyz AI", "url": "https://app.txyz.ai/", "desc": "AI 驱动的学术研究助手，帮助研究人员阅读论文、分析文献和撰写内容。", "detail": "面向学术研究的 AI 助手。论文阅读、文献分析、知识问答、写作辅助。适合科研人员和研究生。" },
+      { "id": 36, "name": "30 AI 工具", "url": "https://www.30aitool.com/", "desc": "AI 工具导航站，收录数百款 AI 应用，覆盖写作、绘画、编程、视频等分类。", "detail": "综合性 AI 导航平台。收录 AI 写作、绘画、编程、视频、办公、音频等数百款工具，配有简介和使用指南。" },
+      { "id": 40, "name": "ChatExcel", "url": "https://chatexcel.com/", "desc": "AI 驱动的 Excel 处理工具，用对话方式操作表格数据，无需记忆复杂公式。", "detail": "AI 表格处理工具。自然语言操作、数据清洗、数据分析、图表生成、公式解释。适合不熟悉 Excel 公式的办公人员。" },
+      { "id": 6, "name": "PhotoKit", "url": "https://photokit.com/?lang=zh#clarity", "desc": "在线 AI 图片编辑工具，支持图片清晰度增强、去背景、修图等多种功能。", "detail": "AI 在线图片编辑平台。AI 清晰度增强、一键去背景、图片编辑、滤镜效果、批处理、格式转换。" },
+      { "id": 28, "name": "Fish Audio TTS", "url": "https://fish.audio/zh-CN/text-to-speech/", "desc": "Fish Audio 在线文本转语音工具，支持多种语音和语种，生成自然逼真的语音。", "detail": "AI 文本转语音平台。多音色多语种、参数调节、语音克隆。适合有声内容制作、视频配音。" },
+      { "id": 27, "name": "Hugging Face 镜像", "url": "https://hf-mirror.com/", "desc": "Hugging Face 国内镜像站，加速 AI 模型下载和数据集访问。", "detail": "HF 国内镜像。加速模型和数据集下载，完全兼容官方 API，设置 HF_ENDPOINT 环境变量即可使用。" },
+      { "id": 38, "name": "LALAL.AI", "url": "https://www.lalal.ai/zh-hans/", "desc": "AI 音频分离工具，一键提取人声、伴奏、乐器音轨，支持多种音频格式。", "detail": "AI 音频分离工具。人声提取、乐器分离、降噪处理、批量处理。适合音乐制作人和视频创作者。" }
+    ]
+  },
+  {
+    "name": "在线学习",
+    "items": [
+      { "id": 5, "name": "LeetCode 数据库", "url": "https://leetcode.cn/problemset/database/", "desc": "力扣（LeetCode）SQL 数据库题库，在线练习 SQL 查询语句，提升数据库技能。", "detail": "SQL 专项练习平台。难度分级、覆盖全面知识点、真实业务场景、在线运行、执行对比。适合准备数据分析面试。" },
+      { "id": 19, "name": "廖雪峰 JavaScript", "url": "https://liaoxuefeng.com/books/javascript/introduction/index.html", "desc": "廖雪峰撰写的 JavaScript 入门教程，从基础语法到进阶实践，适合初学者系统学习。", "detail": "免费 JS 教程。基础语法、函数作用域、对象原型、标准库、DOM 操作、jQuery、Node.js。代码示例丰富，适合零基础入门。" },
+      { "id": 20, "name": "知乎专栏", "url": "https://zhuanlan.zhihu.com/p/1963981293978130398", "desc": "知乎精选技术专栏文章，涵盖编程、AI、职业发展等深度内容。", "detail": "知乎专栏优质技术文章。深入技术原理、实战经验分享、职业发展、AI 前沿话题。" },
+      { "id": 32, "name": "牛客网", "url": "https://www.nowcoder.com/", "desc": "国内最大的 IT 求职刷题平台，提供笔试题库、面试经验和求职服务。", "detail": "IT 求职平台。在线题库、编程练习、面试经验、专项练习、竞赛模式、求职服务。适合准备技术面试的求职者。" },
+      { "id": 25, "name": "试卷1", "url": "https://www.shijuan1.com/", "desc": "在线试卷资源网站，收录各学科各年级的考试试卷，支持在线预览和下载。", "detail": "教育试卷平台。全科目全年级的单元测试、期中期末、模拟考试试卷。支持在线预览和免费下载。" },
+      { "id": 13, "name": "FMHY 资源导航", "url": "https://fmhy.pages.dev/", "desc": "精选互联网免费资源导航站，收录各类实用工具与学习资源。", "detail": "免费资源导航站。收录学习资源、开发工具、媒体资源、安全工具、实用软件。人工精选，免费优先。" }
+    ]
+  },
+  {
+    "name": "设计资源",
+    "items": [
+      { "id": 26, "name": "创客贴", "url": "https://www.chuangkit.com/designtools/designindex", "desc": "在线平面设计工具，海量模板一键套用，轻松制作海报、PPT、社交媒体配图。", "detail": "在线平面设计平台。10万+ 设计模板，拖拽编辑，海量素材库，团队协作，印刷服务。适合快速制作平面设计。" },
+      { "id": 34, "name": "奇迹秀", "url": "https://www.qijishow.com/down/index.html", "desc": "精品设计资源下载站，提供 UI 素材、模板、字体、插件等设计相关资源。", "detail": "设计资源分享平台。UI 素材、设计模板、字体资源、插件工具、教程资源。质量高，分类清晰，更新频繁。" },
+      { "id": 42, "name": "1PPT", "url": "https://www.1ppt.com/", "desc": "海量免费 PPT 模板下载站，提供各类风格和场景的 PowerPoint 模板。", "detail": "免费 PPT 模板平台。多种风格和场景分类，模板设计精美，每日更新。适合职场人士、教师和学生。" }
+    ]
+  },
+  {
+    "name": "工具集合",
+    "items": [
+      { "id": 4, "name": "AConvert 音频转换", "url": "https://www.aconvert.com/cn/audio/", "desc": "免费在线音频格式转换工具，支持 MP3、WAV、FLAC、AAC 等多种格式互转，无需安装。", "detail": "在线音频转换平台。支持主流格式互转，批量处理，可调参数，完全免费，文件自动删除保护隐私。" },
+      { "id": 15, "name": "FreeConvert 视频转MP3", "url": "https://www.freeconvert.com/zh/convert/video-to-mp3", "desc": "免费在线视频转 MP3 工具，支持多种视频格式，无需注册。", "detail": "视频转 MP3 工具。支持几乎所有视频格式，自定义比特率，文件裁剪，批量处理。每天免费 25 个文件。" },
+      { "id": 41, "name": "Audio2Edit", "url": "https://www.audio2edit.com/zh/convert-to-mp3", "desc": "在线音频编辑和转换工具，支持音频格式转换、剪辑、合并等操作。", "detail": "在线音频处理平台。格式转换、音频剪辑、音频合并、参数调节。完全免费，无使用限制。" },
+      { "id": 39, "name": "iLovePDF", "url": "https://www.ilovepdf.com/zh-cn", "desc": "全功能在线 PDF 工具集，支持合并、拆分、压缩、转换、编辑 PDF 文件。", "detail": "全功能 PDF 在线工具。合并/拆分、压缩、格式转换、编辑、加密/解密、签名。免费使用，文件加密保护。" },
+      { "id": 45, "name": "Smallpdf", "url": "https://smallpdf.com/", "desc": "全能 PDF 在线工具，支持压缩、转换、编辑、签名等所有 PDF 操作。", "detail": "知名 PDF 在线平台。格式转换、压缩、合并/拆分、编辑、签名、密码保护、AI 摘要。支持云端存储集成。" },
+      { "id": 43, "name": "AlltoAll", "url": "https://www.alltoall.net/pdf_docx/", "desc": "在线文件格式转换平台，支持 PDF、Word、Excel、图片等多种格式互转。", "detail": "多功能格式转换平台。支持文档、图片、音频、视频、电子书等格式互转。无需注册，上传即转。" },
+      { "id": 44, "name": "PDF to Doc", "url": "https://pdf2doc.com/zh/", "desc": "免费在线 PDF 转 Word 工具，保留原格式，支持批量转换。", "detail": "专注 PDF 转 Word 工具。保留原始排版，支持转 Excel/PPT/图片，批量处理，完全免费。" },
+      { "id": 8, "name": "Wormhole", "url": "https://wormhole.app/", "desc": "端到端加密的文件传输服务，支持点对点安全分享大文件，文件自动过期。", "detail": "加密文件传输服务。端到端加密、点对点直传、自动过期、支持 10GB+ 大文件。无需注册，跨平台使用。" },
+      { "id": 24, "name": "AlternativeTo", "url": "https://alternativeto.net/", "desc": "软件替代方案搜索引擎，输入软件名即可找到功能相似的开源或免费替代品。", "detail": "软件替代方案推荐平台。社区投票驱动，支持按平台和开源/免费筛选。适合寻找付费软件的免费替代品。" },
+      { "id": 37, "name": "沐雨工具导航", "url": "https://www.moooyu.com/sites/972.html", "desc": "精选实用工具和网站导航，收录各类在线工具和资源平台。", "detail": "个人整理的优质工具导航。收录在线工具、学习资源、设计素材、开发工具、效率工具。人工筛选，质量有保障。" },
+      { "id": 16, "name": "网盘资源搜索", "url": "https://wangpanziyuan.pages.dev/", "desc": "网盘资源聚合搜索引擎，快速查找各类网盘分享资源。", "detail": "网盘资源聚合搜索引擎。多引擎聚合、分类浏览、关键词搜索、直达链接。完全免费，无需注册。" }
+    ]
+  },
+  {
+    "name": "娱乐生活",
+    "items": [
+      { "id": 3, "name": "BGM Cat", "url": "https://bgmcat.com/home", "desc": "在线背景音乐播放站点，提供适合工作、学习时聆听的氛围音乐。", "detail": "背景音乐播放网站。按场景分类，精选曲库，持续播放，简洁界面，免费使用。适合编程、阅读时提升专注力。" },
+      { "id": 9, "name": "Qwerty Learner", "url": "https://qwerty.kaiyi.cool/", "desc": "在线键盘打字练习工具，结合英语单词与代码片段，提升打字速度和准确性。", "detail": "打字练习工具。单词模式和代码模式，实时统计，错误追踪，多语言支持。适合程序员提升打字速度。" },
+      { "id": 14, "name": "HelloTik", "url": "https://www.hellotik.app/zh/douyin", "desc": "在线抖音视频下载工具，无水印保存抖音短视频。", "detail": "抖音视频下载工具。无水印下载，多种画质，粘贴链接即用，跨平台，免费不限次。" },
+      { "id": 17, "name": "PlayZip", "url": "https://playzip.com/", "desc": "在线小游戏平台，提供各类益智、休闲网页游戏，即点即玩。", "detail": "在线小游戏平台。益智、休闲、动作、多人对战分类。即点即玩，轻量快速，适合碎片时间放松。" },
+      { "id": 33, "name": "起飞页", "url": "https://www.qifeiye.com/", "desc": "免费在线建站平台，提供海量网站模板，拖拽式编辑，快速搭建企业官网和个人网站。", "detail": "免费建站工具。海量模板、拖拽编辑、响应式设计、免费域名、SEO 优化。适合中小企业快速搭建官网。" },
+      { "id": 46, "name": "Gamer520", "url": "https://www.gamer520.com/", "desc": "游戏资源分享站，提供各类游戏的下载资源和游戏资讯。", "detail": "游戏资源平台。游戏下载、攻略、资讯、推荐、社区互动。适合游戏爱好者发现新游戏和获取攻略。" }
+    ]
+  }
+]
