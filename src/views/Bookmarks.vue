@@ -85,11 +85,11 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
           <div style="transform: scale(0.5); transform-origin: top left;">
           <div
             class="w-48 aspect-video rounded-xl border-4"
-            :class="cardViewMode === 'pixel' ? 'bg-[#3a3347] border-[#f5f0e8]' : 'bg-[#ebe6ef] border-[#121331]'"
+            :class="cardViewMode === 'pixel' ? 'bg-[#f5f0e8] border-[#121331]' : 'bg-[#ebe6ef] border-[#121331]'"
           >
             <div class="flex h-full w-full px-2 items-center gap-x-2">
-              <div class="w-6 h-6 flex-shrink-0 rounded-full border-4"
-                :class="cardViewMode === 'pixel' ? 'bg-[#3a3347] border-[#f5f0e8]' : 'bg-[#ebe6ef] border-[#121331]'"
+              <div class="w-6 h-6 flex-shrink-0 rounded-full border-4 border-[#121331]"
+                :class="cardViewMode === 'pixel' ? 'bg-[#f5f0e8]' : 'bg-[#ebe6ef]'"
               ></div>
               <label
                 for="card-switch"
@@ -108,8 +108,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
                   <div class="w-[25px] h-9 z-10 absolute top-[9px] left-[24px] bg-[#c44002] border-r-4 border-l-2 border-b-4 border-[#121331] skew-y-[-39deg]"></div>
                 </div>
               </label>
-              <div class="w-6 h-1 flex-shrink-0 rounded-full"
-                :class="cardViewMode === 'pixel' ? 'bg-[#3a3347]' : 'bg-[#121331]'"
+              <div class="w-6 h-1 flex-shrink-0 bg-[#121331] rounded-full"
+                :class="cardViewMode === 'pixel' ? 'opacity-0' : ''"
               ></div>
             </div>
             </div>
