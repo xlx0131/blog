@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, h } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, h } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useGsapEnhance } from '@/composables/useGsapEnhance'
 import { initAllInteractions } from '@/composables/useInteractions'
@@ -42,6 +42,10 @@ const route = useRoute()
 const mobileOpen = ref(false)
 const scrolled = ref(false)
 
+const isPixelTheme = computed(() =>
+  route.path.startsWith('/bookmarks') || route.path.startsWith('/archive') || route.path.startsWith('/article')
+)
+
 const navItems = [
   { path: '/', label: '首页', icon: HomeIcon },
   { path: '/projects', label: '项目', icon: FolderKanbanIcon },
@@ -79,19 +83,19 @@ onBeforeUnmount(() => cleanup?.())
       class="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
       :class="[
         scrolled
-          ? route.path.startsWith('/bookmarks')
+          ? isPixelTheme
             ? 'bg-[#fffaef] border-b-2 border-[#161310]'
             : 'bg-card/80 backdrop-blur-xl border-b border-border'
-          : route.path.startsWith('/bookmarks')
+          : isPixelTheme
             ? 'bg-[#f5f0e8]'
             : 'bg-transparent',
-        route.path.startsWith('/bookmarks') ? 'bookmarks-header' : ''
+        isPixelTheme ? 'bookmarks-header' : ''
       ]"
     >
       <div class="max-w-[1400px] mx-auto px-6 lg:px-10 flex items-center justify-between h-16 lg:h-20">
         <button
           class="text-lg font-semibold tracking-tight transition-colors"
-          :class="route.path.startsWith('/bookmarks') ? 'text-[#161310] font-mono' : 'text-foreground hover:text-primary'"
+          :class="isPixelTheme ? 'text-[#161310] font-mono' : 'text-foreground hover:text-primary'"
           @click="router.push('/')"
         >
           许立鑫
@@ -105,7 +109,7 @@ onBeforeUnmount(() => cleanup?.())
             :to="item.path"
           >
             <Button
-              v-if="route.path.startsWith('/bookmarks')"
+              v-if="isPixelTheme"
               :variant="route.path === item.path ? 'default' : 'ghost'"
               size="sm"
               class="rounded-none font-mono text-sm tracking-wider uppercase"
@@ -133,19 +137,19 @@ onBeforeUnmount(() => cleanup?.())
               variant="ghost"
               size="icon"
               class="md:hidden"
-              :class="route.path.startsWith('/bookmarks') ? 'text-[#161310] hover:bg-[#161310]/10' : ''"
+              :class="isPixelTheme ? 'text-[#161310] hover:bg-[#161310]/10' : ''"
               aria-label="Menu"
             >
               <MenuIcon class="h-5 w-5" />
             </Button>
           </SheetTrigger>
           <SheetContent side="right" class="w-[85%] sm:max-w-sm"
-            :class="route.path.startsWith('/bookmarks') ? 'bg-[#fffaef] border-l-2 border-[#161310]' : ''"
+            :class="isPixelTheme ? 'bg-[#fffaef] border-l-2 border-[#161310]' : ''"
           >
             <SheetHeader>
               <SheetTitle class="text-left">
                 <span class="text-lg font-semibold tracking-tight"
-                  :class="route.path.startsWith('/bookmarks') ? 'text-[#161310] font-mono' : ''"
+                  :class="isPixelTheme ? 'text-[#161310] font-mono' : ''"
                 >许立鑫</span>
               </SheetTitle>
             </SheetHeader>
@@ -200,32 +204,32 @@ onBeforeUnmount(() => cleanup?.())
 
     <!-- Footer -->
     <footer v-if="route.path !== '/' && route.path !== '/network-game'"
-      class="border-t mt-24"
-      :class="route.path.startsWith('/bookmarks') ? 'border-[#161310] bg-[#f5f0e8] !mt-0' : 'border-border'"
-    >
-      <div class="max-w-[1400px] mx-auto px-6 lg:px-10 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div class="lg:col-span-2">
-            <p class="text-lg font-semibold tracking-tight"
-              :class="route.path.startsWith('/bookmarks') ? 'text-[#161310] font-mono' : 'text-foreground'"
-            >许立鑫</p>
-            <p class="text-sm mt-2 max-w-sm leading-relaxed"
-              :class="route.path.startsWith('/bookmarks') ? 'text-[#3a332a]' : 'text-muted-foreground'"
-            >
-              写代码、做设计、思考人生。
-            </p>
-            <div class="flex items-center gap-2 mt-4">
-              <a
-                v-for="link in socialLinks"
-                :key="link.label"
-                :href="link.href"
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300"
-                :class="route.path.startsWith('/bookmarks')
-                  ? 'bg-[#161310]/10 text-[#161310] hover:bg-[#161310]/20'
-                  : 'bg-muted/50 hover:bg-primary/10 hover:text-primary text-muted-foreground'"
-              >
+       class="border-t mt-24"
+       :class="isPixelTheme ? 'border-[#161310] bg-[#f5f0e8] !mt-0' : 'border-border'"
+     >
+       <div class="max-w-[1400px] mx-auto px-6 lg:px-10 py-12">
+         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+           <div class="lg:col-span-2">
+             <p class="text-lg font-semibold tracking-tight"
+               :class="isPixelTheme ? 'text-[#161310] font-mono' : 'text-foreground'"
+             >许立鑫</p>
+             <p class="text-sm mt-2 max-w-sm leading-relaxed"
+               :class="isPixelTheme ? 'text-[#3a332a]' : 'text-muted-foreground'"
+             >
+               写代码、做设计、思考人生。
+             </p>
+             <div class="flex items-center gap-2 mt-4">
+               <a
+                 v-for="link in socialLinks"
+                 :key="link.label"
+                 :href="link.href"
+                 target="_blank"
+                 rel="noopener"
+                 class="inline-flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300"
+                 :class="isPixelTheme
+                   ? 'bg-[#161310]/10 text-[#161310] hover:bg-[#161310]/20'
+                   : 'bg-muted/50 hover:bg-primary/10 hover:text-primary text-muted-foreground'"
+               >
                 <component :is="link.icon" class="h-4 w-4" />
                 <span class="sr-only">{{ link.label }}</span>
               </a>
@@ -234,10 +238,10 @@ onBeforeUnmount(() => cleanup?.())
 
           <div>
             <p class="text-sm font-medium mb-3"
-              :class="route.path.startsWith('/bookmarks') ? 'text-[#161310]' : 'text-foreground'"
+              :class="isPixelTheme ? 'text-[#161310]' : 'text-foreground'"
             >导航</p>
             <ul class="space-y-2 text-sm"
-              :class="route.path.startsWith('/bookmarks') ? 'text-[#3a332a]' : 'text-muted-foreground'"
+              :class="isPixelTheme ? 'text-[#3a332a]' : 'text-muted-foreground'"
             >
               <li v-for="item in navItems" :key="item.path">
                 <RouterLink
@@ -252,10 +256,10 @@ onBeforeUnmount(() => cleanup?.())
 
           <div>
             <p class="text-sm font-medium mb-3"
-              :class="route.path.startsWith('/bookmarks') ? 'text-[#161310]' : 'text-foreground'"
+              :class="isPixelTheme ? 'text-[#161310]' : 'text-foreground'"
             >更多</p>
             <ul class="space-y-2 text-sm"
-              :class="route.path.startsWith('/bookmarks') ? 'text-[#3a332a]' : 'text-muted-foreground'"
+              :class="isPixelTheme ? 'text-[#3a332a]' : 'text-muted-foreground'"
             >
               <li>
                 <a
@@ -288,7 +292,7 @@ onBeforeUnmount(() => cleanup?.())
         </div>
         <Separator class="my-8" />
         <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-xs"
-          :class="route.path.startsWith('/bookmarks') ? 'text-[#3a332a]' : 'text-muted-foreground/60'"
+          :class="isPixelTheme ? 'text-[#3a332a]' : 'text-muted-foreground/60'"
         >
           <p>
             &copy; {{ new Date().getFullYear() }} 许立鑫. All rights reserved.

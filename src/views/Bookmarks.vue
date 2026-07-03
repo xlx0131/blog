@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { bookmarks } from '@/data/bookmarks.js'
 
 const router = useRouter()
 
 const activeTab = ref('all')
+const searchQuery = ref('')
 
 const allItems = computed(() => {
   return bookmarks.flatMap((cat: any) =>
@@ -14,8 +15,21 @@ const allItems = computed(() => {
 })
 
 const filteredItems = computed(() => {
-  if (activeTab.value === 'all') return allItems.value
-  return allItems.value.filter((item: any) => item.category === activeTab.value)
+  let items = allItems.value
+  // 分类过滤
+  if (activeTab.value !== 'all') {
+    items = items.filter((item: any) => item.category === activeTab.value)
+  }
+  // 搜索过滤（匹配名称、简介、详细功能）
+  const q = searchQuery.value.trim().toLowerCase()
+  if (q) {
+    items = items.filter((item: any) =>
+      item.name.toLowerCase().includes(q) ||
+      item.desc.toLowerCase().includes(q) ||
+      (item.detail && item.detail.toLowerCase().includes(q))
+    )
+  }
+  return items
 })
 
 const totalCount = computed(() => allItems.value.length)
@@ -40,6 +54,18 @@ const categorySkyColors: Record<string, { sky: string; skyPressed: string; mount
 function getCategoryColors(cat: string) {
   return categorySkyColors[cat] || categorySkyColors['开发工具']
 }
+
+// 搜索快捷键 /
+function onKeydown(e: KeyboardEvent) {
+  if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement).tagName)) {
+    e.preventDefault()
+    document.getElementById('ow-search-input')?.focus()
+  }
+}
+
+import { onMounted, onBeforeUnmount } from 'vue'
+onMounted(() => window.addEventListener('keydown', onKeydown))
+onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 </script>
 
 <template>
@@ -50,6 +76,27 @@ function getCategoryColors(cat: string) {
         <span class="font-mono text-sm tracking-widest text-[#2e5dd6] uppercase">收藏夹</span>
         <h1 class="font-mono text-4xl sm:text-5xl font-black tracking-tight text-[#161310] mt-1">我的收藏</h1>
         <p class="font-mono text-sm text-[#3a332a] mt-2">{{ bookmarks.length }} 个分类，共 {{ totalCount }} 个精选网站</p>
+      </div>
+
+      <!-- 搜索栏 -->
+      <div class="ow-search mb-8">
+        <label class="ow-search__label" for="ow-search-input">QUEST LOG</label>
+        <div class="ow-search__field">
+          <svg class="ow-search__icon" viewBox="0 0 256 256" aria-hidden="true">
+            <path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z" />
+          </svg>
+          <input
+            id="ow-search-input"
+            class="ow-search__input"
+            type="text"
+            placeholder="Search the overworld..."
+            v-model="searchQuery"
+          />
+          <kbd class="ow-search__kbd">/</kbd>
+        </div>
+        <p class="ow-search__help">
+          按 <span>/</span> 快速聚焦。搜索名称、简介或功能介绍。
+        </p>
       </div>
 
       <!-- 分类 Tabs -->
@@ -304,5 +351,104 @@ function getCategoryColors(cat: string) {
 
 .ow-quest-card__stamp--accent {
   color: #e2522e;
+}
+
+/* ─── 搜索框 (Quest Log) ─── */
+.ow-search {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 360px;
+  max-width: 100%;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  color: #161310;
+}
+
+.ow-search__label {
+  font-family: "VT323", ui-monospace, monospace;
+  font-size: 18px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #161310;
+  line-height: 1;
+}
+
+.ow-search__field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px 0 12px;
+  height: 52px;
+  background-color: #fffaef;
+  border: 2px solid #161310;
+  box-shadow: 4px 4px 0 0 #161310;
+  transition: box-shadow 120ms ease, border-color 120ms ease;
+}
+
+.ow-search__field:focus-within {
+  border-color: #2e5dd6;
+  box-shadow: 4px 4px 0 0 #2e5dd6;
+}
+
+.ow-search__icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  fill: #161310;
+}
+
+.ow-search__input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: "VT323", ui-monospace, monospace;
+  font-size: 22px;
+  line-height: 1;
+  color: #161310;
+  padding: 0;
+  margin: 0;
+}
+
+.ow-search__input::placeholder {
+  color: #3a332a;
+  opacity: 0.7;
+}
+
+.ow-search__kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 8px;
+  font-family: "VT323", ui-monospace, monospace;
+  font-size: 18px;
+  background-color: #f2ead6;
+  color: #161310;
+  border: 2px solid #161310;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.ow-search__help {
+  font-family: "VT323", ui-monospace, monospace;
+  font-size: 16px;
+  color: #3a332a;
+  line-height: 1.2;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.ow-search__help span {
+  font-family: "VT323", ui-monospace, monospace;
+  background-color: #f2ead6;
+  border: 2px solid #161310;
+  padding: 0 6px;
+  display: inline-block;
+  line-height: 1.1;
+  color: #161310;
 }
 </style>
