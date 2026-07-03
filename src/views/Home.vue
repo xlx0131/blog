@@ -396,15 +396,15 @@ onBeforeUnmount(() => {
             </header>
             <ul>
               <li>
-                <router-link to="/archive" aria-label="归档">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4h16v16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/></svg>
-                  <span>归档</span>
-                </router-link>
-              </li>
-              <li>
                 <router-link to="/projects" aria-label="项目">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
                   <span>项目</span>
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/archive" aria-label="归档">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4h16v16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/></svg>
+                  <span>归档</span>
                 </router-link>
               </li>
               <li>
