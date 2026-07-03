@@ -6,6 +6,7 @@ import { projects as projectsData } from '@/data/contents.js'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
+import { BarChart3, Globe2, Server, Play } from '@lucide/vue'
 
 const router = useRouter()
 
@@ -92,13 +93,29 @@ onMounted(() => {
           @click="viewProject(project.id)"
         >
           <!-- Cover -->
-          <div class="relative h-52 bg-gradient-to-br from-emerald-900/20 via-card to-emerald-900/10 flex items-center justify-center text-7xl overflow-hidden">
+          <div class="relative h-52 bg-gradient-to-br from-emerald-900/20 via-card to-emerald-900/10 flex items-center justify-center overflow-hidden">
             <div class="absolute inset-0 opacity-[0.03]" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255,255,255,0.03) 19px, rgba(255,255,255,0.03) 20px), repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(255,255,255,0.03) 19px, rgba(255,255,255,0.03) 20px);"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-60"></div>
-            <span class="relative z-10 transition-transform duration-500 group-hover:scale-110">{{ project.cover === 'profile' ? '📊' : '🌐' }}</span>
-            <div class="absolute top-3 left-3 z-10">
+            <div
+              class="relative z-10 flex h-20 w-20 items-center justify-center rounded-2xl ring-1 transition-all duration-500 group-hover:scale-110 shadow-lg"
+              :class="project.cover === 'ops'
+                ? 'bg-gradient-to-br from-cyan-500/20 to-blue-600/20 text-cyan-400 ring-cyan-400/30 group-hover:from-cyan-500/30 group-hover:ring-cyan-400/50 shadow-cyan-500/10'
+                : 'bg-gradient-to-br from-emerald-500/20 to-teal-500/10 text-emerald-400 ring-emerald-400/30 group-hover:from-emerald-500/30 group-hover:ring-emerald-400/50 shadow-emerald-500/10'"
+            >
+              <BarChart3 v-if="project.cover === 'profile'" class="h-10 w-10" />
+              <Server v-else-if="project.cover === 'ops'" class="h-10 w-10" />
+              <Globe2 v-else class="h-10 w-10" />
+            </div>
+            <div class="absolute top-3 left-3 z-10 flex gap-2">
               <Badge variant="secondary" class="text-[11px] bg-background/80 backdrop-blur-sm border-border/40">
                 {{ project.year }}
+              </Badge>
+              <Badge
+                v-if="project.cover === 'ops'"
+                class="text-[11px] bg-gradient-to-r from-cyan-500/20 to-emerald-500/20 text-cyan-300 border-cyan-400/30 backdrop-blur-sm flex items-center gap-1"
+              >
+                <Play class="h-3 w-3" />
+                在线体验
               </Badge>
             </div>
           </div>

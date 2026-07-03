@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { BarChart3, Server, Play } from '@lucide/vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -51,7 +52,10 @@ const highlights = [
                 <div class="absolute inset-0 opacity-[0.06]" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255,255,255,0.03) 19px, rgba(255,255,255,0.03) 20px), repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(255,255,255,0.03) 19px, rgba(255,255,255,0.03) 20px);"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent opacity-60"></div>
                 <div class="absolute inset-0 flex items-center justify-center">
-                  <span class="relative z-10 text-8xl sm:text-9xl drop-shadow-2xl">{{ id === 1 ? '📊' : '🌐' }}</span>
+                  <div class="relative z-10 flex h-32 w-32 sm:h-40 sm:w-40 items-center justify-center rounded-3xl bg-gradient-to-br from-emerald-500/20 to-teal-500/10 text-emerald-400 ring-1 ring-emerald-400/30 shadow-2xl shadow-emerald-500/20 group-hover:scale-105 transition-all duration-500">
+                    <BarChart3 v-if="id === 1" class="h-16 w-16 sm:h-20 sm:w-20" />
+                    <Server v-else class="h-16 w-16 sm:h-20 sm:w-20" />
+                  </div>
                 </div>
                 <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between">
                   <div class="flex items-center gap-2">
@@ -98,7 +102,15 @@ const highlights = [
                     查看源码
                   </Button>
                 </a>
-                <Button variant="outline" class="gap-2 border-border/60 hover:bg-emerald-500/10 hover:border-emerald-500/30 hover:text-emerald-400 transition-all">
+                <Button
+                  v-if="id === 2"
+                  class="gap-2 bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-500 hover:to-emerald-500 text-white shadow-lg shadow-cyan-500/20"
+                  @click="router.push('/network-game')"
+                >
+                  <Play class="w-4 h-4" />
+                  开始体验
+                </Button>
+                <Button v-else variant="outline" class="gap-2 border-border/60 hover:bg-emerald-500/10 hover:border-emerald-500/30 hover:text-emerald-400 transition-all">
                   <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />

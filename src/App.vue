@@ -75,7 +75,7 @@ onBeforeUnmount(() => cleanup?.())
   <div class="min-h-[100dvh] flex flex-col bg-background">
     <!-- Header -->
     <header
-      v-if="route.path !== '/'"
+      v-if="route.path !== '/' && route.path !== '/network-game'"
       class="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
       :class="scrolled
         ? 'bg-card/80 backdrop-blur-xl border-b border-border'
@@ -165,7 +165,7 @@ onBeforeUnmount(() => cleanup?.())
     </header>
 
     <!-- Main -->
-    <main class="flex-1" :class="route.path === '/' ? 'overflow-hidden' : 'pt-16 lg:pt-20'">
+    <main class="flex-1" :class="route.path === '/' || route.path === '/network-game' ? 'overflow-hidden' : 'pt-16 lg:pt-20'">
       <RouterView v-slot="{ Component }">
         <Transition name="page" mode="out-in">
           <component :is="Component" />
@@ -174,7 +174,7 @@ onBeforeUnmount(() => cleanup?.())
     </main>
 
     <!-- Footer -->
-    <footer v-if="route.path !== '/'" class="border-t border-border mt-24">
+    <footer v-if="route.path !== '/' && route.path !== '/network-game'" class="border-t border-border mt-24">
       <div class="max-w-[1400px] mx-auto px-6 lg:px-10 py-12">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div class="lg:col-span-2">
