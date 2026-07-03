@@ -37,7 +37,6 @@ export interface DeviceOperation {
 }
 
 import { ref } from 'vue'
-import type { DeviceConfig, FixAction, VerifyCondition, DeviceOperation } from './useDeviceEngine'
 
 export function useDeviceEngine() {
   const deviceStates = ref<Record<string, DeviceConfig>>({})
@@ -91,64 +90,70 @@ export function executeCommand(
 ): { output: string; success: boolean; type?: string } {
   const device = currentDeviceId ? deviceStates[currentDeviceId] : undefined
 
+  // ping 命令
   if (cmd === 'ping' && args) {
     const targetDevice = Object.values(deviceStates).find(d => d.ipAddress === args || d.id === args)
     if (!targetDevice) {
-      return { output: `正在 Ping ${args} ...\n请求超时 (100% 丢失)`, success: false, type: 'error' }
+      return { output: `正在 Ping ${args} ...\r\n请求超时 (100% 丢失)`, success: false, type: 'error' }
     }
     if (targetDevice.cableStatus !== 'connected' || !targetDevice.isOnline) {
-      return { output: `正在 Ping ${targetDevice.ipAddress || args} ...\n请求超时 (100% 丢失)`, success: false, type: 'error' }
+      return { output: `正在 Ping ${targetDevice.ipAddress || args} ...\r\n请求超时 (100% 丢失)`, success: false, type: 'error' }
     }
     if (currentDeviceId) {
       const curDev = deviceStates[currentDeviceId]
       if (curDev?.cableStatus !== 'connected') {
-        return { output: `正在 Ping ${targetDevice.ipAddress || args} ...\n请求超时 (100% 丢失)`, success: false, type: 'error' }
+        return { output: `正在 Ping ${targetDevice.ipAddress || args} ...\r\n请求超时 (100% 丢失)`, success: false, type: 'error' }
       }
     }
-    return { output: `正在 Ping ${targetDevice.ipAddress || args} 具有 32 字节的数据:\n来自 ${targetDevice.ipAddress || args} 的回复: 字节=32 时间<1ms TTL=64`, success: true, type: 'success' }
+    return { output: `正在 Ping ${targetDevice.ipAddress || args} 具有 32 字节的数据:\r\n来自 ${targetDevice.ipAddress || args} 的回复: 字节=32 时间<1ms TTL=64`, success: true, type: 'success' }
   }
 
+  // ipconfig 命令
   if (cmd === 'ipconfig') {
     if (!device) return { output: '未选择设备', success: false, type: 'error' }
     const cableStatus = device.cableStatus === 'unplugged' ? '媒体已断开' : (device.cableStatus === 'faulty' ? '网线故障' : '已连接')
-    const ipInfo = device.cableStatus === 'connected' ? `   IPv4 地址: ${device.ipAddress || '未配置'}\n   子网掩码: ${device.subnetMask || '未配置'}\n   默认网关: ${device.defaultGateway || '未配置'}` : '   自动配置 IPv4: 169.254.x.x'
+    const ipInfo = device.cableStatus === 'connected' ? `   IPv4 地址: ${device.ipAddress || '未配置'}\r\n   子网掩码: ${device.subnetMask || '未配置'}\r\n   默认网关: ${device.defaultGateway || '未配置'}` : '   自动配置 IPv4: 169.254.x.x'
     return {
-      output: `Windows IP 配置\n\n以太网适配器 本地连接:\n   媒体状态: ${cableStatus}\n${ipInfo}`,
+      output: `Windows IP 配置\r\n\r\n以太网适配器 本地连接:\r\n   媒体状态: ${cableStatus}\r\n${ipInfo}`,
       success: device.cableStatus === 'connected',
       type: device.cableStatus === 'connected' ? 'success' : 'warning',
     }
   }
 
+  // nslookup 命令
   if (cmd === 'nslookup' && args) {
     const dnsDevice = Object.values(deviceStates).find(d => d.type === 'server' && d.id.includes('dns'))
     const dnsOnline = dnsDevice ? dnsDevice.isOnline : true
     if (!dnsOnline) {
-      return { output: `DNS request timed out.\n*** ${Object.values(deviceStates).find(d => d.type === 'server')?.ipAddress || ''} 无响应`, success: false, type: 'error' }
+      return { output: `DNS request timed out.\r\n*** ${Object.values(deviceStates).find(d => d.type === 'server')?.ipAddress || ''} 无响应`, success: false, type: 'error' }
     }
     if (device?.dnsServer === '错误的DNS地址' || device?.dnsServer === '0.0.0.0') {
-      return { output: `DNS request timed out.\n*** ${args} 找不到主机`, success: false, type: 'error' }
+      return { output: `DNS request timed out.\r\n*** ${args} 找不到主机`, success: false, type: 'error' }
     }
-    return { output: `服务器: ${device?.dnsServer || '未知'}\nAddress: ${device?.dnsServer || '未知'}\n\n名称: ${args}\nAddress: 1.2.4.8`, success: true, type: 'success' }
+    return { output: `服务器: ${device?.dnsServer || '未知'}\r\nAddress: ${device?.dnsServer || '未知'}\r\n\r\n名称: ${args}\r\nAddress: 1.2.4.8`, success: true, type: 'success' }
   }
 
+  // show interfaces 命令（交换机）
   if (cmd === 'show' && args?.includes('interfaces')) {
     if (!device || device.type !== 'switch') return { output: '此命令需要在交换机上执行', success: false, type: 'error' }
     const ports = device.portStatus || {}
     const portLines = Object.entries(ports).slice(0, 8).map(([port, status]) => {
       const statusText = status === 'up' ? 'up' : (status === 'down' ? 'down' : 'disabled')
       return `GigabitEthernet0/${port} is ${statusText}, line protocol is ${statusText}`
-    }).join('\n')
+    }).join('\r\n')
     return { output: portLines || '没有端口信息', success: true }
   }
 
+  // show vlan brief
   if (cmd === 'show' && args?.includes('vlan')) {
-    return { output: 'VLAN Name                             Status    Ports\n---- -------------------------------- --------- -------------------------------\n1    default                          active    Gi0/1-8\n10   Sales                            active    Gi0/9-16\n20   R&D                              active    Gi0/17-24', success: true }
+    return { output: 'VLAN Name                             Status    Ports\r\n---- -------------------------------- --------- -------------------------------\r\n1    default                          active    Gi0/1-8\r\n10   Sales                            active    Gi0/9-16\r\n20   R&D                              active    Gi0/17-24', success: true }
   }
 
+  // telnet 命令 - 切换设备上下文
   if (cmd === 'telnet' && args) {
     const targetDevice = Object.values(deviceStates).find(d => d.label.includes(args) || d.id === args)
     if (targetDevice) {
-      return { output: `正在连接 ${targetDevice.label} ...\n连接成功。`, success: true, type: 'success' }
+      return { output: `正在连接 ${targetDevice.label} ...\r\n连接成功。`, success: true, type: 'success' }
     }
     return { output: `无法连接到 ${args}`, success: false, type: 'error' }
   }
@@ -220,7 +225,7 @@ export function executeDeviceOperation(
 
     case 'restart-device':
       deviceStates[deviceId] = { ...device, isOnline: false }
-      setTimeout(() => { deviceStates[deviceId] = { ...deviceStates[deviceId], isOnline: true } }, 2000)
+      setTimeout(() => { if (deviceStates[deviceId]) deviceStates[deviceId] = { ...deviceStates[deviceId], isOnline: true } }, 2000)
       return { output: '设备正在重启...', success: true }
 
     default:
