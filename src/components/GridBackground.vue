@@ -50,6 +50,42 @@ const isPhone = /Mobile|Android|iOS|iPhone|iPad|iPod|Windows Phone|KFAPWI/i.test
 const hiddenProperty = 'hidden' in document ? 'hidden' : 'webkitHidden' in document ? 'webkitHidden' : 'mozHidden' in document ? 'mozHidden' : null
 const visibilityChangeEvent = hiddenProperty?.replace(/hidden/i, 'visibilitychange') ?? 'visibilitychange'
 
+function isInteractiveElement(target: EventTarget | null): boolean {
+  if (!target || !(target instanceof HTMLElement)) return false
+  const interactiveTags = ['A', 'BUTTON', 'INPUT', 'TEXTAREA', 'SELECT', 'LABEL', 'ROUTER-LINK', 'SUMMARY', 'DETAILS']
+  let el: HTMLElement | null = target
+  while (el && el !== document.body) {
+    const tag = el.tagName.toUpperCase()
+    if (interactiveTags.includes(tag)) return true
+    if (el.getAttribute('role') === 'button') return true
+    if (el.style.pointerEvents === 'none') return false
+    el = el.parentElement
+  }
+  return false
+}
+
+function isPointNearInteractiveElement(clientX: number, clientY: number, padding: number = 20): boolean {
+  const el = document.elementFromPoint(clientX, clientY)
+  if (isInteractiveElement(el)) return true
+  const els = document.elementsFromPoint(clientX, clientY)
+  for (const e of els) {
+    if (isInteractiveElement(e)) return true
+  }
+  const interactiveEls = document.querySelectorAll('a, button, [role="button"], input, textarea, select, label')
+  for (let i = 0; i < interactiveEls.length; i++) {
+    const rect = interactiveEls[i].getBoundingClientRect()
+    if (
+      clientX >= rect.left - padding &&
+      clientX <= rect.right + padding &&
+      clientY >= rect.top - padding &&
+      clientY <= rect.bottom + padding
+    ) {
+      return true
+    }
+  }
+  return false
+}
+
 const options = {
   direction: props.direction,
   speed: props.speed ?? (isPhone ? 0.03 : 0.05),
@@ -301,6 +337,7 @@ function updateAnimation(timestamp: number) {
 
 function handleGlobalTouchStart(e: TouchEvent) {
   if (!isPhone) return
+  if (isInteractiveElement(e.target)) return
   const canvas = canvasRef.value
   if (!canvas) return
   const rect = canvas.getBoundingClientRect()
@@ -308,6 +345,7 @@ function handleGlobalTouchStart(e: TouchEvent) {
   const x = touch.clientX - rect.left
   const y = touch.clientY - rect.top
   if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+    if (isPointNearInteractiveElement(touch.clientX, touch.clientY)) return
     e.preventDefault()
     handleHover(x, y, 0.8 * options.touchSensitivity)
     if (options.vibrationEnabled && navigator.vibrate) navigator.vibrate(10)
@@ -316,6 +354,7 @@ function handleGlobalTouchStart(e: TouchEvent) {
 
 function handleGlobalTouchMove(e: TouchEvent) {
   if (!isPhone || e.touches.length !== 1) return
+  if (isInteractiveElement(e.target)) return
   const canvas = canvasRef.value
   if (!canvas) return
   const rect = canvas.getBoundingClientRect()
@@ -323,6 +362,7 @@ function handleGlobalTouchMove(e: TouchEvent) {
   const x = touch.clientX - rect.left
   const y = touch.clientY - rect.top
   if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+    if (isPointNearInteractiveElement(touch.clientX, touch.clientY)) return
     e.preventDefault()
     handleHover(x, y, 0.8 * options.touchSensitivity)
   }
@@ -330,22 +370,44 @@ function handleGlobalTouchMove(e: TouchEvent) {
 
 function handleGlobalTouchEnd(e: TouchEvent) {
   if (!isPhone) return
-  e.preventDefault()
-  if (hoveredSquare) {
-    const startX = Math.floor(gridOffset.x / options.squareSize) * options.squareSize
-    const startY = Math.floor(gridOffset.y / options.squareSize) * options.squareSize
-    trailSquares.set(`${hoveredSquare.x},${hoveredSquare.y}`, {
-      x: hoveredSquare.x * options.squareSize + startX,
-      y: hoveredSquare.y * options.squareSize + startY,
-      opacity: 0.8,
-    })
+  if (isInteractiveElement(e.target)) return
+  const canvas = canvasRef.value
+  if (!canvas) return
+  const touch = e.changedTouches[0]
+  if (!touch) return
+  const rect = canvas.getBoundingClientRect()
+  const x = touch.clientX - rect.left
+  const y = touch.clientY - rect.top
+  if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+    if (isPointNearInteractiveElement(touch.clientX, touch.clientY)) return
+    e.preventDefault()
+    if (hoveredSquare) {
+      const startX = Math.floor(gridOffset.x / options.squareSize) * options.squareSize
+      const startY = Math.floor(gridOffset.y / options.squareSize) * options.squareSize
+      trailSquares.set(`${hoveredSquare.x},${hoveredSquare.y}`, {
+        x: hoveredSquare.x * options.squareSize + startX,
+        y: hoveredSquare.y * options.squareSize + startY,
+        opacity: 0.8,
+      })
+    }
+    targetOpacity = 0.4
   }
-  targetOpacity = 0.4
 }
 
 function handleGlobalTouchCancel(e: TouchEvent) {
   if (!isPhone) return
-  e.preventDefault()
+  if (isInteractiveElement(e.target)) return
+  const canvas = canvasRef.value
+  if (!canvas) return
+  const touch = e.changedTouches[0]
+  if (!touch) return
+  const rect = canvas.getBoundingClientRect()
+  const x = touch.clientX - rect.left
+  const y = touch.clientY - rect.top
+  if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+    if (isPointNearInteractiveElement(touch.clientX, touch.clientY)) return
+    e.preventDefault()
+  }
 }
 
 function handleVisibility() {
