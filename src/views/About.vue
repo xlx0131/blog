@@ -4,9 +4,9 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { Separator } from '@/components/ui/separator'
+import { Code2, Database, Bot, BarChart3, Layers } from '@lucide/vue'
 import avatarImg from '@/assets/头像2.jpg'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -18,20 +18,21 @@ onMounted(() => {
     scrollTrigger: { trigger: '.timeline', start: 'top bottom-=15%', toggleActions: 'play none none reverse' },
   })
   gsap.from('.skill-card', {
-    y: 20, opacity: 0, duration: 0.5, stagger: 0.1,
+    y: 20, duration: 0.5, stagger: 0.1,
     ease: 'power2.out',
     scrollTrigger: { trigger: '.skills-section', start: 'top bottom-=15%', toggleActions: 'play none none reverse' },
   })
 })
 
-interface Skill { name: string; level: string; progress: number; icon: string; items: string[] }
+interface Skill { name: string; level: string; progress: number; icon: any; items: string[] }
 interface Advantage { title: string; desc: string; icon: string }
 
 const skills: Skill[] = [
-  { name: 'Python', level: '核心技能', progress: 90, icon: '🐍', items: ['数据处理 (Pandas/NumPy)', '网络爬虫', '数据可视化', '机器学习 (Scikit-learn)'] },
-  { name: 'SQL', level: '核心技能', progress: 85, icon: '🗄️', items: ['数据库查询 (MySQL)', '多表联查与子查询', '索引优化', '存储过程'] },
-  { name: '大数据', level: '工作知识', progress: 70, icon: '📊', items: ['HDFS', 'MapReduce', 'YARN', 'Spark 基础'] },
-  { name: '开发', level: '工作知识', progress: 75, icon: '💻', items: ['Java / C 语言', 'Web 前端 (Vue)', 'Unity 小游戏开发', '办公自动化'] },
+  { name: 'Python', level: '核心技能', progress: 90, icon: Code2, items: ['数据处理 (Pandas/NumPy)', '网络爬虫', '数据可视化', '机器学习 (Scikit-learn)'] },
+  { name: 'SQL', level: '核心技能', progress: 85, icon: Database, items: ['数据库查询 (MySQL)', '多表联查与子查询', '索引优化', '存储过程'] },
+  { name: 'AI Agent', level: '核心技能', progress: 88, icon: Bot, items: ['Cursor / Codex', 'Claude Code', 'Trae', 'Reasonix', 'Workbuddy', 'Marvis'] },
+  { name: '大数据', level: '工作知识', progress: 70, icon: BarChart3, items: ['HDFS', 'MapReduce', 'YARN', 'Spark 基础'] },
+  { name: '开发', level: '工作知识', progress: 75, icon: Layers, items: ['Java / C 语言', 'Spring Boot 项目开发', 'Web 前端 (Vue)', 'Unity 小游戏开发', '办公自动化'] },
 ]
 
 const advantages: Advantage[] = [
@@ -89,69 +90,41 @@ const education = [
             <p class="mt-0.5 text-sm text-muted-foreground">日常使用的技术与工具。</p>
           </div>
         </div>
-        <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <Card
+        <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div
             v-for="skill in skills"
             :key="skill.name"
-            class="skill-card group overflow-hidden transition-all duration-300 hover:-translate-y-1"
-            :class="skill.level === '核心技能'
-              ? 'border-[#34d399]/20 bg-card/80 hover:border-[#34d399]/50 hover:shadow-lg hover:shadow-[#34d399]/10'
-              : 'border-slate-200/20 bg-gradient-to-br from-slate-50 to-slate-100 text-slate-900 shadow-sm hover:border-slate-300/30 hover:shadow-md hover:shadow-slate-900/10'"
+            class="skill-card group relative overflow-hidden rounded-2xl border border-emerald-500/10 bg-gradient-to-br from-emerald-950/30 via-slate-900/50 to-slate-900/80 backdrop-blur-sm p-5 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-400/30 hover:shadow-xl hover:shadow-emerald-500/10"
           >
-            <CardHeader class="pb-3">
-              <div class="flex items-start justify-between">
-                <div class="flex items-center gap-3">
-                  <div
-                    class="flex h-11 w-11 items-center justify-center rounded-xl text-xl transition-colors"
-                    :class="skill.level === '核心技能'
-                      ? 'bg-[#34d399]/10 group-hover:bg-[#34d399]/20'
-                      : 'bg-emerald-100 text-emerald-700 group-hover:bg-emerald-200'"
-                  >
-                    {{ skill.icon }}
-                  </div>
-                  <div>
-                    <CardTitle :class="skill.level === '核心技能' ? 'text-lg text-foreground' : 'text-lg text-slate-900'">
-                      {{ skill.name }}
-                    </CardTitle>
-                  </div>
-                </div>
-                <Badge
-                  :variant="skill.level === '核心技能' ? 'default' : 'secondary'"
-                  :class="skill.level === '核心技能' ? 'bg-[#34d399] text-emerald-950 hover:bg-[#2dd4bf]' : 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200 border-0'"
-                >
-                  {{ skill.level }}
-                </Badge>
+            <div class="pointer-events-none absolute -top-20 -right-20 h-40 w-40 rounded-full bg-emerald-500/5 blur-3xl transition-all duration-500 group-hover:bg-emerald-500/10"></div>
+            <div class="pointer-events-none absolute left-0 top-0 h-1 w-0 bg-gradient-to-r from-emerald-400 to-teal-400 transition-all duration-500 group-hover:w-full"></div>
+            <div class="relative flex items-start gap-4">
+              <div class="flex shrink-0 h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500/15 to-teal-500/10 text-emerald-400 ring-1 ring-emerald-400/20 transition-all duration-300 group-hover:scale-110 group-hover:from-emerald-500/25 group-hover:ring-emerald-400/40">
+                <component :is="skill.icon" class="h-7 w-7" />
               </div>
-            </CardHeader>
-            <CardContent class="space-y-4">
-              <div class="space-y-1.5">
-                <div class="flex items-center justify-between text-xs">
-                  <span :class="skill.level === '核心技能' ? 'text-muted-foreground' : 'text-slate-500'">熟练度</span>
-                  <span :class="skill.level === '核心技能' ? 'font-medium text-[#34d399]' : 'font-medium text-emerald-600'">{{ skill.progress }}%</span>
-                </div>
-                <div class="h-2 w-full overflow-hidden rounded-full" :class="skill.level === '核心技能' ? 'bg-secondary' : 'bg-slate-200'">
-                  <div
-                    class="h-full rounded-full transition-all duration-500"
-                    :class="skill.level === '核心技能'
-                      ? 'bg-gradient-to-r from-[#34d399] to-[#2dd4bf]'
-                      : 'bg-gradient-to-r from-emerald-400 to-emerald-500'"
-                    :style="{ width: skill.progress + '%' }"
-                  ></div>
+              <div class="min-w-0 flex-1">
+                <h3 class="text-base font-semibold text-foreground transition-colors group-hover:text-emerald-400">{{ skill.name }}</h3>
+                <div class="mt-1.5 flex items-center gap-2">
+                  <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-emerald-950/50">
+                    <div
+                      class="h-full rounded-full bg-gradient-to-r from-emerald-400 to-teal-400 transition-all duration-700 ease-out"
+                      :style="{ width: skill.progress + '%' }"
+                    ></div>
+                  </div>
+                  <span class="text-xs font-semibold text-emerald-400 tabular-nums">{{ skill.progress }}%</span>
                 </div>
               </div>
-              <ul class="space-y-1.5 pt-1">
-                <li
-                  v-for="item in skill.items"
-                  :key="item"
-                  class="flex items-start gap-2 text-sm"
-                  :class="skill.level === '核心技能' ? 'text-muted-foreground' : 'text-slate-600'"
-                >
-                  <span :class="skill.level === '核心技能' ? 'mt-0.5 text-[#34d399]' : 'mt-0.5 text-emerald-500'">›</span>
-                  <span>{{ item }}</span>
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
+            </div>
+            <div class="relative mt-4 flex flex-wrap gap-1.5">
+              <span
+                v-for="item in skill.items"
+                :key="item"
+                class="rounded-md border border-emerald-500/10 bg-emerald-950/20 px-2 py-0.5 text-xs text-slate-300 transition-all duration-200 group-hover:border-emerald-400/20 group-hover:text-emerald-300"
+              >
+                {{ item }}
+              </span>
+            </div>
+          </div>
         </div>
       </section>
 
