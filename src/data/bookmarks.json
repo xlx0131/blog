@@ -12,7 +12,8 @@
       { "id": 30, "name": "Iconfont 阿里巴巴", "url": "https://www.iconfont.cn/?lang=zh-cn", "desc": "阿里巴巴矢量图标库，海量开源图标资源，支持自定义颜色、大小和格式。", "detail": "国内最大开源图标平台。数百万矢量图标，支持在线搜索、项目管理、自定义编辑、多格式导出（SVG/PNG/字体图标），可生成 CDN 链接直接引用。" },
       { "id": 23, "name": "Element Plus", "url": "https://element-plus.org/en-US/guide/quickstart", "desc": "Element Plus 官方文档 — 基于 Vue 3 的企业级 UI 组件库，提供快速上手指南。", "detail": "Vue 3 企业级 UI 组件库。完善的 TypeScript 支持、国际化、可定制主题。涵盖基础组件、数据展示、反馈组件、导航组件等。" },
       { "id": 29, "name": "Easings.net", "url": "https://easings.net/zh-cn", "desc": "CSS/JS 缓动函数速查表，可视化展示各种缓动效果，支持在线预览和代码复制。", "detail": "缓动函数可视化参考网站。每个函数配有动画示意图，支持一键复制 CSS/JS 代码，中文界面。" },
-      { "id": 31, "name": "Web Gradients", "url": "https://webgradients.com/", "desc": "渐变配色参考站，提供 180 个精美渐变方案，支持一键复制 CSS 代码。", "detail": "180 个精选渐变配色方案，一键复制 CSS 代码，支持下载 PSD/Sketch 格式。适合 UI 设计师和前端开发者。" }
+      { "id": 31, "name": "Web Gradients", "url": "https://webgradients.com/", "desc": "渐变配色参考站，提供 180 个精美渐变方案，支持一键复制 CSS 代码。", "detail": "180 个精选渐变配色方案，一键复制 CSS 代码，支持下载 PSD/Sketch 格式。适合 UI 设计师和前端开发者。" },
+      { "id": 47, "name": "Uiverse", "url": "https://uiverse.io/", "desc": "开源 UI 组件库社区，数千个由开发者贡献的 CSS 组件，可直接复制使用。", "detail": "开源 UI 组件社区平台。Button、Card、Form 等数千个 CSS 组件，支持纯 CSS/Tailwind/Bootstrap，一键复制代码，MIT 许可免费使用。" }
     ]
   },
   {
