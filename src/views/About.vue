@@ -2,21 +2,16 @@
 import { onMounted } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Code2, Database, Bot, BarChart3, Layers } from '@lucide/vue'
+import { Code2, Database, Bot, BarChart3, Layers, BookOpen, Globe, FileText, Zap, Lightbulb, Scan, Network, Info, Cpu, Server } from '@lucide/vue'
 import avatarImg from '@/assets/头像2.jpg'
 
 gsap.registerPlugin(ScrollTrigger)
 
 onMounted(() => {
-  gsap.from('.timeline-item', {
-    y: 30, opacity: 0, duration: 0.6, stagger: 0.15,
+  gsap.from('.pixel-panel', {
+    y: 20, duration: 0.5, stagger: 0.08,
     ease: 'power2.out',
-    scrollTrigger: { trigger: '.timeline', start: 'top bottom-=15%', toggleActions: 'play none none reverse' },
-  })
-  gsap.from('.skill-card', {
-    y: 20, duration: 0.5, stagger: 0.1,
-    ease: 'power2.out',
-    scrollTrigger: { trigger: '.skills-section', start: 'top bottom-=15%', toggleActions: 'play none none reverse' },
+    scrollTrigger: { trigger: '.about-grid', start: 'top bottom-=20%', toggleActions: 'play none none none' },
   })
 })
 
@@ -24,231 +19,422 @@ interface Skill { name: string; level: string; progress: number; icon: any; item
 interface Advantage { title: string; desc: string; icon: string }
 
 const skills: Skill[] = [
-  { name: 'Python', level: '核心技能', progress: 90, icon: Code2, items: ['数据处理 (Pandas/NumPy)', '网络爬虫', '数据可视化', '机器学习 (Scikit-learn)'] },
-  { name: 'SQL', level: '核心技能', progress: 85, icon: Database, items: ['数据库查询 (MySQL)', '多表联查与子查询', '索引优化', '存储过程'] },
-  { name: 'AI Agent', level: '核心技能', progress: 88, icon: Bot, items: ['Cursor / Codex', 'Claude Code', 'Trae', 'Reasonix', 'Workbuddy', 'Marvis'] },
-  { name: '大数据', level: '工作知识', progress: 70, icon: BarChart3, items: ['HDFS', 'MapReduce', 'YARN', 'Spark 基础'] },
-  { name: '开发', level: '工作知识', progress: 75, icon: Layers, items: ['Java / C 语言', 'Spring Boot 项目开发', 'Web 前端 (Vue)', 'Unity 小游戏开发', '办公自动化'] },
+  { name: 'Python', level: '核心技能', progress: 90, icon: Code2, items: ['数据处理', '网络爬虫', '数据可视化', '机器学习'] },
+  { name: 'SQL', level: '核心技能', progress: 85, icon: Database, items: ['数据库查询', '多表联查', '索引优化', '存储过程'] },
+  { name: 'AI Agent', level: '核心技能', progress: 88, icon: Bot, items: ['Cursor', 'Claude Code', 'Trae', 'Reasonix'] },
+  { name: '大数据', level: '工作知识', progress: 70, icon: BarChart3, items: ['HDFS', 'MapReduce', 'Spark', 'Hadoop'] },
+  { name: '开发', level: '工作知识', progress: 75, icon: Layers, items: ['Java', 'Vue', 'Unity', '自动化'] },
 ]
 
 const advantages: Advantage[] = [
-  { title: '编程基础扎实', desc: '学习了 C 语言、Java、Python、Web 等多种编程语言，具备良好的编程基础与逻辑思维能力。', icon: '🧠' },
-  { title: '数据处理能力', desc: '掌握使用 Python、Spark、SQL 等技术进行数据处理、清洗、分析与建模。', icon: '📈' },
-  { title: '学习能力强', desc: '每学期均获得校奖学金，课程压力小、实习时间充足，能够快速学习新技术并应用到实践中。', icon: '🎯' },
-  { title: '组织沟通能力', desc: '曾任学生会部门负责人、新生班级班主任助理，具备良好的团队协作与沟通协调能力。', icon: '🤝' },
-  { title: '自主学习探索', desc: '课余时间跟随网课自学 Unity 游戏开发、Web 前端等技术，具备主动探索和解决问题的能力。', icon: '🔍' },
-  { title: '办公软件熟练', desc: '能够熟练使用 Word、Excel、PowerPoint 等办公软件，满足日常文档处理和汇报需求。', icon: '📝' },
+  { title: '编程扎实', desc: '基础扎实', icon: 'Code2' },
+  { title: '数据处理', desc: '分析能力强', icon: 'BarChart3' },
+  { title: '学习力强', desc: '快速上手', icon: 'Zap' },
+  { title: '沟通协作', desc: '团队合作', icon: 'Network' },
+  { title: '自主探索', desc: '主动学习', icon: 'Scan' },
+  { title: '办公熟练', desc: '文档处理', icon: 'FileText' },
 ]
 
 const education = [
   { school: '江西农业大学', degree: '数据科学与大数据技术 本科', years: '2023 - 2027' },
 ]
+
+const stats = [
+  { label: 'GPA', value: '3.8', color: '#2e5dd6' },
+  { label: '奖学金', value: '4次', color: '#d4a017' },
+  { label: '项目', value: '5+', color: '#2e5dd6' },
+  { label: '技能', value: '10+', color: '#d4a017' },
+]
+
+const iconMap: Record<string, any> = {
+  Code2,
+  BarChart3,
+  Zap,
+  Network,
+  Scan,
+  FileText,
+}
+
+function getAdvIcon(name: string) {
+  return iconMap[name] || Code2
+}
 </script>
 
 <template>
-  <div class="min-h-[100dvh] bg-[#f5f0e8] pt-24 pb-20 px-6 sm:px-10 lg:px-20">
-    <section class="mx-auto flex min-h-[60dvh] max-w-5xl flex-col justify-center">
-      <div class="flex flex-col gap-8 sm:flex-row sm:items-center sm:gap-10">
-        <div class="relative">
-          <div class="h-28 w-28 border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] sm:h-36 sm:w-36 overflow-hidden bg-[#2e5dd6]">
-            <img :src="avatarImg" alt="许立鑫" class="h-full w-full object-cover" />
+  <div class="about-page min-h-[100dvh] bg-[#f5f0e8] pt-24 pb-16">
+    <div class="top-bar mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-6">
+      <div class="pixel-topbar flex items-center justify-between px-4 py-3">
+        <div class="flex items-center gap-3">
+          <div class="pixel-logo w-10 h-10 bg-[#2e5dd6] border-2 border-[#fffaef] relative">
+            <div class="absolute inset-1 bg-[#d4a017]"></div>
           </div>
-          <div class="absolute -bottom-1 -right-1 flex h-7 w-7 items-center justify-center border-2 border-[#161310] bg-[#2e5dd6] sm:h-8 sm:w-8">
-            <span class="text-xs text-[#fffaef] font-mono">✓</span>
+          <div>
+            <h1 class="font-['Pixelify_Sans'] text-2xl text-[#fffaef] tracking-wider">XULIXIN</h1>
+            <p class="font-mono text-xs text-[#b8a88a] tracking-widest">ABOUT · 个人档案</p>
           </div>
         </div>
-        <div class="flex-1">
-          <span class="inline-block mb-3 font-mono text-xs tracking-[0.2em] text-[#3a332a] border border-[#161310] px-2 py-0.5">关于</span>
-          <h1 class="font-['Pixelify_Sans'] text-4xl font-bold tracking-tight text-[#161310] sm:text-5xl">许立鑫</h1>
-          <p class="mt-2 text-lg font-medium tracking-tight text-[#2e5dd6] font-['Pixelify_Sans']">数据分析 · 开发</p>
-          <p class="mt-5 max-w-lg text-base leading-relaxed text-[#3a332a] font-mono">
-            江西农业大学 数据科学与大数据技术专业 2023 级本科生。对数据分析与开发充满热情，善于从数据中发现价值，用技术解决问题。
-          </p>
-          <div class="mt-7 flex flex-wrap gap-3">
-            <a
-              href="mailto:1211288810@qq.com"
-              class="inline-block font-mono text-sm tracking-wider uppercase px-4 py-2 border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] transition-all duration-200 hover:-translate-y-0.5 bg-[#2e5dd6] text-[#fffaef]"
-            >发送邮件</a>
-            <a
-              href="https://github.com/xlx0131"
-              class="inline-block font-mono text-sm tracking-wider uppercase px-4 py-2 border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] transition-all duration-200 hover:-translate-y-0.5 bg-[#fffaef] text-[#161310]"
-            >GitHub</a>
+        <div class="hidden md:block text-center">
+          <h2 class="font-['Pixelify_Sans'] text-xl text-[#fffaef]">许立鑫 · 数据分析与开发</h2>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="pixel-tag bg-[#2e5dd6] text-[#fffaef]">在校</span>
+          <span class="pixel-tag bg-[#d4a017] text-[#161310]">开放合作</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-grid mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid grid-cols-12 gap-4">
+      <div class="pixel-panel col-span-12 md:col-span-4 lg:col-span-3">
+        <div class="panel-header">
+          <span class="font-mono text-xs text-[#fffaef] tracking-wider">CHARACTER</span>
+        </div>
+        <div class="panel-content p-4 flex flex-col items-center">
+          <div class="avatar-frame w-28 h-28 border-4 border-[#161310] bg-[#2e5dd6] relative mb-4 shadow-[4px_4px_0_0_#161310]">
+            <img :src="avatarImg" alt="许立鑫" class="w-full h-full object-cover" />
+            <div class="absolute -bottom-2 -right-2 w-6 h-6 bg-[#d4a017] border-2 border-[#161310] flex items-center justify-center">
+              <span class="text-[10px] font-bold text-[#161310]">LV</span>
+            </div>
+          </div>
+          <h3 class="font-['Pixelify_Sans'] text-2xl text-[#161310]">许立鑫</h3>
+          <p class="font-mono text-sm text-[#2e5dd6] mt-1">数据分析 · 开发</p>
+          <div class="w-full mt-4 pt-4 border-t-2 border-[#161310] border-dashed">
+            <div class="flex justify-between items-center mb-2">
+              <span class="font-mono text-xs text-[#3a332a]">等级</span>
+              <span class="font-mono text-xs font-bold text-[#d4a017]">大三</span>
+            </div>
+            <div class="h-3 bg-[#f2ead6] border-2 border-[#161310]">
+              <div class="h-full bg-[#2e5dd6]" style="width: 75%"></div>
+            </div>
+            <p class="font-mono text-[10px] text-[#3a332a] mt-1 text-right">EXP: 75%</p>
           </div>
         </div>
       </div>
-    </section>
 
-    <div class="mx-auto max-w-5xl">
-      <div class="h-px bg-[#161310] mb-20"></div>
-
-      <section class="skills-section mt-20">
-        <div class="flex items-center gap-3">
-          <div class="flex h-10 w-10 items-center justify-center border-2 border-[#161310] bg-[#2e5dd6] shadow-[3px_3px_0_0_#161310]">
-            <span class="text-lg text-[#fffaef]">⚡</span>
-          </div>
-          <div>
-            <h2 class="font-['Pixelify_Sans'] text-2xl font-bold tracking-tight text-[#161310]">专业技能</h2>
-            <p class="mt-0.5 font-mono text-sm text-[#3a332a]">日常使用的技术与工具。</p>
+      <div class="pixel-panel col-span-12 md:col-span-8 lg:col-span-5">
+        <div class="panel-header">
+          <span class="font-mono text-xs text-[#fffaef] tracking-wider">PROFILE</span>
+        </div>
+        <div class="panel-content p-5">
+          <h3 class="font-['Pixelify_Sans'] text-xl text-[#161310] mb-3">个人简介</h3>
+          <p class="font-mono text-base leading-relaxed text-[#3a332a] mb-5">
+            江西农业大学 数据科学与大数据技术专业 2023 级本科生。对数据分析与开发充满热情，善于从数据中发现价值，用技术解决问题。
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <a href="mailto:1211288810@qq.com" class="pixel-btn pixel-btn-primary">
+            <span class="font-mono text-xs tracking-wider">发送邮件</span>
+            </a>
+            <a href="https://github.com/xlx0131" class="pixel-btn pixel-btn-secondary">
+            <span class="font-mono text-xs tracking-wider">GITHUB</span>
+            </a>
           </div>
         </div>
-        <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          <div
-            v-for="skill in skills"
-            :key="skill.name"
-            class="skill-card bg-[#fffaef] border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] p-5 transition-all duration-200 hover:-translate-y-1"
-          >
-            <div class="flex items-start gap-4">
-              <div class="flex shrink-0 h-14 w-14 items-center justify-center border-2 border-[#161310] bg-[#f2ead6] text-[#2e5dd6]">
-                <component :is="skill.icon" class="h-7 w-7" />
-              </div>
-              <div class="min-w-0 flex-1">
-                <h3 class="font-['Pixelify_Sans'] text-base font-semibold text-[#161310]">{{ skill.name }}</h3>
-                <div class="mt-1.5 flex items-center gap-2">
-                  <div class="h-1.5 flex-1 overflow-hidden bg-[#f2ead6] border border-[#161310]">
-                    <div
-                      class="h-full bg-[#2e5dd6] transition-all duration-700 ease-out"
-                      :style="{ width: skill.progress + '%' }"
-                    ></div>
-                  </div>
-                  <span class="font-mono text-xs font-semibold text-[#2e5dd6] tabular-nums">{{ skill.progress }}%</span>
-                </div>
-              </div>
-            </div>
-            <div class="mt-4 flex flex-wrap gap-1.5">
-              <span
-                v-for="item in skill.items"
-                :key="item"
-                class="font-mono text-xs px-2 py-0.5 border border-[#161310] text-[#161310] bg-[#f2ead6]"
-              >
-                {{ item }}
-              </span>
+      </div>
+
+      <div class="pixel-panel col-span-12 lg:col-span-4">
+        <div class="panel-header">
+          <span class="font-mono text-xs text-[#fffaef] tracking-wider">STATS</span>
+        </div>
+        <div class="panel-content p-4">
+          <div class="grid grid-cols-2 gap-3">
+            <div v-for="stat in stats" :key="stat.label" class="stat-item p-3 bg-[#f2ead6] border-2 border-[#161310] text-center">
+              <p class="font-['Pixelify_Sans'] text-3xl" :style="{ color: stat.color }">{{ stat.value }}</p>
+              <p class="font-mono text-xs text-[#3a332a] mt-1">{{ stat.label }}</p>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section class="mt-24">
-        <div class="flex items-center gap-3">
-          <div class="flex h-10 w-10 items-center justify-center border-2 border-[#161310] bg-[#2e5dd6] shadow-[3px_3px_0_0_#161310]">
-            <span class="text-lg text-[#fffaef]">🌟</span>
-          </div>
-          <div>
-            <h2 class="font-['Pixelify_Sans'] text-2xl font-bold tracking-tight text-[#161310]">个人优势</h2>
-            <p class="mt-0.5 font-mono text-sm text-[#3a332a]">我的核心竞争力。</p>
-          </div>
-        </div>
-        <div class="timeline relative mt-8 pl-6">
-          <div class="absolute left-2 top-1 bottom-1 w-px bg-[#161310]"></div>
-          <div class="space-y-5">
-            <div v-for="(item, idx) in advantages" :key="idx" class="timeline-item relative">
-              <div class="absolute -left-[26px] top-5 flex h-5 w-5 items-center justify-center border-2 border-[#161310] bg-[#2e5dd6]">
-                <span class="font-mono text-[10px] text-[#fffaef]">{{ idx + 1 }}</span>
-              </div>
-              <div class="bg-[#fffaef] border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] p-5 transition-all duration-200 hover:-translate-y-0.5">
-                <div class="flex items-start gap-3">
-                  <div class="flex h-9 w-9 shrink-0 items-center justify-center border-2 border-[#161310] bg-[#f2ead6] text-base">
-                    {{ item.icon }}
-                  </div>
-                  <div class="flex-1">
-                    <h3 class="font-['Pixelify_Sans'] text-base font-semibold text-[#161310]">{{ item.title }}</h3>
-                    <p class="mt-1 font-mono text-sm leading-relaxed text-[#3a332a]">{{ item.desc }}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="mt-24">
-        <div class="flex items-center gap-3">
-          <div class="flex h-10 w-10 items-center justify-center border-2 border-[#161310] bg-[#2e5dd6] shadow-[3px_3px_0_0_#161310]">
-            <span class="text-lg text-[#fffaef]">🎓</span>
-          </div>
-          <div>
-            <h2 class="font-['Pixelify_Sans'] text-2xl font-bold tracking-tight text-[#161310]">教育经历</h2>
-            <p class="mt-0.5 font-mono text-sm text-[#3a332a]">学术背景。</p>
-          </div>
-        </div>
-        <div class="mt-6 space-y-4">
-          <div v-for="edu in education" :key="edu.school" class="bg-[#fffaef] border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] overflow-hidden">
-            <div class="flex items-start justify-between gap-4 p-6">
-              <div class="flex items-start gap-4">
-                <div class="flex h-12 w-12 shrink-0 items-center justify-center border-2 border-[#161310] bg-[#f2ead6] text-xl">
-                  🏫
-                </div>
-                <div>
-                  <p class="font-['Pixelify_Sans'] font-semibold text-[#161310]">{{ edu.school }}</p>
-                  <p class="mt-1 font-mono text-sm text-[#3a332a]">{{ edu.degree }}</p>
-                </div>
-              </div>
-              <span class="shrink-0 font-mono text-xs px-2 py-0.5 border border-[#161310] text-[#161310]">{{ edu.years }}</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="mt-24">
-        <div class="bg-[#fffaef] border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] overflow-hidden">
-          <div class="p-6 pb-4">
+          <div class="mt-4 pt-4 border-t-2 border-dashed border-[#161310] space-y-2">
             <div class="flex items-center gap-3">
-              <div class="flex h-10 w-10 items-center justify-center border-2 border-[#161310] bg-[#2e5dd6] shadow-[3px_3px_0_0_#161310]">
-                <span class="text-lg text-[#fffaef]">📬</span>
+              <div class="w-8 h-8 bg-[#2e5dd6] border-2 border-[#161310] flex items-center justify-center text-[#fffaef] flex-shrink-0">
+                <BookOpen class="w-4 h-4" />
               </div>
-              <div>
-                <h2 class="font-['Pixelify_Sans'] text-xl font-bold text-[#161310]">联系方式</h2>
-                <p class="font-mono text-sm text-[#3a332a]">求职中 · 数据分析 / 开发 · 期望城市：南昌 · 薪资：6-9K</p>
+              <div class="flex-1 min-w-0">
+                <p class="font-mono text-xs text-[#3a332a]">学校</p>
+                <p class="font-mono text-sm font-medium text-[#161310] truncate">江西农业大学</p>
               </div>
             </div>
-          </div>
-          <div class="px-6 pb-6">
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <a
-                href="tel:15179493671"
-                class="flex items-center gap-3 border-2 border-[#161310] bg-[#f2ead6] p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[3px_3px_0_0_#161310]"
-              >
-                <div class="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-[#161310] bg-[#2e5dd6] text-lg text-[#fffaef]">
-                  📞
-                </div>
-                <div class="min-w-0">
-                  <p class="font-mono text-xs text-[#3a332a]">电话</p>
-                  <p class="truncate font-mono text-sm font-medium text-[#161310]">15179493671</p>
-                </div>
-              </a>
-              <a
-                href="mailto:1211288810@qq.com"
-                class="flex items-center gap-3 border-2 border-[#161310] bg-[#f2ead6] p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[3px_3px_0_0_#161310]"
-              >
-                <div class="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-[#161310] bg-[#2e5dd6] text-lg text-[#fffaef]">
-                  📧
-                </div>
-                <div class="min-w-0">
-                  <p class="font-mono text-xs text-[#3a332a]">邮箱</p>
-                  <p class="truncate font-mono text-sm font-medium text-[#161310]">1211288810@qq.com</p>
-                </div>
-              </a>
-              <a
-                href="https://github.com/xlx0131"
-                class="flex items-center gap-3 border-2 border-[#161310] bg-[#f2ead6] p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[3px_3px_0_0_#161310]"
-              >
-                <div class="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-[#161310] bg-[#2e5dd6] text-lg text-[#fffaef]">
-                  🐙
-                </div>
-                <div class="min-w-0">
-                  <p class="font-mono text-xs text-[#3a332a]">GitHub</p>
-                  <p class="truncate font-mono text-sm font-medium text-[#161310]">github.com/xlx0131</p>
-                </div>
-              </a>
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 bg-[#d4a017] border-2 border-[#161310] flex items-center justify-center text-[#161310] flex-shrink-0">
+                <Cpu class="w-4 h-4" />
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="font-mono text-xs text-[#3a332a]">专业</p>
+                <p class="font-mono text-sm font-medium text-[#161310] truncate">数据科学与大数据</p>
+              </div>
             </div>
-          </div>
-          <div class="border-t-2 border-[#161310] px-6 py-4">
-            <a
-              href="mailto:1211288810@qq.com"
-              class="inline-block w-full sm:w-auto font-mono text-sm tracking-wider uppercase px-4 py-2 border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] transition-all duration-200 hover:-translate-y-0.5 bg-[#2e5dd6] text-[#fffaef] text-center"
-            >立即联系</a>
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 bg-[#2e5dd6] border-2 border-[#161310] flex items-center justify-center text-[#fffaef] flex-shrink-0">
+                <Globe class="w-4 h-4" />
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="font-mono text-xs text-[#3a332a]">城市</p>
+                <p class="font-mono text-sm font-medium text-[#161310] truncate">南昌</p>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
+      </div>
+
+      <div class="pixel-panel col-span-12 lg:col-span-8">
+        <div class="panel-header">
+          <span class="font-mono text-xs text-[#fffaef] tracking-wider">SKILL TREE</span>
+        </div>
+        <div class="panel-content p-5">
+          <h3 class="font-['Pixelify_Sans'] text-xl text-[#161310] mb-4">专业技能</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div v-for="skill in skills" :key="skill.name" class="skill-item p-4 bg-[#fffaef] border-2 border-[#161310] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[3px_3px_0_0_#161310]">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-12 h-12 bg-[#f2ead6] border-2 border-[#161310] flex items-center justify-center text-[#2e5dd6]">
+                  <component :is="skill.icon" class="w-6 h-6" />
+                </div>
+                <div class="flex-1">
+                  <h4 class="font-['Pixelify_Sans'] text-base text-[#161310]">{{ skill.name }}</h4>
+                  <p class="font-mono text-xs text-[#3a332a]">{{ skill.level }}</p>
+                </div>
+                <span class="font-mono text-sm font-bold text-[#2e5dd6]">{{ skill.progress }}%</span>
+              </div>
+              <div class="h-3 bg-[#f2ead6] border-2 border-[#161310] overflow-hidden">
+                <div class="h-full bg-[#2e5dd6] transition-all duration-700" :style="{ width: skill.progress + '%' }"></div>
+              </div>
+              <div class="flex flex-wrap gap-1.5 mt-3">
+                <span v-for="item in skill.items.slice(0, 4)" :key="item" class="font-mono text-xs px-2 py-0.5 bg-[#f2ead6] border border-[#161310] text-[#161310]">{{ item }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pixel-panel col-span-12 lg:col-span-4">
+        <div class="panel-header">
+          <span class="font-mono text-xs text-[#fffaef] tracking-wider">PERKS</span>
+        </div>
+        <div class="panel-content p-4">
+          <h3 class="font-['Pixelify_Sans'] text-xl text-[#161310] mb-3">个人优势</h3>
+          <div class="grid grid-cols-2 gap-3">
+            <div v-for="adv in advantages" :key="adv.title" class="perk-item p-3 bg-[#fffaef] border-2 border-[#161310] text-center transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[2px_2px_0_0_#161310]">
+              <div class="mb-2 flex justify-center text-[#2e5dd6]">
+                <component :is="getAdvIcon(adv.icon)" class="w-7 h-7" />
+              </div>
+              <p class="font-['Pixelify_Sans'] text-sm text-[#161310]">{{ adv.title }}</p>
+              <p class="font-mono text-[11px] text-[#3a332a] mt-1">{{ adv.desc }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pixel-panel col-span-12 md:col-span-5 lg:col-span-4">
+        <div class="panel-header">
+          <span class="font-mono text-xs text-[#fffaef] tracking-wider">EDUCATION</span>
+        </div>
+        <div class="panel-content p-4">
+          <h3 class="font-['Pixelify_Sans'] text-xl text-[#161310] mb-3">教育经历</h3>
+          <div v-for="edu in education" :key="edu.school" class="edu-item p-4 bg-[#fffaef] border-2 border-[#161310]">
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 bg-[#2e5dd6] border-2 border-[#161310] flex items-center justify-center text-[#fffaef] flex-shrink-0">
+                <BookOpen class="w-6 h-6" />
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="font-['Pixelify_Sans'] text-lg text-[#161310]">{{ edu.school }}</p>
+                <p class="font-mono text-sm text-[#3a332a] mt-1">{{ edu.degree }}</p>
+                <p class="font-mono text-sm text-[#2e5dd6] mt-1">{{ edu.years }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pixel-panel col-span-12 md:col-span-7 lg:col-span-8">
+        <div class="panel-header">
+          <span class="font-mono text-xs text-[#fffaef] tracking-wider">CONTACT</span>
+        </div>
+        <div class="panel-content p-4">
+          <h3 class="font-['Pixelify_Sans'] text-xl text-[#161310] mb-3">联系方式</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+            <a href="tel:15179493671" class="contact-item flex items-center gap-3 p-4 bg-[#fffaef] border-2 border-[#161310] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[3px_3px_0_0_#161310]">
+              <div class="w-10 h-10 bg-[#2e5dd6] border-2 border-[#161310] flex items-center justify-center text-[#fffaef] flex-shrink-0">
+                <Server class="w-5 h-5" />
+              </div>
+              <div class="min-w-0">
+                <p class="font-mono text-xs text-[#3a332a]">电话</p>
+                <p class="font-mono text-sm font-medium text-[#161310] truncate">15179493671</p>
+              </div>
+            </a>
+            <a href="mailto:1211288810@qq.com" class="contact-item flex items-center gap-3 p-4 bg-[#fffaef] border-2 border-[#161310] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[3px_3px_0_0_#161310]">
+              <div class="w-10 h-10 bg-[#2e5dd6] border-2 border-[#161310] flex items-center justify-center text-[#fffaef] flex-shrink-0">
+                <Info class="w-5 h-5" />
+              </div>
+              <div class="min-w-0">
+                <p class="font-mono text-xs text-[#3a332a]">邮箱</p>
+                <p class="font-mono text-sm font-medium text-[#161310] truncate">1211288810@qq.com</p>
+              </div>
+            </a>
+            <a href="https://github.com/xlx0131" class="contact-item flex items-center gap-3 p-4 bg-[#fffaef] border-2 border-[#161310] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[3px_3px_0_0_#161310]">
+              <div class="w-10 h-10 bg-[#2e5dd6] border-2 border-[#161310] flex items-center justify-center text-[#fffaef] flex-shrink-0">
+                <Code2 class="w-5 h-5" />
+              </div>
+              <div class="min-w-0">
+                <p class="font-mono text-xs text-[#3a332a]">GitHub</p>
+                <p class="font-mono text-sm font-medium text-[#161310] truncate">github.com/xlx0131</p>
+              </div>
+            </a>
+          </div>
+          <div class="pt-4 border-t-2 border-dashed border-[#161310]">
+            <a href="mailto:1211288810@qq.com" class="pixel-btn pixel-btn-primary w-full justify-center">
+              <span class="font-mono text-sm tracking-wider">立即联系</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-6">
+      <p class="text-center font-mono text-[10px] text-[#b8a88a] tracking-widest">
+        ■ PIXEL PORTFOLIO v1.0 ■
+      </p>
     </div>
   </div>
 </template>
+
+<style scoped>
+.about-page {
+  background-image:
+    radial-gradient(#e8dfc8 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.pixel-topbar {
+  background: #161310;
+  border: 3px solid #161310;
+  box-shadow: 4px 4px 0 0 #161310;
+  position: relative;
+}
+
+.pixel-topbar::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  height: 2px;
+  background: #3a332a;
+}
+
+.pixel-logo {
+  image-rendering: pixelated;
+}
+
+.pixel-tag {
+  font-family: monospace;
+  font-size: 12px;
+  padding: 4px 10px;
+  border: 2px solid #161310;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.pixel-panel {
+  background: #fffaef;
+  border: 3px solid #161310;
+  box-shadow: 4px 4px 0 0 #161310;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.pixel-panel:hover {
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0 0 #161310;
+}
+
+.panel-header {
+  background: #161310;
+  padding: 8px 14px;
+  border-bottom: 3px solid #161310;
+  position: relative;
+  font-family: monospace;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.panel-header::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 8px;
+  right: 8px;
+  height: 1px;
+  background: #3a332a;
+}
+
+.panel-content {
+  background: #f2ead6;
+  min-height: 80px;
+}
+
+.avatar-frame {
+  image-rendering: pixelated;
+}
+
+.pixel-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 18px;
+  border: 2px solid #161310;
+  box-shadow: 3px 3px 0 0 #161310;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  font-family: monospace;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.pixel-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 0 #161310;
+}
+
+.pixel-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 0 #161310;
+}
+
+.pixel-btn-primary {
+  background: #2e5dd6;
+  color: #fffaef;
+}
+
+.pixel-btn-secondary {
+  background: #fffaef;
+  color: #161310;
+}
+
+.skill-item {
+  position: relative;
+}
+
+.stat-item {
+  image-rendering: pixelated;
+}
+
+.perk-item {
+  cursor: default;
+}
+
+.edu-item {
+  position: relative;
+}
+
+.contact-item {
+  text-decoration: none;
+  color: inherit;
+}
+
+@media (max-width: 768px) {
+  .about-grid {
+    gap: 12px;
+  }
+  
+  .pixel-panel {
+    box-shadow: 3px 3px 0 0 #161310;
+  }
+}
+</style>

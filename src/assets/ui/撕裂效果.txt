@@ -1,0 +1,146 @@
+<section>
+    <div id="grid">
+        <div class="left"></div>
+
+        <div class="middle">
+            <nav>
+                <div class="nav">
+                    <a href="#">Link</a>
+                    <a href="#">Link</a>
+                    <a href="#">Link</a>
+                    <a href="#">Link</a>
+                </div>
+                <div class="logo">Logo</div>
+            </nav>
+            <img style="" src="https://assets.codepen.io/4787486/feathers-reveals-himself_1.png" alt="" />
+            <article style="">
+                <h1 style="color: white;">Feathers McGraw reveals himself</h1>
+                <p>Keep any content here within <code>.middle</code> and it will scale appropriately according to the direction of scroll</p>
+            </article>
+        </div>
+
+        <div class="right"></div>
+    </div>
+
+</section>
+<div class="spacer">
+    <h2>And more content here if you like</h2>
+</div>
+html {
+    font-size: 16pt;
+}
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    transition: 0.01s ease;
+}
+body {
+    display: grid;
+    place-items: center;
+    background: #b8860b;
+}
+section {
+    position: relative;
+    width: 100dvw;
+    height: 200dvh;
+}
+img {
+    max-width: 75%;
+    object-fit: cover;
+}
+article {
+    padding-inline: 1em;
+    margin-inline: 3em;
+    margin-block-end: 3em;
+    max-width: 60ch;
+    color: white;
+    background: rgba(255 255 255 / 0.1);
+    border-radius: 0.4em;
+
+    h1,
+    h2,
+    p {
+        font-weight: 200;
+        margin-block: 0.3lh;
+        line-height: 1.3;
+    }
+}
+#grid {
+    position: sticky;
+    top: 0;
+    display: grid;
+    grid-template-columns: 1fr 0fr 1fr;
+    place-items: start center;
+    width: 100%;
+    height: 100dvh;
+    background: linen;
+    font-size: 0rem;
+    /* overflow: hidden; */
+
+    animation: open 1ms linear both;
+    animation-timeline: scroll();
+    animation-range: 0% 40%;
+}
+nav {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1em;
+    width: 100%;
+    padding: 0.7em 1.4em;
+    background: #562638;
+    color: #eff;
+}
+.nav {
+    display: flex;
+    gap: 1.5em;
+    /* outline: 1px dashed white; */
+
+    a {
+        color: #eff;
+        text-decoration: none;
+    }
+}
+.middle {
+    width: 100%;
+    height: 100%;
+    background-color: crimson;
+    display: grid;
+    place-items: start center;
+}
+.left,
+.right {
+    width: 100%;
+    height: 100%;
+    background: dodgerblue;
+    background-attachment: fixed;
+}
+.left {
+    background: 100% 0% / cover no-repeat
+        url("https://assets.codepen.io/4787486/wanted-feathers-mcgraw-left.png");
+}
+.right {
+    background: 0% 0% / cover no-repeat
+        url("https://assets.codepen.io/4787486/wanted-feathers-mcgraw-right.png");
+}
+
+@keyframes open {
+    to {
+        grid-template-columns: 0fr 1fr 0fr;
+        font-size: 1rem;
+    }
+}
+
+.spacer {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    min-height: 50dvh;
+    background: dodgerblue;
+
+    h2 {
+        max-width: 80%;
+        text-align: center;
+    }
+}
