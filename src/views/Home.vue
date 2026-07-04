@@ -5,6 +5,7 @@ import { animate } from 'animejs'
 import * as echarts from 'echarts'
 import FluidBackground from '@/components/FluidBackground.vue'
 import GridBackground from '@/components/GridBackground.vue'
+
 import avatar from '@/assets/头像.jpg'
 import { projects, articles } from '@/data/contents.js'
 

@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { levels } from '@/data/network-levels.js'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 // ─── 登录状态 ───
 const loggedIn = ref(false)
@@ -16,6 +13,7 @@ async function login() {
   if (username.value === 'admin' && password.value === 'xlx1234') {
     loggedIn.value = true
     loginError.value = ''
+    localStorage.setItem('admin_logged', 'true')
     await loadArticles()
     await loadBookmarks()
   } else {
@@ -27,6 +25,7 @@ function logout() {
   loggedIn.value = false
   username.value = ''
   password.value = ''
+  localStorage.removeItem('admin_logged')
 }
 
 function handleKeydown(e: KeyboardEvent) {
@@ -97,7 +96,9 @@ async function loadBookmarks() {
 async function addCategory() {
   const name = newCatName.value.trim()
   if (!name) return
-  await addBookmark({ type: 'category', name })
+  const cats = await getBookmarkCats()
+  cats.push({ name, items: [] })
+  await saveBookmarkCats(cats)
   await loadBookmarks()
   newCatName.value = ''
   showCatInput.value = false
@@ -106,14 +107,11 @@ async function addCategory() {
 async function deleteCategory(name) {
   if (!confirm(`确定删除分类「${name}」及其所有收藏？`)) return
   const cats = await getBookmarkCats()
-  const cat = cats.find(c => c.name === name)
-  if (cat && cat.items) {
-    for (const item of cat.items) {
-      await deleteBookmark(item.id, 'bookmark')
-    }
+  const idx = cats.findIndex(c => c.name === name)
+  if (idx >= 0) {
+    cats.splice(idx, 1)
+    await saveBookmarkCats(cats)
   }
-  const categoryId = cat?.id
-  if (categoryId) await deleteBookmark(categoryId, 'category')
   await loadBookmarks()
 }
 
@@ -134,7 +132,6 @@ function saveBookmarkHandler() {
   const cats = getBookmarkCats()
   const cat = cats.find(c => c.name === newBookmark.value.category)
   if (!cat) return
-
   if (editingBookmark.value) {
     const idx = cat.items.findIndex(i => i.id === editingBookmark.value!.id)
     if (idx >= 0) cat.items[idx] = { ...newBookmark.value }
@@ -157,76 +154,77 @@ function removeBookmark(catName: string, id: number) {
 }
 
 onMounted(() => {
-  // 尝试从 localStorage 恢复登录
   if (localStorage.getItem('admin_logged') === 'true') {
     loggedIn.value = true
     loadArticles()
     loadBookmarks()
   }
 })
-
-function onLoginSuccess() {
-  localStorage.setItem('admin_logged', 'true')
-}
 </script>
 
 <template>
-  <div class="min-h-[100dvh] bg-background text-foreground">
+  <div class="min-h-[100dvh] bg-[#f5f0e8] text-[#161310]">
     <!-- ═══ 登录页 ═══ -->
     <div v-if="!loggedIn" class="flex items-center justify-center min-h-screen px-4">
       <div class="w-full max-w-sm">
         <div class="text-center mb-8">
-          <div class="text-4xl mb-3">🔐</div>
-          <h1 class="text-xl font-bold">管理后台</h1>
-          <p class="text-sm text-[#8b949e] mt-1">请登录以管理内容</p>
+          <div class="w-16 h-16 bg-[#fffaef] border-2 border-[#161310] shadow-[6px_6px_0_0_#161310] flex items-center justify-center font-mono text-2xl mx-auto mb-4">🔐</div>
+          <h1 class="font-mono text-2xl font-black text-[#161310]">管理后台</h1>
+          <p class="font-mono text-sm text-[#3a332a] mt-1">请登录以管理内容</p>
         </div>
-        <div class="bg-card border border-border rounded-xl p-6 space-y-4" @keydown="handleKeydown">
+        <div class="bg-[#fffaef] border-2 border-[#161310] shadow-[6px_6px_0_0_#161310] p-6 space-y-4" @keydown="handleKeydown">
           <div>
-            <label class="text-xs text-muted-foreground block mb-1.5">账号</label>
+            <label class="font-mono text-xs text-[#3a332a] block mb-1.5">账号</label>
             <input
               v-model="username"
               type="text"
-              class="w-full bg-background border border-border rounded-lg px-3 py-2.5 text-sm text-foreground outline-none focus:border-ring transition-colors"
+              class="w-full bg-[#f5f0e8] border-2 border-[#161310] px-3 py-2.5 font-mono text-sm text-[#161310] outline-none transition-colors focus:border-[#2e5dd6]"
               placeholder="admin"
             />
           </div>
           <div>
-            <label class="text-xs text-muted-foreground block mb-1.5">密码</label>
+            <label class="font-mono text-xs text-[#3a332a] block mb-1.5">密码</label>
             <input
               v-model="password"
               type="password"
-              class="w-full bg-background border border-border rounded-lg px-3 py-2.5 text-sm text-foreground outline-none focus:border-ring transition-colors"
+              class="w-full bg-[#f5f0e8] border-2 border-[#161310] px-3 py-2.5 font-mono text-sm text-[#161310] outline-none transition-colors focus:border-[#2e5dd6]"
               placeholder="••••••••"
               @keydown.enter="login"
             />
           </div>
-          <p v-if="loginError" class="text-xs text-destructive">{{ loginError }}</p>
-          <Button class="w-full" @click="login">登 录</Button>
+          <p v-if="loginError" class="font-mono text-xs text-[#e2522e]">{{ loginError }}</p>
+          <button
+            class="w-full font-mono text-sm tracking-wider uppercase px-4 py-2.5 border-2 border-[#161310] bg-[#161310] text-[#fffaef] shadow-[4px_4px_0_0_#161310] transition-all duration-200 hover:-translate-y-0.5"
+            @click="login"
+          >登 录</button>
         </div>
       </div>
     </div>
 
     <!-- ═══ 后台管理 ═══ -->
-    <div v-else class="max-w-6xl mx-auto px-4 py-8">
+    <div v-else class="max-w-6xl mx-auto px-4 py-8 pt-24">
       <!-- Top bar -->
       <div class="flex items-center justify-between mb-8">
         <div>
-          <h1 class="text-xl font-bold text-foreground">管理后台</h1>
-          <p class="text-sm text-muted-foreground">管理文章和收藏夹</p>
+          <h1 class="font-mono text-2xl font-black text-[#161310]">管理后台</h1>
+          <p class="font-mono text-sm text-[#3a332a] mt-1">管理文章和收藏夹</p>
         </div>
-        <Button variant="outline" size="sm" @click="logout">退出登录</Button>
+        <button
+          class="font-mono text-xs tracking-wider uppercase px-3 py-1.5 border-2 border-[#161310] bg-[#fffaef] text-[#161310] shadow-[3px_3px_0_0_#161310] transition-all duration-200 hover:-translate-y-0.5"
+          @click="logout"
+        >退出登录</button>
       </div>
 
       <!-- Tabs -->
-      <div class="flex gap-1 mb-6 bg-card rounded-lg p-1 border border-border w-fit">
+      <div class="flex gap-1 mb-6 bg-[#fffaef] border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] p-1 w-fit">
         <button
-          :class="activeTab === 'articles' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'"
-          class="px-5 py-2 text-sm rounded-md transition-colors font-medium"
+          :class="activeTab === 'articles' ? 'bg-[#161310] text-[#fffaef]' : 'text-[#3a332a] hover:text-[#161310]'"
+          class="font-mono text-sm tracking-wider uppercase px-5 py-2 transition-colors"
           @click="activeTab = 'articles'"
         >📝 文章管理</button>
         <button
-          :class="activeTab === 'bookmarks' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'"
-          class="px-5 py-2 text-sm rounded-md transition-colors font-medium"
+          :class="activeTab === 'bookmarks' ? 'bg-[#161310] text-[#fffaef]' : 'text-[#3a332a] hover:text-[#161310]'"
+          class="font-mono text-sm tracking-wider uppercase px-5 py-2 transition-colors"
           @click="activeTab = 'bookmarks'"
         >🔖 收藏夹管理</button>
       </div>
@@ -234,46 +232,49 @@ function onLoginSuccess() {
       <!-- ═══ 文章管理 ═══ -->
       <div v-if="activeTab === 'articles'">
         <div class="flex items-center justify-between mb-4">
-          <p class="text-sm text-muted-foreground">共 {{ articles.length }} 篇文章</p>
-          <Button size="sm" @click="openNewArticle">＋ 新建文章</Button>
+          <p class="font-mono text-sm text-[#3a332a]">共 {{ articles.length }} 篇文章</p>
+          <button
+            class="font-mono text-xs tracking-wider uppercase px-3 py-1.5 border-2 border-[#161310] bg-[#161310] text-[#fffaef] shadow-[3px_3px_0_0_#161310] transition-all duration-200 hover:-translate-y-0.5"
+            @click="openNewArticle"
+          >＋ 新建文章</button>
         </div>
 
         <div class="space-y-2">
           <div
             v-for="article in articles"
             :key="article.id"
-            class="bg-card border border-border rounded-lg p-4 flex items-center justify-between group hover:border-ring transition-colors"
+            class="bg-[#fffaef] border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] p-4 flex items-center justify-between group transition-all duration-200 hover:-translate-y-0.5"
           >
             <div class="flex-1 min-w-0">
-              <h3 class="text-sm font-semibold text-foreground truncate">{{ article.title }}</h3>
-              <p class="text-xs text-muted-foreground mt-0.5">{{ article.date }} · {{ article.category }}</p>
+              <h3 class="font-['Pixelify_Sans'] text-sm font-bold text-[#161310] truncate">{{ article.title }}</h3>
+              <p class="font-mono text-xs text-[#3a332a] mt-0.5">{{ article.date }} · {{ article.category }}</p>
             </div>
             <div class="flex gap-2 ml-4 opacity-0 group-hover:opacity-100 transition-opacity">
-              <Button variant="ghost" size="sm" class="text-xs" @click="openEditArticle(article)">编辑</Button>
-              <Button variant="ghost" size="sm" class="text-xs text-destructive hover:text-destructive" @click="removeArticle(article.id)">删除</Button>
+              <button class="font-mono text-xs tracking-wider uppercase px-2 py-1 border border-[#161310] text-[#161310] hover:bg-[#161310]/10 transition-colors" @click="openEditArticle(article)">编辑</button>
+              <button class="font-mono text-xs tracking-wider uppercase px-2 py-1 border border-[#e2522e] text-[#e2522e] hover:bg-[#e2522e]/10 transition-colors" @click="removeArticle(article.id)">删除</button>
             </div>
           </div>
-          <div v-if="articles.length === 0" class="text-center py-12 text-muted-foreground text-sm">
-            暂无文章，点击"新建文章"开始
+          <div v-if="articles.length === 0" class="text-center py-12 font-mono text-sm text-[#3a332a]">
+            暂无文章，点击「新建文章」开始
           </div>
         </div>
 
         <!-- Article Editor Modal -->
-        <div v-if="showArticleEditor" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4" @click.self="showArticleEditor = false">
-          <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-6 w-full max-w-2xl max-h-[85vh] overflow-y-auto">
-            <h2 class="text-base font-bold mb-4">{{ editingArticle ? '编辑文章' : '新建文章' }}</h2>
+        <div v-if="showArticleEditor" class="fixed inset-0 bg-[#161310]/70 flex items-center justify-center z-50 p-4" @click.self="showArticleEditor = false">
+          <div class="bg-[#fffaef] border-2 border-[#161310] shadow-[8px_8px_0_0_#161310] p-6 w-full max-w-2xl max-h-[85vh] overflow-y-auto">
+            <h2 class="font-mono text-lg font-bold text-[#161310] mb-4">{{ editingArticle ? '编辑文章' : '新建文章' }}</h2>
             <div class="space-y-3">
-              <input v-model="newArticle.title" placeholder="文章标题" class="w-full bg-[#0d1117] border border-[#30363d] rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[#58a6ff]" />
+              <input v-model="newArticle.title" placeholder="文章标题" class="w-full bg-[#f5f0e8] border-2 border-[#161310] px-3 py-2.5 font-mono text-sm text-[#161310] outline-none focus:border-[#2e5dd6]" />
               <div class="flex gap-3">
-                <input v-model="newArticle.date" type="date" class="flex-1 bg-[#0d1117] border border-[#30363d] rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[#58a6ff]" />
-                <input v-model="newArticle.category" placeholder="分类" class="flex-1 bg-[#0d1117] border border-[#30363d] rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[#58a6ff]" />
+                <input v-model="newArticle.date" type="date" class="flex-1 bg-[#f5f0e8] border-2 border-[#161310] px-3 py-2.5 font-mono text-sm text-[#161310] outline-none focus:border-[#2e5dd6]" />
+                <input v-model="newArticle.category" placeholder="分类" class="flex-1 bg-[#f5f0e8] border-2 border-[#161310] px-3 py-2.5 font-mono text-sm text-[#161310] outline-none focus:border-[#2e5dd6]" />
               </div>
-              <textarea v-model="newArticle.excerpt" placeholder="摘要" rows="2" class="w-full bg-[#0d1117] border border-[#30363d] rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[#58a6ff] resize-none"></textarea>
-              <textarea v-model="newArticle.content" placeholder="文章内容 (支持 HTML)" rows="8" class="w-full bg-[#0d1117] border border-[#30363d] rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[#58a6ff] resize-none font-mono"></textarea>
+              <textarea v-model="newArticle.excerpt" placeholder="摘要" rows="2" class="w-full bg-[#f5f0e8] border-2 border-[#161310] px-3 py-2.5 font-mono text-sm text-[#161310] outline-none focus:border-[#2e5dd6] resize-none"></textarea>
+              <textarea v-model="newArticle.content" placeholder="文章内容 (支持 HTML)" rows="8" class="w-full bg-[#f5f0e8] border-2 border-[#161310] px-3 py-2.5 font-mono text-sm text-[#161310] outline-none focus:border-[#2e5dd6] resize-none"></textarea>
             </div>
             <div class="flex gap-3 mt-4 justify-end">
-              <button class="px-4 py-2 text-sm text-[#8b949e] hover:text-[#c9d1d9] transition-colors" @click="showArticleEditor = false">取消</button>
-              <button class="px-4 py-2 text-sm bg-[#238636] hover:bg-[#2ea043] text-white rounded-lg transition-colors font-medium" @click="saveArticleHandler">保存</button>
+              <button class="font-mono text-sm px-4 py-2 text-[#3a332a] hover:text-[#161310] transition-colors" @click="showArticleEditor = false">取消</button>
+              <button class="font-mono text-sm tracking-wider uppercase px-4 py-2 border-2 border-[#161310] bg-[#161310] text-[#fffaef] shadow-[3px_3px_0_0_#161310] transition-all duration-200 hover:-translate-y-0.5" @click="saveArticleHandler">保存</button>
             </div>
           </div>
         </div>
@@ -282,38 +283,38 @@ function onLoginSuccess() {
       <!-- ═══ 收藏夹管理 ═══ -->
       <div v-if="activeTab === 'bookmarks'">
         <div class="flex items-center justify-between mb-4">
-          <p class="text-sm text-[#8b949e]">共 {{ bookmarkCats.reduce((s, c) => s + c.items.length, 0) }} 个收藏</p>
+          <p class="font-mono text-sm text-[#3a332a]">共 {{ bookmarkCats.reduce((s, c) => s + c.items.length, 0) }} 个收藏</p>
           <button
-            class="bg-[#1f6feb] hover:bg-[#58a6ff] text-white text-sm px-4 py-2 rounded-lg transition-colors font-medium"
+            class="font-mono text-xs tracking-wider uppercase px-3 py-1.5 border-2 border-[#161310] bg-[#161310] text-[#fffaef] shadow-[3px_3px_0_0_#161310] transition-all duration-200 hover:-translate-y-0.5"
             @click="showCatInput = true"
           >＋ 新建分类</button>
         </div>
 
         <!-- New category input -->
         <div v-if="showCatInput" class="flex gap-2 mb-4">
-          <input v-model="newCatName" placeholder="分类名称" class="flex-1 bg-[#0d1117] border border-[#30363d] rounded-lg px-3 py-2 text-sm outline-none focus:border-[#58a6ff]" @keydown.enter="addCategory" />
-          <button class="px-4 py-2 text-sm bg-[#238636] text-white rounded-lg hover:bg-[#2ea043] transition-colors" @click="addCategory">确定</button>
-          <button class="px-4 py-2 text-sm text-[#8b949e] hover:text-[#c9d1d9] transition-colors" @click="showCatInput = false">取消</button>
+          <input v-model="newCatName" placeholder="分类名称" class="flex-1 bg-[#f5f0e8] border-2 border-[#161310] px-3 py-2 font-mono text-sm text-[#161310] outline-none focus:border-[#2e5dd6]" @keydown.enter="addCategory" />
+          <button class="font-mono text-xs tracking-wider uppercase px-3 py-1.5 border-2 border-[#161310] bg-[#161310] text-[#fffaef] shadow-[3px_3px_0_0_#161310] transition-all duration-200 hover:-translate-y-0.5" @click="addCategory">确定</button>
+          <button class="font-mono text-xs px-3 py-1.5 text-[#3a332a] hover:text-[#161310] transition-colors" @click="showCatInput = false">取消</button>
         </div>
 
         <!-- Categories -->
-        <div v-for="cat in bookmarkCats" :key="cat.name" class="mb-6 bg-[#161b22] border border-[#30363d] rounded-xl overflow-hidden">
-          <div class="flex items-center justify-between px-4 py-3 bg-[#0d1117] border-b border-[#30363d]">
-            <h3 class="text-sm font-semibold">{{ cat.name }} <span class="text-[#8b949e] font-normal">({{ cat.items.length }})</span></h3>
+        <div v-for="cat in bookmarkCats" :key="cat.name" class="mb-6 bg-[#fffaef] border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] overflow-hidden">
+          <div class="flex items-center justify-between px-4 py-3 bg-[#f5f0e8] border-b-2 border-[#161310]">
+            <h3 class="font-['Pixelify_Sans'] text-sm font-bold text-[#161310]">{{ cat.name }} <span class="font-mono font-normal text-[#3a332a]">({{ cat.items.length }})</span></h3>
             <div class="flex gap-2">
-              <button class="text-xs text-[#58a6ff] hover:underline px-2" @click="openNewBookmark(cat.name)">＋ 添加</button>
-              <button class="text-xs text-[#f85149] hover:underline px-2" @click="deleteCategory(cat.name)">删除分类</button>
+              <button class="font-mono text-xs text-[#2e5dd6] hover:underline px-2" @click="openNewBookmark(cat.name)">＋ 添加</button>
+              <button class="font-mono text-xs text-[#e2522e] hover:underline px-2" @click="deleteCategory(cat.name)">删除分类</button>
             </div>
           </div>
-          <div class="divide-y divide-[#30363d]">
-            <div v-for="item in cat.items" :key="item.id" class="px-4 py-3 flex items-center justify-between group hover:bg-[#0d1117]/50 transition-colors">
+          <div class="divide-y-2 divide-[#d9cdb3]">
+            <div v-for="item in cat.items" :key="item.id" class="px-4 py-3 flex items-center justify-between group hover:bg-[#f5f0e8]/50 transition-colors">
               <div class="flex-1 min-w-0">
-                <h4 class="text-sm font-medium truncate">{{ item.name }}</h4>
-                <p class="text-xs text-[#8b949e] truncate">{{ item.url }}</p>
+                <h4 class="font-['Pixelify_Sans'] text-sm font-bold text-[#161310] truncate">{{ item.name }}</h4>
+                <p class="font-mono text-xs text-[#3a332a] truncate">{{ item.url }}</p>
               </div>
               <div class="flex gap-2 ml-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button class="text-xs text-[#58a6ff] hover:underline px-2" @click="openEditBookmark(cat.name, item)">编辑</button>
-                <button class="text-xs text-[#f85149] hover:underline px-2" @click="removeBookmark(cat.name, item.id)">删除</button>
+                <button class="font-mono text-xs text-[#2e5dd6] hover:underline px-2" @click="openEditBookmark(cat.name, item)">编辑</button>
+                <button class="font-mono text-xs text-[#e2522e] hover:underline px-2" @click="removeBookmark(cat.name, item.id)">删除</button>
               </div>
             </div>
           </div>
@@ -321,17 +322,17 @@ function onLoginSuccess() {
       </div>
 
       <!-- Bookmark Editor Modal -->
-      <div v-if="showBookmarkEditor" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4" @click.self="showBookmarkEditor = false">
-        <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-6 w-full max-w-lg">
-          <h2 class="text-base font-bold mb-4">{{ editingBookmark ? '编辑收藏' : '新建收藏' }}</h2>
+      <div v-if="showBookmarkEditor" class="fixed inset-0 bg-[#161310]/70 flex items-center justify-center z-50 p-4" @click.self="showBookmarkEditor = false">
+        <div class="bg-[#fffaef] border-2 border-[#161310] shadow-[8px_8px_0_0_#161310] p-6 w-full max-w-lg">
+          <h2 class="font-mono text-lg font-bold text-[#161310] mb-4">{{ editingBookmark ? '编辑收藏' : '新建收藏' }}</h2>
           <div class="space-y-3">
-            <input v-model="newBookmark.name" placeholder="名称" class="w-full bg-[#0d1117] border border-[#30363d] rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[#58a6ff]" />
-            <input v-model="newBookmark.url" placeholder="URL (https://...)" class="w-full bg-[#0d1117] border border-[#30363d] rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[#58a6ff]" />
-            <textarea v-model="newBookmark.desc" placeholder="描述" rows="2" class="w-full bg-[#0d1117] border border-[#30363d] rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[#58a6ff] resize-none"></textarea>
+            <input v-model="newBookmark.name" placeholder="名称" class="w-full bg-[#f5f0e8] border-2 border-[#161310] px-3 py-2.5 font-mono text-sm text-[#161310] outline-none focus:border-[#2e5dd6]" />
+            <input v-model="newBookmark.url" placeholder="URL (https://...)" class="w-full bg-[#f5f0e8] border-2 border-[#161310] px-3 py-2.5 font-mono text-sm text-[#161310] outline-none focus:border-[#2e5dd6]" />
+            <textarea v-model="newBookmark.desc" placeholder="描述" rows="2" class="w-full bg-[#f5f0e8] border-2 border-[#161310] px-3 py-2.5 font-mono text-sm text-[#161310] outline-none focus:border-[#2e5dd6] resize-none"></textarea>
           </div>
           <div class="flex gap-3 mt-4 justify-end">
-            <button class="px-4 py-2 text-sm text-[#8b949e] hover:text-[#c9d1d9] transition-colors" @click="showBookmarkEditor = false">取消</button>
-            <button class="px-4 py-2 text-sm bg-[#238636] hover:bg-[#2ea043] text-white rounded-lg transition-colors font-medium" @click="saveBookmarkHandler">保存</button>
+            <button class="font-mono text-sm px-4 py-2 text-[#3a332a] hover:text-[#161310] transition-colors" @click="showBookmarkEditor = false">取消</button>
+            <button class="font-mono text-sm tracking-wider uppercase px-4 py-2 border-2 border-[#161310] bg-[#161310] text-[#fffaef] shadow-[3px_3px_0_0_#161310] transition-all duration-200 hover:-translate-y-0.5" @click="saveBookmarkHandler">保存</button>
           </div>
         </div>
       </div>

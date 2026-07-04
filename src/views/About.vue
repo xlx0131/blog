@@ -2,10 +2,6 @@
 import { onMounted } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card'
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
-import { Separator } from '@/components/ui/separator'
 import { Code2, Database, Bot, BarChart3, Layers } from '@lucide/vue'
 import avatarImg from '@/assets/头像2.jpg'
 
@@ -50,76 +46,79 @@ const education = [
 </script>
 
 <template>
-  <div class="min-h-[100dvh] bg-background">
-    <section class="mx-auto flex min-h-[60dvh] max-w-5xl flex-col justify-center px-6 py-16 sm:px-10 lg:px-16">
+  <div class="min-h-[100dvh] bg-[#f5f0e8] pt-24 pb-20 px-6 sm:px-10 lg:px-20">
+    <section class="mx-auto flex min-h-[60dvh] max-w-5xl flex-col justify-center">
       <div class="flex flex-col gap-8 sm:flex-row sm:items-center sm:gap-10">
         <div class="relative">
-          <Avatar class="h-28 w-28 border-4 border-border sm:h-36 sm:w-36">
-            <AvatarImage :src="avatarImg" alt="许立鑫" />
-            <AvatarFallback class="text-2xl font-semibold">许立鑫</AvatarFallback>
-          </Avatar>
-          <div class="absolute -bottom-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full border-2 border-background bg-[#34d399] sm:h-8 sm:w-8">
-            <span class="text-xs">✓</span>
+          <div class="h-28 w-28 border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] sm:h-36 sm:w-36 overflow-hidden bg-[#2e5dd6]">
+            <img :src="avatarImg" alt="许立鑫" class="h-full w-full object-cover" />
+          </div>
+          <div class="absolute -bottom-1 -right-1 flex h-7 w-7 items-center justify-center border-2 border-[#161310] bg-[#2e5dd6] sm:h-8 sm:w-8">
+            <span class="text-xs text-[#fffaef] font-mono">✓</span>
           </div>
         </div>
         <div class="flex-1">
-          <Badge variant="outline" class="mb-3 w-fit text-xs tracking-[0.2em] text-muted-foreground">关于</Badge>
-          <h1 class="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">许立鑫</h1>
-          <p class="mt-2 text-lg font-medium tracking-tight text-[#34d399]">数据分析 · 开发</p>
-          <p class="mt-5 max-w-lg text-base leading-relaxed text-muted-foreground">
+          <span class="inline-block mb-3 font-mono text-xs tracking-[0.2em] text-[#3a332a] border border-[#161310] px-2 py-0.5">关于</span>
+          <h1 class="font-['Pixelify_Sans'] text-4xl font-bold tracking-tight text-[#161310] sm:text-5xl">许立鑫</h1>
+          <p class="mt-2 text-lg font-medium tracking-tight text-[#2e5dd6] font-['Pixelify_Sans']">数据分析 · 开发</p>
+          <p class="mt-5 max-w-lg text-base leading-relaxed text-[#3a332a] font-mono">
             江西农业大学 数据科学与大数据技术专业 2023 级本科生。对数据分析与开发充满热情，善于从数据中发现价值，用技术解决问题。
           </p>
           <div class="mt-7 flex flex-wrap gap-3">
-            <Button as="a" href="mailto:1211288810@qq.com" class="bg-[#34d399] text-emerald-950 hover:bg-[#2dd4bf]">发送邮件</Button>
-            <Button as="a" href="https://github.com/xlx0131" variant="outline">GitHub</Button>
+            <a
+              href="mailto:1211288810@qq.com"
+              class="inline-block font-mono text-sm tracking-wider uppercase px-4 py-2 border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] transition-all duration-200 hover:-translate-y-0.5 bg-[#2e5dd6] text-[#fffaef]"
+            >发送邮件</a>
+            <a
+              href="https://github.com/xlx0131"
+              class="inline-block font-mono text-sm tracking-wider uppercase px-4 py-2 border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] transition-all duration-200 hover:-translate-y-0.5 bg-[#fffaef] text-[#161310]"
+            >GitHub</a>
           </div>
         </div>
       </div>
     </section>
 
-    <div class="mx-auto max-w-5xl px-6 pb-24 sm:px-10 lg:px-16">
-      <Separator class="mb-20" />
+    <div class="mx-auto max-w-5xl">
+      <div class="h-px bg-[#161310] mb-20"></div>
 
       <section class="skills-section mt-20">
         <div class="flex items-center gap-3">
-          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-[#34d399]/10 text-[#34d399]">
-            <span class="text-lg">⚡</span>
+          <div class="flex h-10 w-10 items-center justify-center border-2 border-[#161310] bg-[#2e5dd6] shadow-[3px_3px_0_0_#161310]">
+            <span class="text-lg text-[#fffaef]">⚡</span>
           </div>
           <div>
-            <h2 class="text-2xl font-bold tracking-tight text-foreground">专业技能</h2>
-            <p class="mt-0.5 text-sm text-muted-foreground">日常使用的技术与工具。</p>
+            <h2 class="font-['Pixelify_Sans'] text-2xl font-bold tracking-tight text-[#161310]">专业技能</h2>
+            <p class="mt-0.5 font-mono text-sm text-[#3a332a]">日常使用的技术与工具。</p>
           </div>
         </div>
         <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <div
             v-for="skill in skills"
             :key="skill.name"
-            class="skill-card group relative overflow-hidden rounded-2xl border border-emerald-500/10 bg-gradient-to-br from-emerald-950/30 via-slate-900/50 to-slate-900/80 backdrop-blur-sm p-5 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-400/30 hover:shadow-xl hover:shadow-emerald-500/10"
+            class="skill-card bg-[#fffaef] border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] p-5 transition-all duration-200 hover:-translate-y-1"
           >
-            <div class="pointer-events-none absolute -top-20 -right-20 h-40 w-40 rounded-full bg-emerald-500/5 blur-3xl transition-all duration-500 group-hover:bg-emerald-500/10"></div>
-            <div class="pointer-events-none absolute left-0 top-0 h-1 w-0 bg-gradient-to-r from-emerald-400 to-teal-400 transition-all duration-500 group-hover:w-full"></div>
-            <div class="relative flex items-start gap-4">
-              <div class="flex shrink-0 h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500/15 to-teal-500/10 text-emerald-400 ring-1 ring-emerald-400/20 transition-all duration-300 group-hover:scale-110 group-hover:from-emerald-500/25 group-hover:ring-emerald-400/40">
+            <div class="flex items-start gap-4">
+              <div class="flex shrink-0 h-14 w-14 items-center justify-center border-2 border-[#161310] bg-[#f2ead6] text-[#2e5dd6]">
                 <component :is="skill.icon" class="h-7 w-7" />
               </div>
               <div class="min-w-0 flex-1">
-                <h3 class="text-base font-semibold text-foreground transition-colors group-hover:text-emerald-400">{{ skill.name }}</h3>
+                <h3 class="font-['Pixelify_Sans'] text-base font-semibold text-[#161310]">{{ skill.name }}</h3>
                 <div class="mt-1.5 flex items-center gap-2">
-                  <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-emerald-950/50">
+                  <div class="h-1.5 flex-1 overflow-hidden bg-[#f2ead6] border border-[#161310]">
                     <div
-                      class="h-full rounded-full bg-gradient-to-r from-emerald-400 to-teal-400 transition-all duration-700 ease-out"
+                      class="h-full bg-[#2e5dd6] transition-all duration-700 ease-out"
                       :style="{ width: skill.progress + '%' }"
                     ></div>
                   </div>
-                  <span class="text-xs font-semibold text-emerald-400 tabular-nums">{{ skill.progress }}%</span>
+                  <span class="font-mono text-xs font-semibold text-[#2e5dd6] tabular-nums">{{ skill.progress }}%</span>
                 </div>
               </div>
             </div>
-            <div class="relative mt-4 flex flex-wrap gap-1.5">
+            <div class="mt-4 flex flex-wrap gap-1.5">
               <span
                 v-for="item in skill.items"
                 :key="item"
-                class="rounded-md border border-emerald-500/10 bg-emerald-950/20 px-2 py-0.5 text-xs text-slate-300 transition-all duration-200 group-hover:border-emerald-400/20 group-hover:text-emerald-300"
+                class="font-mono text-xs px-2 py-0.5 border border-[#161310] text-[#161310] bg-[#f2ead6]"
               >
                 {{ item }}
               </span>
@@ -130,34 +129,32 @@ const education = [
 
       <section class="mt-24">
         <div class="flex items-center gap-3">
-          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-[#34d399]/10 text-[#34d399]">
-            <span class="text-lg">🌟</span>
+          <div class="flex h-10 w-10 items-center justify-center border-2 border-[#161310] bg-[#2e5dd6] shadow-[3px_3px_0_0_#161310]">
+            <span class="text-lg text-[#fffaef]">🌟</span>
           </div>
           <div>
-            <h2 class="text-2xl font-bold tracking-tight text-foreground">个人优势</h2>
-            <p class="mt-0.5 text-sm text-muted-foreground">我的核心竞争力。</p>
+            <h2 class="font-['Pixelify_Sans'] text-2xl font-bold tracking-tight text-[#161310]">个人优势</h2>
+            <p class="mt-0.5 font-mono text-sm text-[#3a332a]">我的核心竞争力。</p>
           </div>
         </div>
         <div class="timeline relative mt-8 pl-6">
-          <div class="absolute left-2 top-1 bottom-1 w-px bg-gradient-to-b from-[#34d399]/50 via-border to-transparent"></div>
+          <div class="absolute left-2 top-1 bottom-1 w-px bg-[#161310]"></div>
           <div class="space-y-5">
             <div v-for="(item, idx) in advantages" :key="idx" class="timeline-item relative">
-              <div class="absolute -left-[26px] top-5 flex h-5 w-5 items-center justify-center rounded-full border-2 border-background bg-[#34d399]">
-                <span class="text-[10px] text-emerald-950">{{ idx + 1 }}</span>
+              <div class="absolute -left-[26px] top-5 flex h-5 w-5 items-center justify-center border-2 border-[#161310] bg-[#2e5dd6]">
+                <span class="font-mono text-[10px] text-[#fffaef]">{{ idx + 1 }}</span>
               </div>
-              <Card class="transition-all duration-300 hover:border-[#34d399]/30 hover:shadow-md">
-                <CardHeader class="pb-3">
-                  <div class="flex items-start gap-3">
-                    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#34d399]/10 text-base">
-                      {{ item.icon }}
-                    </div>
-                    <div class="flex-1">
-                      <CardTitle class="text-base">{{ item.title }}</CardTitle>
-                      <CardDescription class="mt-1 leading-relaxed">{{ item.desc }}</CardDescription>
-                    </div>
+              <div class="bg-[#fffaef] border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] p-5 transition-all duration-200 hover:-translate-y-0.5">
+                <div class="flex items-start gap-3">
+                  <div class="flex h-9 w-9 shrink-0 items-center justify-center border-2 border-[#161310] bg-[#f2ead6] text-base">
+                    {{ item.icon }}
                   </div>
-                </CardHeader>
-              </Card>
+                  <div class="flex-1">
+                    <h3 class="font-['Pixelify_Sans'] text-base font-semibold text-[#161310]">{{ item.title }}</h3>
+                    <p class="mt-1 font-mono text-sm leading-relaxed text-[#3a332a]">{{ item.desc }}</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -165,82 +162,92 @@ const education = [
 
       <section class="mt-24">
         <div class="flex items-center gap-3">
-          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-[#34d399]/10 text-[#34d399]">
-            <span class="text-lg">🎓</span>
+          <div class="flex h-10 w-10 items-center justify-center border-2 border-[#161310] bg-[#2e5dd6] shadow-[3px_3px_0_0_#161310]">
+            <span class="text-lg text-[#fffaef]">🎓</span>
           </div>
           <div>
-            <h2 class="text-2xl font-bold tracking-tight text-foreground">教育经历</h2>
-            <p class="mt-0.5 text-sm text-muted-foreground">学术背景。</p>
+            <h2 class="font-['Pixelify_Sans'] text-2xl font-bold tracking-tight text-[#161310]">教育经历</h2>
+            <p class="mt-0.5 font-mono text-sm text-[#3a332a]">学术背景。</p>
           </div>
         </div>
         <div class="mt-6 space-y-4">
-          <Card v-for="edu in education" :key="edu.school" class="overflow-hidden">
-            <CardContent class="flex items-start justify-between gap-4 p-6">
+          <div v-for="edu in education" :key="edu.school" class="bg-[#fffaef] border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] overflow-hidden">
+            <div class="flex items-start justify-between gap-4 p-6">
               <div class="flex items-start gap-4">
-                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#34d399]/20 to-[#2dd4bf]/20 text-xl">
+                <div class="flex h-12 w-12 shrink-0 items-center justify-center border-2 border-[#161310] bg-[#f2ead6] text-xl">
                   🏫
                 </div>
                 <div>
-                  <p class="font-semibold text-foreground">{{ edu.school }}</p>
-                  <p class="mt-1 text-sm text-muted-foreground">{{ edu.degree }}</p>
+                  <p class="font-['Pixelify_Sans'] font-semibold text-[#161310]">{{ edu.school }}</p>
+                  <p class="mt-1 font-mono text-sm text-[#3a332a]">{{ edu.degree }}</p>
                 </div>
               </div>
-              <Badge variant="outline" class="shrink-0 text-xs">{{ edu.years }}</Badge>
-            </CardContent>
-          </Card>
+              <span class="shrink-0 font-mono text-xs px-2 py-0.5 border border-[#161310] text-[#161310]">{{ edu.years }}</span>
+            </div>
+          </div>
         </div>
       </section>
 
       <section class="mt-24">
-        <Card class="overflow-hidden border-[#34d399]/20 bg-gradient-to-br from-[#34d399]/5 via-card to-transparent">
-          <CardHeader class="pb-4">
+        <div class="bg-[#fffaef] border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] overflow-hidden">
+          <div class="p-6 pb-4">
             <div class="flex items-center gap-3">
-              <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-[#34d399]/10 text-[#34d399]">
-                <span class="text-lg">📬</span>
+              <div class="flex h-10 w-10 items-center justify-center border-2 border-[#161310] bg-[#2e5dd6] shadow-[3px_3px_0_0_#161310]">
+                <span class="text-lg text-[#fffaef]">📬</span>
               </div>
               <div>
-                <CardTitle>联系方式</CardTitle>
-                <CardDescription>求职中 · 数据分析 / 开发 · 期望城市：南昌 · 薪资：6-9K</CardDescription>
+                <h2 class="font-['Pixelify_Sans'] text-xl font-bold text-[#161310]">联系方式</h2>
+                <p class="font-mono text-sm text-[#3a332a]">求职中 · 数据分析 / 开发 · 期望城市：南昌 · 薪资：6-9K</p>
               </div>
             </div>
-          </CardHeader>
-          <CardContent>
+          </div>
+          <div class="px-6 pb-6">
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <a href="tel:15179493671" class="group flex items-center gap-3 rounded-lg border border-border/50 bg-background/50 p-4 transition-all hover:border-[#34d399]/30 hover:bg-background hover:shadow-sm">
-                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#34d399]/10 text-lg transition-colors group-hover:bg-[#34d399]/20">
+              <a
+                href="tel:15179493671"
+                class="flex items-center gap-3 border-2 border-[#161310] bg-[#f2ead6] p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[3px_3px_0_0_#161310]"
+              >
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-[#161310] bg-[#2e5dd6] text-lg text-[#fffaef]">
                   📞
                 </div>
                 <div class="min-w-0">
-                  <p class="text-xs text-muted-foreground">电话</p>
-                  <p class="truncate text-sm font-medium text-foreground">15179493671</p>
+                  <p class="font-mono text-xs text-[#3a332a]">电话</p>
+                  <p class="truncate font-mono text-sm font-medium text-[#161310]">15179493671</p>
                 </div>
               </a>
-              <a href="mailto:1211288810@qq.com" class="group flex items-center gap-3 rounded-lg border border-border/50 bg-background/50 p-4 transition-all hover:border-[#34d399]/30 hover:bg-background hover:shadow-sm">
-                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#34d399]/10 text-lg transition-colors group-hover:bg-[#34d399]/20">
+              <a
+                href="mailto:1211288810@qq.com"
+                class="flex items-center gap-3 border-2 border-[#161310] bg-[#f2ead6] p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[3px_3px_0_0_#161310]"
+              >
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-[#161310] bg-[#2e5dd6] text-lg text-[#fffaef]">
                   📧
                 </div>
                 <div class="min-w-0">
-                  <p class="text-xs text-muted-foreground">邮箱</p>
-                  <p class="truncate text-sm font-medium text-foreground">1211288810@qq.com</p>
+                  <p class="font-mono text-xs text-[#3a332a]">邮箱</p>
+                  <p class="truncate font-mono text-sm font-medium text-[#161310]">1211288810@qq.com</p>
                 </div>
               </a>
-              <a href="https://github.com/xlx0131" class="group flex items-center gap-3 rounded-lg border border-border/50 bg-background/50 p-4 transition-all hover:border-[#34d399]/30 hover:bg-background hover:shadow-sm">
-                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#34d399]/10 text-lg transition-colors group-hover:bg-[#34d399]/20">
+              <a
+                href="https://github.com/xlx0131"
+                class="flex items-center gap-3 border-2 border-[#161310] bg-[#f2ead6] p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[3px_3px_0_0_#161310]"
+              >
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-[#161310] bg-[#2e5dd6] text-lg text-[#fffaef]">
                   🐙
                 </div>
                 <div class="min-w-0">
-                  <p class="text-xs text-muted-foreground">GitHub</p>
-                  <p class="truncate text-sm font-medium text-foreground">github.com/xlx0131</p>
+                  <p class="font-mono text-xs text-[#3a332a]">GitHub</p>
+                  <p class="truncate font-mono text-sm font-medium text-[#161310]">github.com/xlx0131</p>
                 </div>
               </a>
             </div>
-          </CardContent>
-          <CardFooter class="border-t border-border/50 pt-4">
-            <Button as="a" href="mailto:1211288810@qq.com" class="w-full bg-[#34d399] text-emerald-950 hover:bg-[#2dd4bf] sm:w-auto">
-              立即联系
-            </Button>
-          </CardFooter>
-        </Card>
+          </div>
+          <div class="border-t-2 border-[#161310] px-6 py-4">
+            <a
+              href="mailto:1211288810@qq.com"
+              class="inline-block w-full sm:w-auto font-mono text-sm tracking-wider uppercase px-4 py-2 border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] transition-all duration-200 hover:-translate-y-0.5 bg-[#2e5dd6] text-[#fffaef] text-center"
+            >立即联系</a>
+          </div>
+        </div>
       </section>
     </div>
   </div>

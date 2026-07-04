@@ -169,12 +169,11 @@ function formatNumber(num: number): string {
 <style scoped>
 .book {
   position: relative;
-  border-radius: 10px;
   width: 220px;
   height: 300px;
   background-color: #fffaef;
-  -webkit-box-shadow: 1px 1px 12px #000;
-  box-shadow: 1px 1px 12px #000;
+  border: 3px solid #161310;
+  box-shadow: 6px 6px 0 0 #161310;
   -webkit-transform: preserve-3d;
   -ms-transform: preserve-3d;
   transform: preserve-3d;
@@ -193,6 +192,23 @@ function formatNumber(num: number): string {
   cursor: pointer;
   padding: 20px;
   text-align: center;
+  /* Pixel grid pattern on book body */
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 20px,
+      rgba(22, 19, 16, 0.03) 20px,
+      rgba(22, 19, 16, 0.03) 21px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 20px,
+      rgba(22, 19, 16, 0.03) 20px,
+      rgba(22, 19, 16, 0.03) 21px
+    ),
+    linear-gradient(to bottom, #fffaef, #f5f0e8);
 }
 
 .book p {
@@ -205,23 +221,23 @@ function formatNumber(num: number): string {
   display: -webkit-box;
   -webkit-line-clamp: 8;
   -webkit-box-orient: vertical;
+  position: relative;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .cover {
   top: 0;
   position: absolute;
-  background-color: #fffaef;
+  background-color: #f2ead6;
   width: 100%;
   height: 100%;
-  border-radius: 10px;
   cursor: pointer;
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
   -webkit-transform-origin: 0;
   -ms-transform-origin: 0;
   transform-origin: 0;
-  -webkit-box-shadow: 1px 1px 12px #000;
-  box-shadow: 1px 1px 12px #000;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -233,6 +249,74 @@ function formatNumber(num: number): string {
   justify-content: center;
   padding: 20px;
   text-align: center;
+  z-index: 2;
+  /* Same pixel clip */
+  clip-path: polygon(
+    0 0,
+    calc(100% - 8px) 0,
+    100% 8px,
+    100% 100%,
+    8px 100%,
+    0 calc(100% - 8px)
+  );
+  /* Cover decorative border - pixel inner frame */
+  border: 3px solid #161310;
+  /* Pixel art decoration: top stripe */
+  background:
+    /* Bottom stripe */
+    linear-gradient(to bottom, transparent calc(100% - 8px), #161310 calc(100% - 8px), #161310 100%),
+    /* Top stripe */
+    linear-gradient(to bottom, #161310 0px, #161310 8px, transparent 8px),
+    /* Left stripe */
+    linear-gradient(to right, #161310 0px, #161310 8px, transparent 8px),
+    /* Right stripe */
+    linear-gradient(to left, #161310 0px, #161310 8px, transparent 8px),
+    /* Center decoration: diamond pattern */
+    repeating-conic-gradient(#e8dcc8 0% 25%, transparent 0% 50%) 50% / 16px 16px,
+    /* Base */
+    #f2ead6;
+  background-blend-mode: overlay, normal, normal, normal, normal, normal;
+  background-repeat: no-repeat;
+}
+
+.cover::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  border: 2px solid #161310;
+  pointer-events: none;
+  opacity: 0.3;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 4px) 0,
+    100% 4px,
+    100% 100%,
+    4px 100%,
+    0 calc(100% - 4px)
+  );
+}
+
+/* Pixel art bookmark hanging from bottom */
+.cover::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  right: 20px;
+  width: 12px;
+  height: 16px;
+  background-color: #e2522e;
+  border: 2px solid #161310;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 4px),
+    50% 100%,
+    0 calc(100% - 4px)
+  );
+  z-index: 5;
 }
 
 .cover p {
@@ -241,6 +325,9 @@ function formatNumber(num: number): string {
   font-weight: 700;
   -webkit-line-clamp: 6;
   color: #161310;
+  position: relative;
+  z-index: 2;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.08);
 }
 
 .book:hover .cover {

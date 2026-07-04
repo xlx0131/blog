@@ -7,7 +7,7 @@ const router = useRouter()
 
 const activeTab = ref('all')
 const searchQuery = ref('')
-const cardViewMode = ref<'pixel' | 'browser'>('browser')
+const cardViewMode = ref<'pixel' | 'browser'>('pixel')
 
 const allItems = computed(() => {
   return bookmarks.flatMap((cat: any) =>

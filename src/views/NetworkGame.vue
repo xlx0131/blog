@@ -936,7 +936,7 @@ watch(gamePhase, (newPhase) => {
 </script>
 
 <template>
-  <div class="cyber-game-container">
+  <div class="cyber-game-container bg-[#f5f0e8]">
     <div class="cyber-grid-bg"></div>
     <div class="cyber-scanlines"></div>
 
@@ -1809,7 +1809,7 @@ watch(gamePhase, (newPhase) => {
 .cyber-game-container {
   position: fixed;
   inset: 0;
-  background: #0a0e17;
+  background: #f5f0e8;
   color: #e2e8f0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   overflow: hidden;
