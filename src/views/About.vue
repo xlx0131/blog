@@ -209,12 +209,14 @@ function getAdvIcon(name: string) {
         <div class="panel-content p-4">
           <h3 class="font-['Pixelify_Sans'] text-xl text-[#161310] mb-3">个人优势</h3>
           <div class="grid grid-cols-2 gap-3">
-            <div v-for="adv in advantages" :key="adv.title" class="perk-item p-3 bg-[#fffaef] border-2 border-[#161310] text-center transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[2px_2px_0_0_#161310]">
-              <div class="mb-2 flex justify-center text-[#2e5dd6]">
-                <component :is="getAdvIcon(adv.icon)" class="w-7 h-7" />
+            <div v-for="adv in advantages" :key="adv.title" class="perk-card">
+              <div class="perk-icon text-[#2e5dd6]">
+                <component :is="getAdvIcon(adv.icon)" class="w-8 h-8" />
               </div>
-              <p class="font-['Pixelify_Sans'] text-sm text-[#161310]">{{ adv.title }}</p>
-              <p class="font-mono text-[11px] text-[#3a332a] mt-1">{{ adv.desc }}</p>
+              <div class="perk-content">
+                <p class="perk-title font-['Pixelify_Sans'] text-[#161310]">{{ adv.title }}</p>
+                <p class="perk-desc font-mono text-[#3a332a]">{{ adv.desc }}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -415,8 +417,66 @@ function getAdvIcon(name: string) {
   image-rendering: pixelated;
 }
 
-.perk-item {
-  cursor: default;
+.perk-card {
+  position: relative;
+  height: 100px;
+  background-color: #fffaef;
+  border: 2px solid #161310;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  perspective: 1000px;
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+}
+
+.perk-card:hover {
+  transform: scale(1.05);
+  box-shadow: 4px 4px 0 0 #161310;
+}
+
+.perk-card .perk-icon {
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.perk-card:hover .perk-icon {
+  scale: 0;
+}
+
+.perk-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+  background-color: #fffaef;
+  transform: rotateX(-90deg);
+  transform-origin: bottom;
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 6px;
+}
+
+.perk-card:hover .perk-content {
+  transform: rotateX(0deg);
+}
+
+.perk-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.perk-desc {
+  font-size: 12px;
+  margin: 0;
 }
 
 .edu-item {
