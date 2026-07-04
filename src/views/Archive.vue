@@ -229,7 +229,7 @@ function formatNumber(num: number): string {
 .cover {
   top: 0;
   position: absolute;
-  background-color: #f2ead6;
+  background-color: #fffaef;
   width: 100%;
   height: 100%;
   cursor: pointer;
@@ -261,22 +261,7 @@ function formatNumber(num: number): string {
   );
   /* Cover decorative border - pixel inner frame */
   border: 3px solid #161310;
-  /* Pixel art decoration: top stripe */
-  background:
-    /* Bottom stripe */
-    linear-gradient(to bottom, transparent calc(100% - 8px), #161310 calc(100% - 8px), #161310 100%),
-    /* Top stripe */
-    linear-gradient(to bottom, #161310 0px, #161310 8px, transparent 8px),
-    /* Left stripe */
-    linear-gradient(to right, #161310 0px, #161310 8px, transparent 8px),
-    /* Right stripe */
-    linear-gradient(to left, #161310 0px, #161310 8px, transparent 8px),
-    /* Center decoration: diamond pattern */
-    repeating-conic-gradient(#e8dcc8 0% 25%, transparent 0% 50%) 50% / 16px 16px,
-    /* Base */
-    #f2ead6;
-  background-blend-mode: overlay, normal, normal, normal, normal, normal;
-  background-repeat: no-repeat;
+  background: #fffaef;
 }
 
 .cover::before {
