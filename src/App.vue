@@ -56,6 +56,10 @@ const route = useRoute()
 const mobileOpen = ref(false)
 const scrolled = ref(false)
 const showBackTop = ref(false)
+const showSecretModal = ref(false)
+const secretUsername = ref('')
+const secretPassword = ref('')
+const secretError = ref('')
 
 const navItems = [
   { path: '/', label: '首页', icon: HomeIcon },
@@ -90,6 +94,28 @@ onMounted(() => {
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+function openSecretModal() {
+  showSecretModal.value = true
+  secretUsername.value = ''
+  secretPassword.value = ''
+  secretError.value = ''
+}
+
+function verifySecret() {
+  if (secretUsername.value === '许立鑫' && secretPassword.value === '20050131') {
+    showSecretModal.value = false
+    sessionStorage.setItem('writingAuth', 'true')
+    router.push('/writing')
+  } else {
+    secretError.value = '用户名或密码错误'
+  }
+}
+
+function closeSecretModal() {
+  showSecretModal.value = false
+  secretError.value = ''
 }
 onBeforeUnmount(() => cleanup?.())
 </script>
@@ -287,7 +313,9 @@ onBeforeUnmount(() => cleanup?.())
         <Separator class="my-8" />
         <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#3a332a]">
           <p>
-            &copy; {{ new Date().getFullYear() }} 许立鑫. All rights reserved.
+            <button class="copyright-btn" @click="openSecretModal">
+              &copy; {{ new Date().getFullYear() }} 许立鑫. All rights reserved.
+            </button>
           </p>
           <p class="flex items-center gap-1">
             Made with
@@ -310,6 +338,55 @@ onBeforeUnmount(() => cleanup?.())
       </svg>
       <span>TOP</span>
     </button>
+
+    <!-- Secret Modal -->
+    <div v-if="showSecretModal" class="secret-modal-overlay" @click.self="closeSecretModal">
+      <div class="secret-modal">
+        <div class="secret-modal-header">
+          <span class="font-mono text-xs text-[#fffaef] tracking-wider">ACCESS RESTRICTED</span>
+        </div>
+        <div class="secret-modal-body p-6">
+          <h3 class="font-['Pixelify_Sans'] text-2xl text-[#161310] mb-1 text-center">管理员验证</h3>
+          <p class="font-mono text-xs text-[#3a332a] mb-6 text-center">请输入管理员凭证</p>
+          
+          <div class="space-y-4">
+            <div>
+              <label class="font-mono text-xs text-[#161310] block mb-2">用户名</label>
+              <input
+                v-model="secretUsername"
+                type="text"
+                class="secret-input"
+                placeholder="请输入用户名"
+                @keyup.enter="verifySecret"
+              />
+            </div>
+            <div>
+              <label class="font-mono text-xs text-[#161310] block mb-2">密码</label>
+              <input
+                v-model="secretPassword"
+                type="password"
+                class="secret-input"
+                placeholder="请输入密码"
+                @keyup.enter="verifySecret"
+              />
+            </div>
+            
+            <p v-if="secretError" class="font-mono text-xs text-[#a33a3a] text-center">
+              {{ secretError }}
+            </p>
+            
+            <div class="flex gap-3 pt-2">
+              <button class="secret-btn secondary flex-1" @click="closeSecretModal">
+                取消
+              </button>
+              <button class="secret-btn primary flex-1" @click="verifySecret">
+                确认
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -483,5 +560,130 @@ onBeforeUnmount(() => cleanup?.())
     width: 20px;
     height: 20px;
   }
+}
+
+.copyright-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.copyright-btn:hover {
+  color: #2e5dd6;
+}
+
+.secret-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(22, 19, 16, 0.6);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.secret-modal {
+  background: #fffaef;
+  border: 3px solid #161310;
+  box-shadow: 8px 8px 0 0 #161310;
+  width: 100%;
+  max-width: 420px;
+  animation: modalIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.secret-modal-header {
+  background: #161310;
+  padding: 10px 16px;
+}
+
+.secret-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: #f5f0e8;
+  border: 2px solid #161310;
+  color: #161310;
+  font-family: ui-monospace, monospace;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.secret-input:focus {
+  background: #fffaef;
+  border-color: #2e5dd6;
+  box-shadow: 3px 3px 0 0 #2e5dd6;
+}
+
+.secret-btn {
+  padding: 10px 20px;
+  border: 2px solid #161310;
+  font-family: 'Pixelify Sans', ui-monospace, monospace;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.secret-btn.primary {
+  background: #2e5dd6;
+  color: #fffaef;
+  box-shadow: 3px 3px 0 0 #161310;
+}
+
+.secret-btn.primary:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 0 #161310;
+  background: #3a6ee8;
+}
+
+.secret-btn.primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 0 #161310;
+}
+
+.secret-btn.secondary {
+  background: #fffaef;
+  color: #161310;
+  box-shadow: 3px 3px 0 0 #161310;
+}
+
+.secret-btn.secondary:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 0 #161310;
+  background: #f5f0e8;
+}
+
+.secret-btn.secondary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 0 #161310;
 }
 </style>
