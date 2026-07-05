@@ -55,6 +55,7 @@ const router = useRouter()
 const route = useRoute()
 const mobileOpen = ref(false)
 const scrolled = ref(false)
+const showBackTop = ref(false)
 
 const navItems = [
   { path: '/', label: '首页', icon: HomeIcon },
@@ -73,7 +74,10 @@ const socialLinks = [
 let cleanup: (() => void) | null = null
 
 onMounted(() => {
-  const onScroll = () => { scrolled.value = window.scrollY > 20 }
+  const onScroll = () => {
+    scrolled.value = window.scrollY > 20
+    showBackTop.value = window.scrollY > 400
+  }
   window.addEventListener('scroll', onScroll, { passive: true })
   cleanup = () => window.removeEventListener('scroll', onScroll)
 
@@ -83,6 +87,10 @@ onMounted(() => {
     initAllInteractions()
   }, 100)
 })
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
 onBeforeUnmount(() => cleanup?.())
 </script>
 
@@ -289,6 +297,19 @@ onBeforeUnmount(() => cleanup?.())
         </div>
       </div>
     </footer>
+
+    <!-- Back to Top Button -->
+    <button
+      v-if="showBackTop"
+      class="back-to-top"
+      @click="scrollToTop"
+      aria-label="回到顶部"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter">
+        <polyline points="18 15 12 9 6 15"></polyline>
+      </svg>
+      <span>TOP</span>
+    </button>
   </div>
 </template>
 
@@ -405,5 +426,62 @@ onBeforeUnmount(() => cleanup?.())
   60% { transform: scale(0.8); }
   80% { transform: scale(1.2); }
   100% { transform: scale(1); }
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 64px;
+  height: 64px;
+  background: #fffaef;
+  border: 3px solid #161310;
+  box-shadow: 4px 4px 0 0 #161310;
+  color: #161310;
+  cursor: pointer;
+  font-family: 'Pixelify Sans', ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  image-rendering: pixelated;
+}
+
+.back-to-top:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 0 #161310;
+  background: #f5f0e8;
+}
+
+.back-to-top:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 0 #161310;
+  background: #ebe4d6;
+}
+
+.back-to-top svg {
+  width: 24px;
+  height: 24px;
+}
+
+@media (max-width: 768px) {
+  .back-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    font-size: 10px;
+  }
+  .back-to-top svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 </style>
