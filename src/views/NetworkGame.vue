@@ -73,6 +73,20 @@ const showCompleteModal = ref(false)
 const currentCompleteType = ref('')
 const completed = ref<Record<number, boolean>>({})
 
+// 教程引导
+const showTutorial = ref(false)
+const tutorialStepIndex = ref(0)
+const isTutorialLevel = computed(() => currentLevel.value?.tutorial && currentLevel.value.tutorial.steps?.length > 0)
+const currentTutorialStep = computed(() => {
+  if (!currentLevel.value?.tutorial) return null
+  return currentLevel.value.tutorial.steps[tutorialStepIndex.value] || null
+})
+const isLastTutorialStep = computed(() => {
+  if (!currentLevel.value?.tutorial) return true
+  return tutorialStepIndex.value >= currentLevel.value.tutorial.steps.length - 1
+})
+const isFirstTutorialStep = computed(() => tutorialStepIndex.value === 0)
+
 const elapsedTime = ref(0)
 const errorCount = ref(0)
 const commandCount = ref(0)
@@ -705,7 +719,45 @@ function startLevel(level: any) {
   }
   resetState()
   gamePhase.value = 'playing'
+  
+  // 初始化教程
+  tutorialStepIndex.value = 0
+  if (level.tutorial && level.tutorial.steps?.length > 0) {
+    showTutorial.value = true
+  } else {
+    showTutorial.value = false
+  }
+  
   startTimer()
+}
+
+function nextTutorialStep() {
+  if (!currentLevel.value?.tutorial) return
+  if (tutorialStepIndex.value < currentLevel.value.tutorial.steps.length - 1) {
+    tutorialStepIndex.value++
+  }
+}
+
+function prevTutorialStep() {
+  if (tutorialStepIndex.value > 0) {
+    tutorialStepIndex.value--
+  }
+}
+
+function finishTutorial() {
+  showTutorial.value = false
+  // 如果是教学关卡且没有故障，直接标记为完成并进入复盘
+  if (currentLevel.value?.fault.type === 'none') {
+    setTimeout(() => {
+      foundFault.value = true
+      fixed.value = true
+      enterReview()
+    }, 300)
+  }
+}
+
+function closeTutorial() {
+  showTutorial.value = false
 }
 
 function enterReview() {
@@ -1096,6 +1148,11 @@ watch(gamePhase, (newPhase) => {
               <ChevronRight v-else :size="16" />
             </button>
 
+            <div v-if="!leftPanelCollapsed" class="panel-title">
+              <TerminalIcon :size="16" />
+              <span>快捷命令</span>
+            </div>
+
             <div class="tools-list">
               <button
                 v-for="tool in tools"
@@ -1104,7 +1161,7 @@ watch(gamePhase, (newPhase) => {
                 :title="tool.name"
                 @click="runTool(tool.cmd)"
               >
-                <component :is="tool.icon" :size="18" />
+                <component :is="tool.icon" :size="24" color="#161310" class="tool-icon" />
                 <span v-if="!leftPanelCollapsed" class="tool-name">{{ tool.name }}</span>
               </button>
             </div>
@@ -1610,6 +1667,72 @@ watch(gamePhase, (newPhase) => {
             </div>
           </div>
         </Transition>
+
+        <!-- 教程引导弹窗 -->
+        <Teleport to="body">
+          <Transition name="tutorial-fade">
+            <div v-if="showTutorial && currentTutorialStep" class="tutorial-overlay">
+              <div class="tutorial-dialog">
+                <div class="tutorial-header">
+                  <div class="tutorial-step-indicator">
+                    <span class="step-current">{{ tutorialStepIndex + 1 }}</span>
+                    <span class="step-separator">/</span>
+                    <span class="step-total">{{ currentLevel.tutorial.steps.length }}</span>
+                  </div>
+                  <button class="tutorial-close" @click="closeTutorial" title="跳过教程">
+                    <X :size="18" />
+                  </button>
+                </div>
+                
+                <div class="tutorial-icon-title">
+                  <h3 class="tutorial-title">{{ currentTutorialStep.title }}</h3>
+                </div>
+                
+                <div class="tutorial-content">
+                  <p v-for="(paragraph, i) in currentTutorialStep.content.split('\n\n')" :key="i" class="tutorial-paragraph">
+                    {{ paragraph }}
+                  </p>
+                </div>
+                
+                <div class="tutorial-actions">
+                  <button 
+                    v-if="!isFirstTutorialStep" 
+                    class="tutorial-btn secondary" 
+                    @click="prevTutorialStep"
+                  >
+                    <ChevronLeft :size="16" />
+                    上一步
+                  </button>
+                  <button 
+                    v-if="isLastTutorialStep" 
+                    class="tutorial-btn primary" 
+                    @click="finishTutorial"
+                  >
+                    完成教学
+                    <CheckCircle2 :size="16" />
+                  </button>
+                  <button 
+                    v-else 
+                    class="tutorial-btn primary" 
+                    @click="nextTutorialStep"
+                  >
+                    下一步
+                    <ChevronRight :size="16" />
+                  </button>
+                </div>
+                
+                <div class="tutorial-progress-dots">
+                  <span 
+                    v-for="(_, i) in currentLevel.tutorial.steps" 
+                    :key="i" 
+                    class="progress-dot"
+                    :class="{ active: i === tutorialStepIndex }"
+                  ></span>
+                </div>
+              </div>
+            </div>
+          </Transition>
+        </Teleport>
       </div>
     </template>
 
@@ -2293,7 +2416,7 @@ watch(gamePhase, (newPhase) => {
 /* 左侧工具面板 */
 .left-panel {
   position: relative;
-  width: 180px;
+  width: 200px;
   background: #fffaef;
   border-right: 2px solid #161310;
   display: flex;
@@ -2303,7 +2426,7 @@ watch(gamePhase, (newPhase) => {
 }
 
 .left-panel.collapsed {
-  width: 60px;
+  width: 68px;
 }
 
 .panel-toggle {
@@ -2329,41 +2452,74 @@ watch(gamePhase, (newPhase) => {
 }
 
 .tools-list {
-  padding: 16px 10px;
+  padding: 12px 12px 20px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
+}
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 14px 10px;
+  font-family: 'Pixelify Sans', ui-monospace, monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: #161310;
+  border-bottom: 2px solid #161310;
+  margin: 0 12px;
 }
 
 .tool-btn {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  background: transparent;
-  border: 2px solid transparent;
-  color: #161310;
+  gap: 14px;
+  padding: 12px 14px;
+  background: #fffaef;
+  border: 2px solid #161310;
+  color: #161310 !important;
   font-size: 13px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s;
   white-space: nowrap;
   font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+  font-weight: 600;
+  box-shadow: 3px 3px 0 0 #161310;
+  width: 100%;
 }
 
 .tool-btn:hover {
   background: #f2ead6;
-  border-color: #161310;
-  color: #2e5dd6;
-  box-shadow: 2px 2px 0 0 #161310;
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 0 #161310;
+}
+
+.tool-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 0 #161310;
 }
 
 .tool-name {
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.tool-icon {
+  flex-shrink: 0;
+  color: #161310 !important;
+  stroke: #161310 !important;
+  stroke-width: 2;
+  width: 24px;
+  height: 24px;
+  display: block;
+  min-width: 24px;
+  min-height: 24px;
 }
 
 .left-panel.collapsed .tool-btn {
   justify-content: center;
-  padding: 10px;
+  padding: 12px;
 }
 
 /* 中央区域 */
@@ -2584,21 +2740,24 @@ watch(gamePhase, (newPhase) => {
   background: transparent;
   border: none;
   border-bottom: 2px solid transparent;
-  color: #3a332a;
-  font-size: 11px;
+  color: #161310;
+  font-size: 12px;
   cursor: pointer;
   transition: all 0.2s;
   margin-bottom: -2px;
-  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+  font-family: 'Pixelify Sans', ui-monospace, monospace;
+  font-weight: 600;
 }
 
 .panel-tab:hover {
   color: #2e5dd6;
+  background: rgba(46, 93, 214, 0.08);
 }
 
 .panel-tab.active {
   color: #2e5dd6;
   border-bottom-color: #2e5dd6;
+  font-weight: 700;
 }
 
 .panel-content {
@@ -4233,5 +4392,175 @@ watch(gamePhase, (newPhase) => {
   .fix-option { padding: 12px 14px; }
   .device-panel { gap: 12px; }
   .op-btn { padding: 8px 10px; font-size: 12px; }
+}
+
+/* ═══════ 教程引导弹窗 ═══════ */
+.tutorial-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(22, 19, 16, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(2px);
+}
+
+.tutorial-dialog {
+  background: #fffaef;
+  border: 3px solid #161310;
+  box-shadow: 6px 6px 0 0 #161310;
+  width: 90%;
+  max-width: 480px;
+  padding: 24px;
+  position: relative;
+}
+
+.tutorial-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.tutorial-step-indicator {
+  font-family: 'Pixelify Sans', ui-monospace, monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: #6a5f52;
+}
+
+.step-current {
+  color: #161310;
+  font-size: 18px;
+}
+
+.step-separator {
+  margin: 0 4px;
+  color: #a89888;
+}
+
+.tutorial-close {
+  width: 32px;
+  height: 32px;
+  border: 2px solid #161310;
+  background: #f5e6d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: #161310;
+}
+
+.tutorial-close:hover {
+  background: #e8d5b8;
+  transform: translate(-1px, -1px);
+  box-shadow: 2px 2px 0 0 #161310;
+}
+
+.tutorial-icon-title {
+  margin-bottom: 16px;
+}
+
+.tutorial-title {
+  font-family: 'Pixelify Sans', ui-monospace, monospace;
+  font-size: 20px;
+  font-weight: 700;
+  color: #161310;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.tutorial-content {
+  margin-bottom: 24px;
+  min-height: 120px;
+}
+
+.tutorial-paragraph {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #3a332a;
+  margin: 0 0 12px 0;
+  white-space: pre-wrap;
+}
+
+.tutorial-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+.tutorial-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.tutorial-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  font-family: 'Pixelify Sans', ui-monospace, monospace;
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px solid #161310;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.tutorial-btn.secondary {
+  background: #f5e6d0;
+  color: #161310;
+  box-shadow: 3px 3px 0 0 #161310;
+}
+
+.tutorial-btn.secondary:hover {
+  background: #e8d5b8;
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 0 #161310;
+}
+
+.tutorial-btn.primary {
+  background: #4a7c59;
+  color: #fffaef;
+  box-shadow: 3px 3px 0 0 #161310;
+}
+
+.tutorial-btn.primary:hover {
+  background: #3a6a49;
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 0 #161310;
+}
+
+.tutorial-progress-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.progress-dot {
+  width: 10px;
+  height: 10px;
+  background: #d4c8b8;
+  border: 2px solid #161310;
+  transition: all 0.2s;
+}
+
+.progress-dot.active {
+  background: #4a7c59;
+  transform: scale(1.2);
+}
+
+.tutorial-fade-enter-active,
+.tutorial-fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+
+.tutorial-fade-enter-from,
+.tutorial-fade-leave-to {
+  opacity: 0;
 }
 </style>

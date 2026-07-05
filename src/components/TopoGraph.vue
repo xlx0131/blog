@@ -42,12 +42,12 @@ const adjustedDevices = computed(() => {
 const hoveredConn = ref<number | null>(null)
 
 const deviceColors: Record<string, string> = {
-  computer: '#00d4ff',
-  server: '#00ff88',
-  switch: '#a855f7',
-  router: '#ffaa00',
-  firewall: '#ff4757',
-  wifi: '#06b6d4',
+  computer: '#2e5dd6',
+  server: '#a33a3a',
+  switch: '#7c3aed',
+  router: '#d4a017',
+  firewall: '#a33a3a',
+  wifi: '#0891b2',
 }
 
 const iconComponents: Record<string, any> = {
@@ -110,15 +110,15 @@ function getConnMockData(index: number) {
 }
 
 function getStatusColor(status?: string): string {
-  if (status === 'offline') return '#ff4757'
-  if (status === 'unstable') return '#ffaa00'
-  return '#00ff88'
+  if (status === 'offline') return '#a33a3a'
+  if (status === 'unstable') return '#d4a017'
+  return '#2f9e44'
 }
 
 function getConnColor(status: string): string {
-  if (status === 'down') return '#ff4757'
-  if (status === 'unstable') return '#ffaa00'
-  return '#00d4ff'
+  if (status === 'down') return '#a33a3a'
+  if (status === 'unstable') return '#d4a017'
+  return '#2e5dd6'
 }
 </script>
 
@@ -127,59 +127,14 @@ function getConnColor(status: string): string {
     <div class="topo-scroll-wrapper">
       <svg :viewBox="viewBox" class="topo-svg" preserveAspectRatio="xMidYMid meet">
       <defs>
-        <pattern id="cyber-grid" width="30" height="30" patternUnits="userSpaceOnUse">
-          <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#1e3a5f" stroke-width="0.5" opacity="0.4" />
+        <pattern id="pixel-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+          <rect width="20" height="20" fill="none" />
+          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#d9d2c4" stroke-width="1" />
         </pattern>
-
-        <filter id="glow-cyan" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-          <feMerge>
-            <feMergeNode in="coloredBlur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-
-        <filter id="glow-green" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-          <feMerge>
-            <feMergeNode in="coloredBlur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-
-        <filter id="glow-red" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-          <feMerge>
-            <feMergeNode in="coloredBlur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-
-        <filter id="glow-purple" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-          <feMerge>
-            <feMergeNode in="coloredBlur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-
-        <filter id="glow-amber" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-          <feMerge>
-            <feMergeNode in="coloredBlur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-
-        <linearGradient id="line-gradient-up" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:0.6" />
-          <stop offset="50%" style="stop-color:#00d4ff;stop-opacity:1" />
-          <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:0.6" />
-        </linearGradient>
       </defs>
 
-      <rect width="100%" height="100%" fill="#0a0e17" />
-      <rect width="100%" height="100%" fill="url(#cyber-grid)" />
+      <rect width="100%" height="100%" fill="#f5f0e8" />
+      <rect width="100%" height="100%" fill="url(#pixel-grid)" />
 
       <g class="connections-group">
         <g
@@ -193,79 +148,65 @@ function getConnColor(status: string): string {
             :d="getConnectionPath(conn, adjustedDevices)"
             fill="none"
             :stroke="getConnColor(conn.status)"
-            :stroke-width="hoveredConn === i ? 3.5 : (conn.status === 'down' ? 2.5 : 2)"
-            :stroke-dasharray="conn.status === 'down' ? '8,5' : (conn.status === 'unstable' ? '4,3' : 'none')"
-            :opacity="conn.status === 'down' ? 0.8 : 1"
-            :filter="hoveredConn === i ? 'url(#glow-cyan)' : 'none'"
+            :stroke-width="hoveredConn === i ? 4 : (conn.status === 'down' ? 3 : 3)"
+            :stroke-dasharray="conn.status === 'down' ? '10,6' : (conn.status === 'unstable' ? '6,4' : 'none')"
+            :opacity="conn.status === 'down' ? 0.9 : 1"
             class="connection-line"
           />
 
-          <circle
+          <rect
             v-if="conn.status === 'up'"
-            r="4"
-            fill="#00d4ff"
-            filter="url(#glow-cyan)"
+            width="6"
+            height="6"
+            :fill="getConnColor(conn.status)"
             class="data-particle"
           >
             <animateMotion
-              :dur="(getPathLength(conn, adjustedDevices) / 200) + 's'"
+              :dur="(getPathLength(conn, adjustedDevices) / 180) + 's'"
               repeatCount="indefinite"
               :path="getConnectionPath(conn, adjustedDevices)"
             />
-          </circle>
-
-          <circle
-            v-if="conn.status === 'up'"
-            r="3"
-            fill="#00d4ff"
-            filter="url(#glow-cyan)"
-            class="data-particle"
-          >
-            <animateMotion
-              :dur="(getPathLength(conn, adjustedDevices) / 200) + 's'"
-              begin="-0.8s"
-              repeatCount="indefinite"
-              :path="getConnectionPath(conn, adjustedDevices)"
-            />
-          </circle>
+          </rect>
 
           <g v-if="hoveredConn === i" class="conn-tooltip-group">
             <rect
-              :x="(adjustedDevices.find(d => d.id === conn.from)!.x + adjustedDevices.find(d => d.id === conn.to)!.x) / 2 - 60"
-              :y="(adjustedDevices.find(d => d.id === conn.from)!.y + adjustedDevices.find(d => d.id === conn.to)!.y) / 2 - 45"
-              width="120"
-              height="55"
-              rx="6"
-              fill="rgba(15, 22, 41, 0.95)"
-              stroke="#00d4ff"
-              stroke-width="1"
-              filter="url(#glow-cyan)"
+              :x="(adjustedDevices.find(d => d.id === conn.from)!.x + adjustedDevices.find(d => d.id === conn.to)!.x) / 2 - 65"
+              :y="(adjustedDevices.find(d => d.id === conn.from)!.y + adjustedDevices.find(d => d.id === conn.to)!.y) / 2 - 50"
+              width="130"
+              height="60"
+              fill="#fffaef"
+              stroke="#161310"
+              stroke-width="2"
             />
             <text
               :x="(adjustedDevices.find(d => d.id === conn.from)!.x + adjustedDevices.find(d => d.id === conn.to)!.x) / 2"
-              :y="(adjustedDevices.find(d => d.id === conn.from)!.y + adjustedDevices.find(d => d.id === conn.to)!.y) / 2 - 25"
+              :y="(adjustedDevices.find(d => d.id === conn.from)!.y + adjustedDevices.find(d => d.id === conn.to)!.y) / 2 - 28"
               text-anchor="middle"
-              fill="#00d4ff"
-              font-size="10"
-              font-weight="600"
+              fill="#161310"
+              font-size="11"
+              font-weight="700"
+              font-family="'Pixelify Sans', monospace"
             >链路信息</text>
             <text
-              :x="(adjustedDevices.find(d => d.id === conn.from)!.x + adjustedDevices.find(d => d.id === conn.to)!.x) / 2 - 52"
-              :y="(adjustedDevices.find(d => d.id === conn.from)!.y + adjustedDevices.find(d => d.id === conn.to)!.y) / 2 - 8"
-              fill="#94a3b8"
-              font-size="9"
+              :x="(adjustedDevices.find(d => d.id === conn.from)!.x + adjustedDevices.find(d => d.id === conn.to)!.x) / 2 - 55"
+              :y="(adjustedDevices.find(d => d.id === conn.from)!.y + adjustedDevices.find(d => d.id === conn.to)!.y) / 2 - 10"
+              fill="#3a332a"
+              font-size="10"
+              font-family="ui-monospace, monospace"
             >带宽: {{ getConnMockData(i).bandwidth }}</text>
             <text
-              :x="(adjustedDevices.find(d => d.id === conn.from)!.x + adjustedDevices.find(d => d.id === conn.to)!.x) / 2 - 52"
-              :y="(adjustedDevices.find(d => d.id === conn.from)!.y + adjustedDevices.find(d => d.id === conn.to)!.y) / 2 + 5"
-              fill="#94a3b8"
-              font-size="9"
+              :x="(adjustedDevices.find(d => d.id === conn.from)!.x + adjustedDevices.find(d => d.id === conn.to)!.x) / 2 - 55"
+              :y="(adjustedDevices.find(d => d.id === conn.from)!.y + adjustedDevices.find(d => d.id === conn.to)!.y) / 2 + 4"
+              fill="#3a332a"
+              font-size="10"
+              font-family="ui-monospace, monospace"
             >延迟: {{ getConnMockData(i).latency }}</text>
             <text
-              :x="(adjustedDevices.find(d => d.id === conn.from)!.x + adjustedDevices.find(d => d.id === conn.to)!.x) / 2 - 52"
+              :x="(adjustedDevices.find(d => d.id === conn.from)!.x + adjustedDevices.find(d => d.id === conn.to)!.x) / 2 - 55"
               :y="(adjustedDevices.find(d => d.id === conn.from)!.y + adjustedDevices.find(d => d.id === conn.to)!.y) / 2 + 18"
-              fill="#94a3b8"
-              font-size="9"
+              fill="#3a332a"
+              font-size="10"
+              font-family="ui-monospace, monospace"
             >丢包: {{ getConnMockData(i).loss }}</text>
           </g>
         </g>
@@ -313,30 +254,12 @@ function getConnColor(status: string): string {
 
 <style scoped>
 .topo-container {
-  background: rgba(15, 22, 41, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 212, 255, 0.3);
-  border-radius: 12px;
+  background: #f5f0e8;
+  border: 3px solid #161310;
+  box-shadow: 6px 6px 0 0 #161310;
   overflow: hidden;
-  box-shadow:
-    0 0 30px rgba(0, 212, 255, 0.1),
-    inset 0 0 60px rgba(0, 212, 255, 0.03);
   position: relative;
-  padding: 20px;
-}
-
-.topo-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #00d4ff, transparent);
-  opacity: 0.6;
-  z-index: 10;
-  pointer-events: none;
+  padding: 16px;
 }
 
 .topo-scroll-wrapper {
@@ -348,25 +271,19 @@ function getConnColor(status: string): string {
   align-items: center;
   justify-content: flex-start;
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 212, 255, 0.3) transparent;
+  scrollbar-color: #161310 #f5f0e8;
 }
 
 .topo-scroll-wrapper::-webkit-scrollbar {
-  height: 6px;
+  height: 8px;
 }
 
 .topo-scroll-wrapper::-webkit-scrollbar-track {
-  background: rgba(0, 212, 255, 0.05);
-  border-radius: 3px;
+  background: #e8e0d0;
 }
 
 .topo-scroll-wrapper::-webkit-scrollbar-thumb {
-  background: rgba(0, 212, 255, 0.3);
-  border-radius: 3px;
-}
-
-.topo-scroll-wrapper::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 212, 255, 0.5);
+  background: #161310;
 }
 
 .topo-svg {
@@ -378,12 +295,13 @@ function getConnColor(status: string): string {
 }
 
 .connection-line {
-  transition: stroke-width 0.25s ease, filter 0.25s ease;
+  transition: stroke-width 0.2s ease;
   cursor: pointer;
+  stroke-linecap: square;
 }
 
 .connection-group:hover .connection-line {
-  stroke-width: 3.5;
+  stroke-width: 4;
 }
 
 .data-particle {
@@ -413,37 +331,32 @@ function getConnColor(status: string): string {
 .device-card {
   width: 100%;
   height: 100%;
-  border-radius: 10px;
-  background: color-mix(in srgb, var(--device-color) 12%, transparent);
-  border: 1.5px solid color-mix(in srgb, var(--device-color) 40%, transparent);
+  background: #fffaef;
+  border: 2px solid #161310;
+  box-shadow: 3px 3px 0 0 #161310;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 4px;
   position: relative;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
   box-sizing: border-box;
   overflow: visible;
 }
 
 .device-card:hover {
   border-color: var(--device-color);
-  background: color-mix(in srgb, var(--device-color) 20%, transparent);
-  transform: scale(1.06);
-  box-shadow:
-    0 0 20px color-mix(in srgb, var(--device-color) 50%, transparent),
-    0 0 40px color-mix(in srgb, var(--device-color) 25%, transparent);
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 0 var(--device-color);
 }
 
 .device-highlighted {
-  border-width: 2.5px !important;
+  border-width: 3px !important;
   border-color: var(--device-color) !important;
-  background: color-mix(in srgb, var(--device-color) 25%, rgba(0, 0, 0, 0.3)) !important;
-  box-shadow:
-    0 0 25px color-mix(in srgb, var(--device-color) 60%, transparent),
-    0 0 50px color-mix(in srgb, var(--device-color) 30%, transparent) !important;
-  transform: scale(1.04);
+  background: #fffaef !important;
+  box-shadow: 5px 5px 0 0 var(--device-color) !important;
+  transform: translate(-2px, -2px);
 }
 
 .device-icon-wrap {
@@ -455,9 +368,9 @@ function getConnColor(status: string): string {
 
 .device-label {
   font-size: 10px;
-  color: #cbd5e1;
-  font-weight: 500;
-  letter-spacing: 0.3px;
+  color: #161310;
+  font-weight: 600;
+  font-family: 'Pixelify Sans', ui-monospace, monospace;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -466,99 +379,56 @@ function getConnColor(status: string): string {
 
 .status-dot {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--status-color);
-}
-
-.device-online .status-dot {
-  animation: breathe-green 2s ease-in-out infinite;
-  box-shadow: 0 0 6px #00ff88, 0 0 12px rgba(0, 255, 136, 0.5);
-}
-
-.device-unstable .status-dot {
-  animation: blink-amber 1s ease-in-out infinite;
-  box-shadow: 0 0 6px #ffaa00, 0 0 12px rgba(255, 170, 0, 0.5);
-}
-
-.device-offline .status-dot {
-  animation: pulse-red 1.5s ease-in-out infinite;
-  box-shadow: 0 0 8px #ff4757, 0 0 16px rgba(255, 71, 87, 0.6);
-}
-
-@keyframes breathe-green {
-  0%, 100% {
-    opacity: 0.6;
-    transform: scale(0.9);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.1);
-  }
-}
-
-@keyframes blink-amber {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.3;
-  }
-}
-
-@keyframes pulse-red {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-    box-shadow: 0 0 8px #ff4757, 0 0 16px rgba(255, 71, 87, 0.6);
-  }
-  50% {
-    opacity: 0.7;
-    transform: scale(1.3);
-    box-shadow: 0 0 12px #ff4757, 0 0 24px rgba(255, 71, 87, 0.8);
-  }
-}
-
-.device-unstable.device-card {
-  animation: borderPulseAmber 2s ease-in-out infinite;
-}
-
-@keyframes borderPulseAmber {
-  0%, 100% {
-    border-color: color-mix(in srgb, var(--device-color) 40%, transparent);
-  }
-  50% {
-    border-color: color-mix(in srgb, #ffaa00 70%, transparent);
-  }
-}
-
-.device-offline.device-card {
-  animation: borderGlowRed 1.5s ease-in-out infinite;
-}
-
-@keyframes borderGlowRed {
-  0%, 100% {
-    box-shadow: 0 0 5px rgba(255, 71, 87, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 15px rgba(255, 71, 87, 0.6), 0 0 30px rgba(255, 71, 87, 0.3);
-  }
-}
-
-.device-indicator {
-  position: absolute;
-  bottom: 4px;
+  top: 4px;
   right: 4px;
   width: 8px;
   height: 8px;
-  border-radius: 50%;
-  border: 1px solid rgba(0,0,0,0.3);
-  transition: all 0.3s ease;
+  background: var(--status-color);
+  border: 1px solid #161310;
 }
-.device-indicator.online { background: #00ff88; box-shadow: 0 0 6px rgba(0,255,136,0.6); }
-.device-indicator.offline { background: #ff4757; box-shadow: 0 0 6px rgba(255,71,87,0.6); }
-.device-indicator.faulty { background: #ffaa00; box-shadow: 0 0 6px rgba(255,170,0,0.6); }
+
+.device-online .status-dot {
+  animation: blink-green 2s steps(2) infinite;
+}
+
+.device-unstable .status-dot {
+  animation: blink-amber 1s steps(2) infinite;
+}
+
+.device-offline .status-dot {
+  animation: blink-red 1.5s steps(2) infinite;
+}
+
+@keyframes blink-green {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes blink-amber {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes blink-red {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.device-unstable.device-card {
+  animation: borderBlinkAmber 2s steps(2) infinite;
+}
+
+@keyframes borderBlinkAmber {
+  0%, 100% { border-color: #161310; }
+  50% { border-color: #d4a017; }
+}
+
+.device-offline.device-card {
+  animation: borderBlinkRed 1.5s steps(2) infinite;
+}
+
+@keyframes borderBlinkRed {
+  0%, 100% { border-color: #161310; }
+  50% { border-color: #a33a3a; }
+}
 </style>

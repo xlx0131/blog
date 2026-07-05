@@ -390,90 +390,64 @@ defineExpose({
 <style scoped>
 .terminal {
   position: relative;
-  background: #0a0e17;
-  border: 1px solid rgba(0, 212, 255, 0.3);
-  border-radius: 8px;
+  background: #1a1612;
+  border: 3px solid #161310;
+  box-shadow: 5px 5px 0 0 #161310;
   overflow: hidden;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-family: 'Courier New', ui-monospace, monospace;
   font-size: 13px;
   line-height: 1.5;
   cursor: text;
-  box-shadow:
-    0 0 20px rgba(0, 212, 255, 0.1),
-    0 0 40px rgba(0, 212, 255, 0.05),
-    inset 0 0 60px rgba(0, 212, 255, 0.03);
 }
 
 .scanlines {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 10;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.15),
-    rgba(0, 0, 0, 0.15) 1px,
-    transparent 1px,
-    transparent 2px
-  );
-  opacity: 0.3;
-  animation: scanline-flicker 8s ease-in-out infinite;
-}
-
-@keyframes scanline-flicker {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.2; }
+  display: none;
 }
 
 .terminal-header {
   position: relative;
   z-index: 20;
-  background: #0f1629;
-  padding: 10px 16px;
+  background: #2d2620;
+  padding: 10px 14px;
   font-size: 12px;
-  color: #8b949e;
+  color: #d4c8b8;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+  border-bottom: 2px solid #161310;
   user-select: none;
+  font-family: 'Pixelify Sans', 'Courier New', monospace;
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
 }
 
 .window-buttons {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .window-btn {
   width: 12px;
   height: 12px;
-  border-radius: 50%;
+  border: 2px solid #161310;
   display: inline-block;
 }
 
 .window-btn.close {
-  background: #ff5f57;
-  box-shadow: 0 0 8px rgba(255, 95, 87, 0.5);
+  background: #d94c4c;
 }
 
 .window-btn.minimize {
-  background: #febc2e;
-  box-shadow: 0 0 8px rgba(254, 188, 46, 0.5);
+  background: #d4a017;
 }
 
 .window-btn.maximize {
-  background: #28c840;
-  box-shadow: 0 0 8px rgba(40, 200, 64, 0.5);
+  background: #3a8a3a;
 }
 
 .header-title {
@@ -483,15 +457,13 @@ defineExpose({
 }
 
 .header-icon {
-  color: #00d4ff;
-  filter: drop-shadow(0 0 4px rgba(0, 212, 255, 0.6));
+  color: #d4c8b8;
 }
 
 .title-text {
-  color: #00d4ff;
+  color: #e8dfd0;
   font-weight: 500;
   letter-spacing: 0.5px;
-  text-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
 }
 
 .header-right {
@@ -503,30 +475,29 @@ defineExpose({
 .status-dot {
   width: 8px;
   height: 8px;
-  border-radius: 50%;
-  background: #00ff88;
-  box-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
-  animation: status-pulse 2s ease-in-out infinite;
+  background: #3a8a3a;
+  border: 1px solid #161310;
+  animation: status-blink 2s steps(2) infinite;
 }
 
-@keyframes status-pulse {
+@keyframes status-blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.6; }
 }
 
 .status-text {
-  color: #8b949e;
+  color: #a89888;
   font-size: 11px;
 }
 
 .terminal-output {
   position: relative;
   z-index: 5;
-  padding: 12px 16px;
+  padding: 12px 14px;
   min-height: 200px;
   max-height: 400px;
   overflow-y: auto;
-  background: transparent;
+  background: #1a1612;
 }
 
 .terminal-line {
@@ -537,36 +508,35 @@ defineExpose({
   padding: 0;
 }
 
-.terminal-input { color: #e4e4e7; }
-.terminal-output { color: #8b949e; }
-.terminal-error { color: #ff4757; text-shadow: 0 0 8px rgba(255, 71, 87, 0.4); }
-.terminal-success { color: #00ff88; text-shadow: 0 0 8px rgba(0, 255, 136, 0.4); }
-.terminal-system { color: #00d4ff; text-shadow: 0 0 8px rgba(0, 212, 255, 0.4); }
-.terminal-warning { color: #ffaa00; text-shadow: 0 0 8px rgba(255, 170, 0, 0.4); }
-.terminal-input-line .terminal-prompt { color: #00ff88; white-space: pre; flex-shrink: 0; text-shadow: 0 0 8px rgba(0, 255, 136, 0.5); }
+.terminal-input { color: #e8dfd0; }
+.terminal-output { color: #b8a898; }
+.terminal-error { color: #d94c4c; }
+.terminal-success { color: #5aa85a; }
+.terminal-system { color: #d4a017; }
+.terminal-warning { color: #d47617; }
+.terminal-input-line .terminal-prompt { color: #5aa85a; white-space: pre; flex-shrink: 0; }
 
-.ip-address { color: #a855f7; text-shadow: 0 0 8px rgba(168, 85, 247, 0.4); }
-.port-number { color: #ff8c42; text-shadow: 0 0 8px rgba(255, 140, 66, 0.4); }
+.ip-address { color: #a855f7; }
+.port-number { color: #d47617; }
 
 .terminal-input-line {
   position: relative;
   z-index: 5;
   display: flex;
   align-items: center;
-  padding: 8px 16px 12px;
-  background: transparent;
-  border-top: 1px solid rgba(0, 212, 255, 0.1);
+  padding: 8px 14px 12px;
+  background: #1a1612;
+  border-top: 2px solid #2d2620;
 }
 
 .search-prefix {
-  color: #8b949e;
+  color: #a89888;
   flex-shrink: 0;
 }
 
 .search-quote {
-  color: #00d4ff;
+  color: #d4a017;
   flex-shrink: 0;
-  text-shadow: 0 0 8px rgba(0, 212, 255, 0.4);
 }
 
 .search-wrapper {
@@ -577,17 +547,15 @@ defineExpose({
 }
 
 .search-result {
-  color: #00ff88;
+  color: #5aa85a;
   margin-left: 8px;
-  text-shadow: 0 0 8px rgba(0, 255, 136, 0.5);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .search-cursor {
-  background: #ffaa00;
-  box-shadow: 0 0 10px rgba(255, 170, 0, 0.8);
+  background: #d4a017;
 }
 
 .input-wrapper {
@@ -612,7 +580,7 @@ defineExpose({
   background: none;
   border: none;
   outline: none;
-  color: #e4e4e7;
+  color: #e8dfd0;
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
@@ -623,7 +591,7 @@ defineExpose({
   z-index: 1;
 }
 
-.terminal-input::placeholder { color: #3f3f46; }
+.terminal-input::placeholder { color: #5a5048; }
 
 .cursor-block {
   position: absolute;
@@ -632,8 +600,7 @@ defineExpose({
   transform: translateY(-50%);
   width: 8px;
   height: 16px;
-  background: #00ff88;
-  box-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
+  background: #5aa85a;
   animation: cursor-blink 1s step-end infinite;
   pointer-events: none;
 }
@@ -644,21 +611,19 @@ defineExpose({
 }
 
 .terminal-output::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 .terminal-output::-webkit-scrollbar-track {
-  background: rgba(0, 212, 255, 0.05);
+  background: #2d2620;
 }
 
 .terminal-output::-webkit-scrollbar-thumb {
-  background: rgba(0, 212, 255, 0.3);
-  border-radius: 3px;
-  box-shadow: 0 0 6px rgba(0, 212, 255, 0.3);
+  background: #5a5048;
+  border: 1px solid #161310;
 }
 
 .terminal-output::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 212, 255, 0.5);
-  box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+  background: #7a6a58;
 }
 </style>

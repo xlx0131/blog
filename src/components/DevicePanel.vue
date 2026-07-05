@@ -86,16 +86,27 @@ function getCategoryLabel(cat: string): string {
 
 <style scoped>
 .device-panel { padding: 4px 0; display: flex; flex-direction: column; gap: 16px; }
-.empty-state { padding: 40px 16px; text-align: center; color: #64748b; font-size: 13px; }
+.empty-state { padding: 40px 16px; text-align: center; color: #6a5f52; font-size: 13px; }
 .op-group { display: flex; flex-direction: column; gap: 8px; }
-.op-group-title { font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; padding: 0 4px; }
-.op-list { display: flex; flex-direction: column; gap: 6px; }
+.op-group-title { font-size: 12px; font-weight: 700; color: #161310; text-transform: none; letter-spacing: 0; padding: 0 2px; font-family: 'Pixelify Sans', ui-monospace, monospace; border-bottom: 2px solid #161310; padding-bottom: 4px; }
+.op-list { display: flex; flex-direction: column; gap: 8px; }
 .op-btn {
   display: flex; align-items: center; gap: 10px; padding: 10px 12px;
-  background: rgba(30,58,95,0.2); border: 1px solid #1e3a5f; border-radius: 8px;
-  color: #c8d6e5; font-size: 13px; cursor: pointer; transition: all 0.2s ease; text-align: left; width: 100%;
+  background: #fffaef; border: 2px solid #161310;
+  color: #161310; font-size: 13px; cursor: pointer; transition: all 0.15s; text-align: left; width: 100%;
+  font-family: ui-monospace, 'Cascadia Code', monospace;
+  box-shadow: 3px 3px 0 0 #161310;
+  font-weight: 500;
 }
-.op-btn:hover { background: rgba(30,58,95,0.4); border-color: #00d4ff; color: #e6f1ff; }
+.op-btn:hover {
+  background: #f2ead6;
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 0 #161310;
+}
+.op-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 0 #161310;
+}
 .op-label { flex: 1; }
-.op-type-badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: rgba(0,212,255,0.1); color: #00d4ff; white-space: nowrap; }
+.op-type-badge { font-size: 10px; padding: 2px 6px; border: 1px solid #161310; background: #d4e8d4; color: #2a5a2a; white-space: nowrap; font-weight: 600; }
 </style>

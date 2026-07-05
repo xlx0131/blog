@@ -3,107 +3,350 @@
 
 export const levels = [
   // ═══════════════════════════════════════
-  // 教学关1：认识网络拓扑
+  // 教学关1：欢迎来到网络运维世界
   // ═══════════════════════════════════════
   {
-    id: 1, title: '认识网络拓扑', difficulty: '📖', category: '教学',
-    description: '欢迎来到网络运维模拟器！这一关带你认识网络拓扑图。了解图中的各种设备图标、连线含义和状态指示灯，为后续的实战排查打好基础。',
-    hint: '注意观察不同设备的图标和颜色。绿色连线表示链路正常，红色表示中断。设备上的小圆点代表运行状态。',
+    id: 1, title: '第1课：认识游戏界面', difficulty: '📖', category: '教学',
+    description: '欢迎来到网络运维模拟器！这是你的第一堂课。在这一关里，你将认识游戏界面的各个区域，了解它们的作用。准备好了吗？让我们开始吧！',
+    hint: '仔细看看屏幕上有哪些区域。左边是工具栏，上面是网络拓扑图，下面是命令终端。试着点击各个区域看看会发生什么。',
+    tutorial: {
+      steps: [
+        {
+          title: '👋 欢迎！',
+          content: '你好，网络工程师！欢迎来到网络运维模拟器。\n\n在这个游戏里，你将扮演一名网络工程师，解决各种网络故障。\n\n让我先带你认识一下游戏界面。',
+          highlight: null,
+        },
+        {
+          title: '🗺️ 拓扑图区域',
+          content: '屏幕上方的大区域是【网络拓扑图】。\n\n这里展示了整个网络的结构，包括各种设备（电脑、交换机、路由器等）和它们之间的连接线路。\n\n💡 小提示：绿色的线表示链路正常，红色表示链路中断。',
+          highlight: 'topo',
+        },
+        {
+          title: '🛠️ 左侧工具栏',
+          content: '屏幕左边是【快捷命令工具栏】。\n\n这里有一些常用的排查工具按钮，点击它们可以快速执行对应的命令，不用手动输入。\n\n包含：ping命令、ipconfig、tracert路由追踪、nslookup域名解析等。',
+          highlight: 'toolbar',
+        },
+        {
+          title: '💻 终端区域',
+          content: '屏幕下方是【命令终端】。\n\n这就像真实的电脑命令行一样，你可以在这里输入各种网络命令来排查问题。\n\n试着在终端里输入 help 然后按回车，看看会发生什么！',
+          highlight: 'terminal',
+        },
+        {
+          title: '📋 任务说明栏',
+          content: '屏幕右上角是【当前任务说明】。\n\n这里会告诉你当前关卡的故障现象和需要解决的问题。\n\n右边还有关卡进度和提示按钮，卡住的时候可以点提示获得帮助。',
+          highlight: 'mission',
+        },
+        {
+          title: '🎮 开始你的冒险吧！',
+          content: '好啦，界面介绍完毕！\n\n总结一下：\n• 拓扑图 = 看网络结构\n• 工具栏 = 快速点命令\n• 终端 = 输入命令排查\n• 任务栏 = 知道该做什么\n\n点击"完成教学"按钮，进入下一关学习真正的网络知识吧！',
+          highlight: null,
+        },
+      ],
+    },
     topology: {
       devices: [
-        { id: 'pc_t1', type: 'computer', label: '办公电脑', x: 80, y: 200 },
-        { id: 'sw_t1', type: 'switch', label: '接入交换机', x: 300, y: 200, ports: 24 },
-        { id: 'rt_t1', type: 'router', label: '核心路由器', x: 520, y: 100 },
-        { id: 'svr_t1', type: 'server', label: '公司服务器', x: 520, y: 300 },
+        { id: 'pc_t1', type: 'computer', label: '你的电脑', x: 80, y: 180 },
+        { id: 'sw_t1', type: 'switch', label: '交换机', x: 280, y: 180, ports: 8 },
+        { id: 'rt_t1', type: 'router', label: '路由器', x: 480, y: 180 },
       ],
       connections: [
-        { from: 'pc_t1', to: 'sw_t1', fromPort: null, toPort: 5, status: 'up' },
-        { from: 'sw_t1', to: 'rt_t1', fromPort: 24, toPort: 1, status: 'up' },
-        { from: 'rt_t1', to: 'svr_t1', fromPort: 2, toPort: null, status: 'up' },
+        { from: 'pc_t1', to: 'sw_t1', fromPort: null, toPort: 1, status: 'up' },
+        { from: 'sw_t1', to: 'rt_t1', fromPort: 8, toPort: 1, status: 'up' },
       ],
     },
     fault: { type: 'none', device: '', detail: '这是一个教学关卡，没有故障' },
     expectedSteps: [
-      { type: 'diagnose', answer: '认识设备类型和连接方式' },
+      { type: 'diagnose', answer: '完成界面认识' },
     ],
     review: {
-      summary: '网络拓扑图是网络工程师的第一语言。通过拓扑图你可以快速了解整个网络的设备组成和连接关系。',
+      summary: '恭喜你完成了第一课！现在你已经认识了游戏的基本界面。在接下来的关卡中，你将学习网络知识，解决各种故障。',
       steps: [
-        { command: '观察拓扑图', result: '电脑 → 交换机 → 路由器 → 服务器', explanation: '典型的办公网络拓扑结构：电脑通过网线连接到交换机，交换机汇聚后连接到路由器，路由器再连接到外部网络或内部服务器。数据从电脑发出，逐级向上传递。' },
-        { command: '设备类型', result: '💻电脑 🔀交换机 🌐路由器 🖥️服务器', explanation: '电脑（终端设备）通过网线连接到交换机。交换机（二层设备）负责在同一网络内转发数据。路由器（三层设备）负责连接不同网络。服务器提供网络服务（网站、文件等）。' },
-        { command: '连线状态', result: '绿色=正常，红色=中断', explanation: '拓扑图中的连线颜色表示链路状态：绿色表示连接正常，红色表示链路中断（故障），灰色表示未使用。虚线表示链路不稳定。' },
+        { command: '拓扑图', result: '展示网络设备和连接', explanation: '通过拓扑图可以直观地看到整个网络的结构，包括电脑、交换机、路由器等设备，以及它们之间的连接线路。' },
+        { command: '工具栏', result: '快捷执行常用命令', explanation: '左侧工具栏提供了 ping、ipconfig、tracert、nslookup 等常用命令的快捷按钮，点击即可快速执行。' },
+        { command: '终端', result: '手动输入命令', explanation: '终端就像真实的命令行一样，可以输入各种网络命令来排查故障。支持上下方向键查看历史命令。' },
+        { command: '任务栏', result: '显示当前任务和进度', explanation: '右上角的任务说明告诉你当前关卡需要解决什么问题，还可以查看进度和获取提示。' },
       ],
-      optimalPath: '这是教学关卡，没有特定的排查路径。重点是熟悉拓扑图的阅读方法。',
+      optimalPath: '这是教学关卡，重点是熟悉界面。下一关我们将学习网络基础知识。',
     },
   },
 
   // ═══════════════════════════════════════
-  // 教学关2：常用排查命令入门
+  // 教学关2：认识网络设备
   // ═══════════════════════════════════════
   {
-    id: 2, title: '常用排查命令入门', difficulty: '📖', category: '教学',
-    description: '这一关带你学习网络故障排查中最常用的几个命令：ping、ipconfig、tracert、nslookup。了解每个命令的作用和输出信息的含义。',
-    hint: '在终端中输入每个命令试试，看看它们的输出有什么区别。可以先用 help 查看可用命令列表。',
+    id: 2, title: '第2课：认识网络设备', difficulty: '📖', category: '教学',
+    description: '网络中有很多不同的设备，它们各司其职。在这一关里，我们来认识一下最常见的几种网络设备：电脑、交换机、路由器和服务器。',
+    hint: '仔细观察拓扑图中的每个设备，它们的图标和名字都不一样。想想看，你家里的网络都有哪些设备？',
+    tutorial: {
+      steps: [
+        {
+          title: '💻 电脑（终端设备）',
+          content: '首先来认识【电脑】，也叫终端设备。\n\n这就是我们日常使用的电脑、手机、打印机等。\n\n它们是网络的"使用者"，发送和接收数据。\n\n💡 特点：位于网络的边缘，是数据的起点和终点。',
+          highlight: 'device:pc_t2',
+        },
+        {
+          title: '🔀 交换机（Switch）',
+          content: '接下来是【交换机】。\n\n交换机就像一个"交通枢纽"，它把同一个网络里的所有设备连接起来。\n\n同一楼层或同一办公室的电脑，通常都连到同一台交换机上。\n\n💡 特点：负责同一个网络内的数据转发，有很多端口可以插网线。',
+          highlight: 'device:sw_t2',
+        },
+        {
+          title: '🌐 路由器（Router）',
+          content: '然后是【路由器】。\n\n路由器就像"邮局"，负责把数据从一个网络送到另一个网络。\n\n你家里的路由器就是把你家的局域网和互联网连起来。\n\n💡 特点：连接不同的网络，是网络与网络之间的桥梁。',
+          highlight: 'device:rt_t2',
+        },
+        {
+          title: '🖥️ 服务器（Server）',
+          content: '最后是【服务器】。\n\n服务器是提供服务的电脑，比如网站、文件存储、游戏等。\n\n当你访问一个网站时，你的电脑就是"客户端"，网站所在的电脑就是"服务器"。\n\n💡 特点：24小时开机，为其他设备提供各种网络服务。',
+          highlight: 'device:svr_t2',
+        },
+        {
+          title: '📡 无线AP（WiFi）',
+          content: '还有一种常见设备是【无线AP】，也就是WiFi热点。\n\n它把有线网络转换成无线信号，让手机、笔记本等设备可以无线上网。\n\n你家里的无线路由器其实就是路由器 + 无线AP的组合。',
+          highlight: null,
+        },
+        {
+          title: '🎉 设备认识完毕！',
+          content: '好啦，现在你认识了五种常见网络设备：\n\n💻 电脑 —— 使用者，数据的起点和终点\n🔀 交换机 —— 交通枢纽，连接同一网络的设备\n🌐 路由器 —— 邮局，连接不同的网络\n🖥️ 服务器 —— 服务提供者，24小时工作\n📡 无线AP —— WiFi热点，提供无线上网\n\n下一关我们来学习数据是怎么在网络中传输的！',
+          highlight: null,
+        },
+      ],
+    },
     topology: {
       devices: [
-        { id: 'pc_t2', type: 'computer', label: '你的电脑', x: 80, y: 200 },
-        { id: 'sw_t2', type: 'switch', label: '楼层交换机', x: 300, y: 200, ports: 24 },
-        { id: 'rt_t2', type: 'router', label: '核心路由器', x: 520, y: 200 },
+        { id: 'pc_t2', type: 'computer', label: '办公电脑', x: 80, y: 180 },
+        { id: 'sw_t2', type: 'switch', label: '接入交换机', x: 280, y: 180, ports: 24 },
+        { id: 'rt_t2', type: 'router', label: '核心路由器', x: 480, y: 100 },
+        { id: 'svr_t2', type: 'server', label: '公司服务器', x: 480, y: 260 },
       ],
       connections: [
-        { from: 'pc_t2', to: 'sw_t2', fromPort: null, toPort: 10, status: 'up' },
+        { from: 'pc_t2', to: 'sw_t2', fromPort: null, toPort: 5, status: 'up' },
         { from: 'sw_t2', to: 'rt_t2', fromPort: 24, toPort: 1, status: 'up' },
+        { from: 'rt_t2', to: 'svr_t2', fromPort: 2, toPort: null, status: 'up' },
       ],
     },
     fault: { type: 'none', device: '', detail: '教学关卡，没有故障' },
     expectedSteps: [
-      { type: 'diagnose', answer: '了解各命令的用途' },
+      { type: 'diagnose', answer: '认识各种网络设备' },
     ],
     review: {
-      summary: '掌握这五个命令，你可以排查 90% 以上的常见网络故障。每个命令都有其特定的使用场景。',
+      summary: '网络设备是构成网络的基础。每种设备都有自己的角色和功能，就像一个公司里不同岗位的员工一样。',
       steps: [
-        { command: 'ping', result: '测试网络连通性', explanation: 'ping 是最常用的网络诊断命令。它发送 ICMP 数据包到目标主机，通过是否能收到回复来判断网络是否连通。ping 网关（路由器）可以判断局域网是否正常；ping 外网可以判断互联网连接是否正常。' },
-        { command: 'ipconfig', result: '查看本机网络配置', explanation: 'ipconfig 查看本机的 IP 地址、子网掩码、默认网关和 DNS 服务器信息。"媒体已断开"表示物理层有问题（网线没插好）。169.254.x.x 的 IP 表示 DHCP 获取失败。' },
-        { command: 'tracert', result: '追踪路由路径', explanation: 'tracert 追踪数据包到达目标主机的完整路径。每一跳代表经过的一个路由器。通过查看在哪一跳中断，可以判断故障发生在网络的哪个位置。' },
-        { command: 'nslookup', result: '测试 DNS 解析', explanation: 'nslookup 测试域名是否能正确解析为 IP 地址。如果 ping 域名失败但 ping IP 成功，问题很可能在 DNS。这个命令能帮你快速确认 DNS 是否正常工作。' },
+        { command: '电脑（终端）', result: '发送和接收数据的设备', explanation: '电脑、手机、打印机都是终端设备，它们是网络数据的生产者和消费者。' },
+        { command: '交换机', result: '同一网络内的数据转发', explanation: '交换机有很多端口，用来连接同一网络内的多台设备，在它们之间转发数据。' },
+        { command: '路由器', result: '连接不同的网络', explanation: '路由器负责在不同网络之间转发数据，是网络的"十字路口"。家里的路由器连接着你的局域网和互联网。' },
+        { command: '服务器', result: '提供网络服务的设备', explanation: '服务器是专门提供服务的电脑，比如网页服务、文件服务、邮件服务等。它们通常24小时不间断运行。' },
       ],
-      optimalPath: '排查时建议先用 ping 测试连通性，不通的话用 ipconfig 查看本机配置，再用 tracert 定位中断位置。涉及域名问题用 nslookup。',
+      optimalPath: '这是教学关卡，重点是认识各种网络设备。下一关我们将学习网络排查的常用命令。',
     },
   },
 
   // ═══════════════════════════════════════
-  // 教学关3：认识 IP 地址和端口
+  // 教学关3：第一个命令 —— ping
   // ═══════════════════════════════════════
   {
-    id: 3, title: '认识 IP 地址和端口', difficulty: '📖', category: '教学',
-    description: '了解 IP 地址、子网掩码、默认网关和端口号的基本概念。这些是网络排障中最常遇到的基础知识，理解它们有助于快速定位问题。',
-    hint: 'IP 地址就像门牌号，端口就像房门号。子网掩码决定哪些地址在同一个"小区"内。',
+    id: 3, title: '第3课：你的第一个命令 ping', difficulty: '📖', category: '教学',
+    description: '现在来学习网络排障中最最常用的命令——ping！它就像网络世界的"敲门"，你敲一下，看看对方有没有回应。',
+    hint: '在下面的终端里输入 ping 192.168.1.1 然后按回车试试。或者直接点击左边工具栏的 ping 按钮。',
+    tutorial: {
+      steps: [
+        {
+          title: '📡 什么是 ping？',
+          content: 'ping 是网络工程师最常用的命令，没有之一！\n\n它的作用是：测试你和目标设备之间网络通不通。\n\n原理很简单：你发一个"小数据包"给对方，对方收到后回复一个。能收到回复 = 网络通。',
+          highlight: 'terminal',
+        },
+        {
+          title: '🔧 怎么用 ping？',
+          content: '使用方法超简单：\n\nping + 目标IP地址\n\n比如：\nping 192.168.1.1\n\n💡 小技巧：左边工具栏有 ping 的快捷按钮，点一下就能快速执行！',
+          highlight: 'toolbar',
+        },
+        {
+          title: '✅ 成功的样子',
+          content: '如果网络通，你会看到类似这样的回复：\n\n来自 192.168.1.1 的回复: 字节=32 时间<1ms TTL=64\n来自 192.168.1.1 的回复: 字节=32 时间<1ms TTL=64\n\n每一行都代表收到了一次回复。',
+          highlight: 'terminal',
+        },
+        {
+          title: '❌ 失败的样子',
+          content: '如果网络不通，你会看到：\n\n请求超时。\n请求超时。\n\n这说明数据包发出去了，但没有收到回复。\n网络不通的原因有很多，可能是网线没插好、对方关机了、防火墙拦截了等等。',
+          highlight: 'terminal',
+        },
+        {
+          title: '🎯 试着 ping 一下！',
+          content: '现在轮到你动手啦！\n\n试着 ping 一下网关路由器：\n\n目标IP：192.168.1.1\n\n你可以直接在终端输入 ping 192.168.1.1，或者点击左边工具栏的 ping 按钮。\n\n试试看吧！',
+          highlight: 'terminal',
+        },
+        {
+          title: '🎉 恭喜！你学会了 ping！',
+          content: '太棒了！你已经掌握了网络排障的第一个命令！\n\nping 是排查网络问题的第一步，遇到网络不通时，先 ping 一下看看通不通。\n\n下一关我们将学习更多有用的命令！',
+          highlight: null,
+        },
+      ],
+    },
     topology: {
       devices: [
-        { id: 'pc_t3a', type: 'computer', label: '办公电脑A', x: 80, y: 120 },
-        { id: 'pc_t3b', type: 'computer', label: '办公电脑B', x: 80, y: 280 },
-        { id: 'sw_t3', type: 'switch', label: '办公室交换机', x: 300, y: 200, ports: 16 },
+        { id: 'pc_t3', type: 'computer', label: '你的电脑', x: 80, y: 200 },
+        { id: 'sw_t3', type: 'switch', label: '楼层交换机', x: 300, y: 200, ports: 24 },
         { id: 'rt_t3', type: 'router', label: '网关路由器', x: 520, y: 200 },
       ],
       connections: [
-        { from: 'pc_t3a', to: 'sw_t3', fromPort: null, toPort: 1, status: 'up' },
-        { from: 'pc_t3b', to: 'sw_t3', fromPort: null, toPort: 2, status: 'up' },
-        { from: 'sw_t3', to: 'rt_t3', fromPort: 16, toPort: 1, status: 'up' },
+        { from: 'pc_t3', to: 'sw_t3', fromPort: null, toPort: 10, status: 'up' },
+        { from: 'sw_t3', to: 'rt_t3', fromPort: 24, toPort: 1, status: 'up' },
       ],
     },
     fault: { type: 'none', device: '', detail: '教学关卡，没有故障' },
     expectedSteps: [
-      { type: 'diagnose', answer: '理解 IP 地址和端口的概念' },
+      { type: 'ping', target: '192.168.1.1', expectedResult: '成功' },
+      { type: 'diagnose', answer: '学会了 ping 命令' },
     ],
     review: {
-      summary: 'IP 地址和端口是网络通信的基础。理解它们的关系对排查网络故障至关重要。',
+      summary: 'ping 是网络排障最基础也是最重要的命令。任何网络问题，第一步都是用 ping 来确认连通性。',
       steps: [
-        { command: 'IP 地址', result: '192.168.1.x — 局域网专用地址段', explanation: 'IP 地址是网络中每台设备的唯一标识。192.168.x.x 是预留的私有地址段，只能在局域网内部使用。电脑、手机、打印机等设备都需要一个唯一的 IP 地址才能通信。' },
-        { command: '子网掩码', result: '255.255.255.0 — 决定网络规模', explanation: '子网掩码用来区分网络位和主机位。255.255.255.0 表示前 24 位是网络号，后 8 位是主机号，一个子网最多容纳 254 台设备。相同子网的设备可以直接通信，不同子网需要通过路由器转发。' },
-        { command: '默认网关', result: '192.168.1.1 — 通往外部网络的大门', explanation: '默认网关是设备访问外部网络时必须经过的路由器地址。当电脑要访问其他网络的设备时，会把数据包发送给网关，由网关负责转发。ping 网关是排查网络故障的第一步——如果连网关都 ping 不通，肯定无法上外网。' },
-        { command: '端口号', result: '80=网页, 443=安全网页, 53=DNS, 22=SSH', explanation: '端口号用于区分不同的网络服务。一台服务器上可以同时运行多个服务（网页、邮件、文件传输等），每个服务使用不同的端口号。排查时如果 ping 通但网页打不开，可能是 80/443 端口被防火墙阻拦。' },
+        { command: 'ping 命令', result: '测试网络连通性', explanation: 'ping 发送 ICMP 数据包到目标地址，通过是否收到回复来判断网络是否连通。是网络排障的第一神器。' },
+        { command: '成功回复', result: '来自 x.x.x.x 的回复: 字节=32 时间<1ms', explanation: '能收到回复说明网络是通的。"时间"越小说明速度越快，"TTL"表示数据包经过了多少跳。' },
+        { command: '请求超时', result: '网络不通或对方未响应', explanation: '"请求超时"表示数据包发出去了但没有收到回复。可能原因：网线故障、对方关机、防火墙拦截等。' },
+        { command: '排查思路', result: '先 ping 网关，再 ping 外网', explanation: '遇到上不了网时，先 ping 网关（192.168.1.1）确认局域网是否通，再 ping 外网IP确认互联网是否通。' },
       ],
-      optimalPath: '排查网络问题时，先确认 IP 配置是否正确（ipconfig），再 ping 网关确认局域网连通性，最后检查特定端口是否开放。',
+      optimalPath: '先 ping 网关确认局域网连通性，再 ping 外网确认互联网连通性。这是网络排障的标准第一步。',
+    },
+  },
+
+  // ═══════════════════════════════════════
+  // 教学关4：ipconfig —— 查看自己的配置
+  // ═══════════════════════════════════════
+  {
+    id: 4, title: '第4课：ipconfig 查看配置', difficulty: '📖', category: '教学',
+    description: '这节课我们来学习 ipconfig 命令。它可以查看你自己电脑的网络配置信息，比如 IP 地址、网关、DNS 等等。',
+    hint: '在终端里输入 ipconfig 然后按回车，看看你的电脑网络配置是什么样的。',
+    tutorial: {
+      steps: [
+        {
+          title: '🏠 什么是 ipconfig？',
+          content: 'ipconfig 是用来查看你自己电脑网络配置的命令。\n\n它会告诉你：\n• 你的IP地址是什么\n• 你的网关路由器地址是什么\n• 你的DNS服务器是什么\n• 网线有没有插好\n\n💡 就像查你自己的"身份证"一样。',
+          highlight: 'terminal',
+        },
+        {
+          title: '🔢 IP地址是什么？',
+          content: 'IP地址就像你家的门牌号。\n\n网络中的每台设备都有一个唯一的IP地址，这样数据才能准确地送到正确的设备。\n\n常见的局域网IP格式：192.168.1.x\n\n比如：192.168.1.100',
+          highlight: null,
+        },
+        {
+          title: '🚪 什么是默认网关？',
+          content: '默认网关就是你通往外部网络的"大门"。\n\n通常就是你家里的路由器地址。\n\n当你要访问外网（比如百度）时，数据会先发给网关，由网关帮你转发出去。\n\n常见网关地址：192.168.1.1',
+          highlight: 'device:rt_t4',
+        },
+        {
+          title: '📚 什么是DNS？',
+          content: 'DNS 就像"电话簿"。\n\n你记住的是域名（比如 baidu.com），但电脑需要的是IP地址。\nDNS服务器负责把域名翻译成IP地址。\n\n没有DNS，你就只能记住一串串数字来访问网站了！',
+          highlight: null,
+        },
+        {
+          title: '🔧 试试 ipconfig！',
+          content: '现在动手试试吧！\n\n在终端输入 ipconfig 然后按回车，\n或者点击左边工具栏的 ipconfig 按钮。\n\n看看你的电脑IP地址、网关、DNS都是什么？',
+          highlight: 'terminal',
+        },
+        {
+          title: '🎉 你又学会一个命令！',
+          content: '太棒了！现在你学会了 ipconfig。\n\n记住几个关键点：\n• IP地址 = 你的门牌号\n• 默认网关 = 出外网的大门\n• DNS = 域名翻译电话簿\n\n下一关我们继续学习更多命令！',
+          highlight: null,
+        },
+      ],
+    },
+    topology: {
+      devices: [
+        { id: 'pc_t4', type: 'computer', label: '你的电脑', x: 80, y: 200 },
+        { id: 'sw_t4', type: 'switch', label: '接入交换机', x: 300, y: 200, ports: 16 },
+        { id: 'rt_t4', type: 'router', label: '网关路由器', x: 520, y: 200 },
+      ],
+      connections: [
+        { from: 'pc_t4', to: 'sw_t4', fromPort: null, toPort: 3, status: 'up' },
+        { from: 'sw_t4', to: 'rt_t4', fromPort: 16, toPort: 1, status: 'up' },
+      ],
+    },
+    fault: { type: 'none', device: '', detail: '教学关卡，没有故障' },
+    expectedSteps: [
+      { type: 'ipconfig', target: '', expectedResult: '看到IP配置信息' },
+      { type: 'diagnose', answer: '学会了 ipconfig 命令' },
+    ],
+    review: {
+      summary: 'ipconfig 让你了解自己电脑的网络配置。排查问题时，先看看自己的配置对不对，这是非常重要的一步。',
+      steps: [
+        { command: 'ipconfig', result: '查看本机网络配置', explanation: '显示本机的 IP 地址、子网掩码、默认网关、DNS 服务器等信息。是排查网络问题的基础命令。' },
+        { command: 'IP 地址', result: '192.168.1.x 格式', explanation: 'IP 地址是设备在网络中的唯一标识，就像门牌号。同一局域网内不能有两台设备使用相同的 IP。' },
+        { command: '默认网关', result: '通常是 192.168.1.1', explanation: '默认网关是访问外部网络的出口，一般就是路由器的地址。ping 不通网关说明局域网有问题。' },
+        { command: '媒体已断开', result: '物理连接有问题', explanation: '如果 ipconfig 显示"媒体已断开"，说明网线没插好或者网卡被禁用了，是物理层问题。' },
+      ],
+      optimalPath: '网络不通时，先 ipconfig 查看自己的配置是否正确，再 ping 网关测试连通性。',
+    },
+  },
+
+  // ═══════════════════════════════════════
+  // 教学关5：tracert 和 nslookup
+  // ═══════════════════════════════════════
+  {
+    id: 5, title: '第5课：tracert 与 nslookup', difficulty: '📖', category: '教学',
+    description: '继续学习两个实用命令：tracert（路由追踪）和 nslookup（域名解析测试）。有了这两个命令，排查问题就更精准了！',
+    hint: '试着用 tracert 追踪到 8.8.8.8 的路径，再用 nslookup 解析 baidu.com 的IP地址。',
+    tutorial: {
+      steps: [
+        {
+          title: '🗺️ tracert 是什么？',
+          content: 'tracert 是"路由追踪"命令。\n\n它能告诉你：从你的电脑到目标地址，中间经过了哪些路由器（也就是"几跳"）。\n\n💡 用途：当网络不通时，用 tracert 可以看出是在哪一跳出问题的。',
+          highlight: 'terminal',
+        },
+        {
+          title: '📊 怎么看 tracert 结果？',
+          content: 'tracert 的结果是这样的：\n\n  1    <1 ms   网关 [192.168.1.1]\n  2     5 ms   运营商路由器 [10.0.0.1]\n  3    20 ms   目标地址 [8.8.8.8]\n\n每一行代表经过的一个路由器。\n如果某一行显示"请求超时"，说明问题出在那一跳。',
+          highlight: 'terminal',
+        },
+        {
+          title: '🔍 nslookup 是什么？',
+          content: 'nslookup 用来测试 DNS 解析。\n\n也就是：域名能不能正确翻译成 IP 地址。\n\n比如：nslookup baidu.com\n\n它会告诉你 baidu.com 对应的 IP 地址是什么。',
+          highlight: 'terminal',
+        },
+        {
+          title: '🎯 什么时候用 nslookup？',
+          content: '当你遇到这种情况时：\n• ping IP地址能通\n• 但 ping 域名却不通\n\n这时候就用 nslookup 来确认 DNS 是否正常工作。\n\n如果 nslookup 失败，说明是 DNS 的问题。',
+          highlight: null,
+        },
+        {
+          title: '💪 动手试试吧！',
+          content: '现在来练习一下这两个命令：\n\n1. 输入 tracert 8.8.8.8 看看经过几跳\n2. 输入 nslookup baidu.com 试试域名解析\n\n也可以点击左边工具栏的快捷按钮哦！',
+          highlight: 'terminal',
+        },
+        {
+          title: '🎉 命令全部学会啦！',
+          content: '恭喜你！现在你已经掌握了网络排障的四大神器：\n\n🔧 ping —— 测试连通性\n🔧 ipconfig —— 查看本机配置\n🔧 tracert —— 追踪路由路径\n🔧 nslookup —— 测试DNS解析\n\n下一关开始，我们就要解决真正的网络故障啦！准备好了吗？',
+          highlight: null,
+        },
+      ],
+    },
+    topology: {
+      devices: [
+        { id: 'pc_t5', type: 'computer', label: '你的电脑', x: 80, y: 200 },
+        { id: 'sw_t5', type: 'switch', label: '接入交换机', x: 300, y: 200, ports: 24 },
+        { id: 'rt_t5', type: 'router', label: '核心路由器', x: 520, y: 100 },
+        { id: 'dns_t5', type: 'server', label: 'DNS 服务器', x: 520, y: 300 },
+      ],
+      connections: [
+        { from: 'pc_t5', to: 'sw_t5', fromPort: null, toPort: 3, status: 'up' },
+        { from: 'sw_t5', to: 'rt_t5', fromPort: 24, toPort: 1, status: 'up' },
+        { from: 'rt_t5', to: 'dns_t5', fromPort: 2, toPort: null, status: 'up' },
+      ],
+    },
+    fault: { type: 'none', device: '', detail: '教学关卡，没有故障' },
+    expectedSteps: [
+      { type: 'tracert', target: '8.8.8.8', expectedResult: '看到路由路径' },
+      { type: 'nslookup', target: 'baidu.com', expectedResult: '解析出IP地址' },
+      { type: 'diagnose', answer: '学会了 tracert 和 nslookup' },
+    ],
+    review: {
+      summary: 'tracert 和 nslookup 是 ping 和 ipconfig 的好搭档。四个命令配合使用，几乎可以定位所有常见网络问题。',
+      steps: [
+        { command: 'tracert', result: '追踪数据包的路径', explanation: 'tracert 显示从本机到目标地址经过的每一跳路由器。通过在哪一跳超时，可以精准定位故障发生的位置。' },
+        { command: 'nslookup', result: '测试 DNS 解析', explanation: 'nslookup 测试域名是否能正确解析为 IP 地址。能 ping IP 但不能 ping 域名时，用它确认 DNS 是否正常。' },
+        { command: '排查思路', result: '分层排查，逐步缩小范围', explanation: '物理层 → 数据链路层 → 网络层 → 应用层。从下往上排查，先排除低级问题。' },
+        { command: '四大命令总结', result: 'ping/ipconfig/tracert/nslookup', explanation: '四个命令配合使用：ipconfig看配置、ping测连通、tracert定位、nslookup查DNS。' },
+      ],
+      optimalPath: '遇到网络问题时，按这个顺序排查最快：ipconfig → ping网关 → ping外网 → tracert → nslookup。',
     },
   },
 
