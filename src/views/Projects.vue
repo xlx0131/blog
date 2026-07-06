@@ -37,11 +37,7 @@ const filteredProjects = computed(() => {
 })
 
 function viewProject(id: number) {
-  if (id === 3) {
-    router.push('/github-hot')
-  } else {
-    router.push(`/projects/${id}`)
-  }
+  router.push(`/projects/${id}`)
 }
 
 function reInitTilt() {

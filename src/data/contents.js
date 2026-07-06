@@ -37,25 +37,6 @@ export const projects = [
       '完整复盘机制，评分体系与知识点扩展',
     ],
   },
-  {
-    id: 3,
-    title: 'GitHub 热榜',
-    subtitle: '每日自动更新的开源项目精选',
-    description:
-      '自动爬取 GitHub 热门开源项目，按编程语言和领域分类展示，GitHub Actions 每日定时更新数据，发现全球最火的开源项目。',
-    url: '/github-hot',
-    tags: ['工具', '数据', '自动化'],
-    tech: ['Vue 3', 'GitHub API', 'GitHub Actions', 'Node.js'],
-    cover: 'github',
-    year: '2026',
-    highlights: [
-      '每日自动更新 GitHub 热门项目',
-      '按编程语言和领域双维度筛选',
-      '支持关键词搜索项目',
-      '项目详情与 README 摘要展示',
-      'GitHub Actions 全自动化流水线',
-    ],
-  },
 ]
 
 // 作品详情
