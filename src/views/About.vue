@@ -1,11 +1,38 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Code2, Database, Bot, BarChart3, Layers, BookOpen, Globe, FileText, Zap, Lightbulb, Scan, Network, Info, Cpu, Server } from '@lucide/vue'
+import { Code2, Database, Bot, BarChart3, Layers, BookOpen, Globe, FileText, Zap, Lightbulb, Scan, Network, Info, Cpu, Server, Lock } from '@lucide/vue'
 import avatarImg from '@/assets/头像2.jpg'
 
+const router = useRouter()
 gsap.registerPlugin(ScrollTrigger)
+
+const showVerifyModal = ref(false)
+const adminName = ref('')
+const adminPassword = ref('')
+const verifyError = ref('')
+
+const ADMIN_NAME = '许立鑫'
+const ADMIN_PASSWORD = '20050131'
+
+function handleSecretClick() {
+  showVerifyModal.value = true
+  adminName.value = ''
+  adminPassword.value = ''
+  verifyError.value = ''
+}
+
+function handleVerify() {
+  if (adminName.value === ADMIN_NAME && adminPassword.value === ADMIN_PASSWORD) {
+    sessionStorage.setItem('writingAuth', 'true')
+    showVerifyModal.value = false
+    router.push('/writing')
+  } else {
+    verifyError.value = '姓名或密码错误，请重试'
+  }
+}
 
 onMounted(() => {
   gsap.from('.pixel-panel', {
@@ -287,11 +314,77 @@ function getAdvIcon(name: string) {
       </div>
     </div>
 
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-6">
-      <p class="text-center font-mono text-[10px] text-[#b8a88a] tracking-widest">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-6 pb-8">
+      <p class="text-center font-mono text-[10px] text-[#b8a88a] tracking-widest mb-3">
         ■ PIXEL PORTFOLIO v1.0 ■
       </p>
+      <p 
+        class="text-center font-mono text-[10px] text-[#8a7a68] tracking-wider cursor-pointer hover:text-[#161310] transition-colors select-none"
+        @click="handleSecretClick"
+      >
+        © 2026 许立鑫. All rights reserved.
+      </p>
     </div>
+
+    <!-- 管理员验证弹窗 -->
+    <Teleport to="body">
+      <Transition name="fade">
+        <div v-if="showVerifyModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" @click.self="showVerifyModal = false">
+          <div class="bg-[#fffaef] border-3 border-[#161310] shadow-[8px_8px_0_0_#161310] w-full max-w-sm mx-4 p-6">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-10 h-10 bg-[#2e5dd6] border-2 border-[#161310] flex items-center justify-center text-[#fffaef]">
+                <Lock class="w-5 h-5" />
+              </div>
+              <div>
+                <h3 class="font-['Pixelify_Sans'] text-xl text-[#161310]">管理员验证</h3>
+                <p class="font-mono text-xs text-[#6a5f52]">请输入管理员信息</p>
+              </div>
+            </div>
+            
+            <div class="space-y-4">
+              <div>
+                <label class="block font-mono text-xs text-[#3a332a] mb-2">管理员姓名</label>
+                <input 
+                  v-model="adminName" 
+                  type="text" 
+                  class="w-full px-3 py-2 bg-[#f5f0e8] border-2 border-[#161310] font-mono text-sm text-[#161310] focus:outline-none focus:border-[#2e5dd6] placeholder-[#a89888]"
+                  placeholder="请输入姓名"
+                  @keyup.enter="handleVerify"
+                />
+              </div>
+              <div>
+                <label class="block font-mono text-xs text-[#3a332a] mb-2">管理员密码</label>
+                <input 
+                  v-model="adminPassword" 
+                  type="password" 
+                  class="w-full px-3 py-2 bg-[#f5f0e8] border-2 border-[#161310] font-mono text-sm text-[#161310] focus:outline-none focus:border-[#2e5dd6] placeholder-[#a89888]"
+                  placeholder="请输入密码"
+                  @keyup.enter="handleVerify"
+                />
+              </div>
+              <p v-if="verifyError" class="font-mono text-xs text-[#d94c4c]">
+                {{ verifyError }}
+              </p>
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+              <button 
+                class="flex-1 px-4 py-2 bg-[#f5e6d0] border-2 border-[#161310] font-mono text-sm text-[#161310] hover:bg-[#e8d5b8] transition-colors"
+                @click="showVerifyModal = false"
+              >
+                取消
+              </button>
+              <button 
+                class="flex-1 px-4 py-2 bg-[#2e5dd6] border-2 border-[#161310] font-mono text-sm text-[#fffaef] hover:bg-[#1e4dc0] transition-colors"
+                @click="handleVerify"
+              >
+                验证
+              </button>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>
 
@@ -496,5 +589,19 @@ function getAdvIcon(name: string) {
   .pixel-panel {
     box-shadow: 3px 3px 0 0 #161310;
   }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.border-3 {
+  border-width: 3px;
 }
 </style>

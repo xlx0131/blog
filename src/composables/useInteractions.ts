@@ -116,25 +116,56 @@ export function initScrollProgress() {
 // ─── 4. 3D 倾角卡片 ───
 export function initTiltCards(selector = '.tilt-card') {
   document.querySelectorAll(selector).forEach((card) => {
+    const el = card as HTMLElement
+    let rect: DOMRect | null = null
+    let rafId: number | null = null
+    let targetX = 0
+    let targetY = 0
+    let currentX = 0
+    let currentY = 0
+
+    el.style.transformStyle = 'preserve-3d'
+    el.style.willChange = 'transform'
+    el.style.perspective = '800px'
+
+    const updateTransform = () => {
+      currentX += (targetX - currentX) * 0.15
+      currentY += (targetY - currentY) * 0.15
+
+      el.style.transform = `perspective(800px) rotateY(${currentX}deg) rotateX(${currentY}deg) translateZ(0)`
+
+      if (Math.abs(targetX - currentX) > 0.01 || Math.abs(targetY - currentY) > 0.01) {
+        rafId = requestAnimationFrame(updateTransform)
+      } else {
+        rafId = null
+      }
+    }
+
+    card.addEventListener('mouseenter', () => {
+      rect = el.getBoundingClientRect()
+    })
+
     card.addEventListener('mousemove', (e) => {
-      const rect = (card as HTMLElement).getBoundingClientRect()
+      if (!rect) rect = el.getBoundingClientRect()
+
       const x = (e.clientX - rect.left) / rect.width - 0.5
       const y = (e.clientY - rect.top) / rect.height - 0.5
-      gsap.to(card, {
-        rotationY: x * 10,
-        rotationX: y * -10,
-        transformPerspective: 800,
-        duration: 0.4,
-        ease: 'power2.out',
-      })
+
+      targetX = x * 10
+      targetY = y * -10
+
+      if (!rafId) {
+        rafId = requestAnimationFrame(updateTransform)
+      }
     })
+
     card.addEventListener('mouseleave', () => {
-      gsap.to(card, {
-        rotationY: 0,
-        rotationX: 0,
-        duration: 0.6,
-        ease: 'elastic.out(1, 0.2)',
-      })
+      targetX = 0
+      targetY = 0
+      if (!rafId) {
+        rafId = requestAnimationFrame(updateTransform)
+      }
+      rect = null
     })
   })
 }
