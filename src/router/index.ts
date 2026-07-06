@@ -64,6 +64,16 @@ const router = createRouter({
       name: 'writing',
       component: () => import('@/views/Writing.vue'),
     },
+    {
+      path: '/github-hot',
+      name: 'github-hot',
+      component: () => import('@/views/GitHubHot.vue'),
+    },
+    {
+      path: '/github-hot/:id',
+      name: 'github-hot-detail',
+      component: () => import('@/views/GithubHotDetail.vue'),
+    },
   ],
 })
 
