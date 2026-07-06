@@ -39,10 +39,6 @@ function openDetail(bookmark: { id: number }) {
   router.push(`/bookmarks/${bookmark.id}`)
 }
 
-function getInitials(name: string) {
-  return name.slice(0, 2).toUpperCase()
-}
-
 const categorySkyColors: Record<string, { sky: string; skyPressed: string; mountain: string; ground: string; accent: string }> = {
   '开发工具': { sky: '#2e5dd6', skyPressed: '#1f47b0', mountain: '#2f6e4f', ground: '#e2522e', accent: '#2e5dd6' },
   'AI 工具': { sky: '#7c3aed', skyPressed: '#6d28d9', mountain: '#1e3a5f', ground: '#a855f7', accent: '#7c3aed' },
@@ -222,7 +218,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
           </div>
           <div class="ow-quest-card__body">
             <p class="ow-quest-card__kicker" :style="{ color: getCategoryColors(item.category).accent }">
-              {{ getInitials(item.name) }} · {{ item.name.slice(0, 2).toUpperCase() }}
+              {{ item.category }}
             </p>
             <h3 class="ow-quest-card__title">{{ item.name }}</h3>
             <p class="ow-quest-card__copy">{{ item.desc }}</p>
@@ -724,11 +720,11 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 .ow-quest-card__copy {
   font-family: "Inter", ui-sans-serif, sans-serif;
   font-size: 14px;
-  line-height: 1.45;
-  color: #3a332a;
+  line-height: 1.6;
+  color: #161310;
   margin: 0 0 16px;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
