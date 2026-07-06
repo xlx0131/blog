@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -16,6 +16,8 @@ const verifyError = ref('')
 
 const ADMIN_NAME = '许立鑫'
 const ADMIN_PASSWORD = '20050131'
+
+let ctx: gsap.Context | null = null
 
 function handleSecretClick() {
   showVerifyModal.value = true
@@ -35,11 +37,18 @@ function handleVerify() {
 }
 
 onMounted(() => {
-  gsap.from('.pixel-panel', {
-    y: 20, duration: 0.5, stagger: 0.08,
-    ease: 'power2.out',
-    scrollTrigger: { trigger: '.about-grid', start: 'top bottom-=20%', toggleActions: 'play none none none' },
+  ctx = gsap.context(() => {
+    gsap.from('.pixel-panel', {
+      y: 20, duration: 0.5, stagger: 0.08,
+      ease: 'power2.out',
+      scrollTrigger: { trigger: '.about-grid', start: 'top bottom-=20%', toggleActions: 'play none none none' },
+    })
   })
+})
+
+onBeforeUnmount(() => {
+  ctx?.revert()
+  ScrollTrigger.getAll().forEach(t => t.kill())
 })
 
 interface Skill { name: string; level: string; progress: number; icon: any; items: string[] }

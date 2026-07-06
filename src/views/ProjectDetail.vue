@@ -136,7 +136,7 @@ function openUrl(url: string) {
           <span class="font-mono text-xs text-[#3a332a]">Details</span>
         </div>
         <div class="bg-[#fffaef] border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] p-6 sm:p-8">
-          <div class="font-mono text-sm text-[#3a332a] leading-relaxed prose-custom" v-html="project.details" />
+          <div class="font-mono text-sm text-[#161310] leading-relaxed prose-custom" v-html="project.details" />
         </div>
       </section>
     </div>

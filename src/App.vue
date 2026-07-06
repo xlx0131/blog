@@ -13,6 +13,8 @@ import {
   SheetClose,
 } from '@/components/ui/sheet'
 import { Separator } from '@/components/ui/separator'
+import Breadcrumb from '@/components/Breadcrumb.vue'
+import MobileNav from '@/components/MobileNav.vue'
 import {
   MenuIcon,
   HomeIcon,
@@ -117,6 +119,10 @@ function closeSecretModal() {
   showSecretModal.value = false
   secretError.value = ''
 }
+
+function openDrawer() {
+  mobileOpen.value = true
+}
 onBeforeUnmount(() => cleanup?.())
 </script>
 
@@ -218,8 +224,16 @@ onBeforeUnmount(() => cleanup?.())
       </div>
     </header>
 
+    <!-- Breadcrumb -->
+    <div
+      v-if="route.path !== '/' && route.path !== '/network-game'"
+      class="fixed left-0 right-0 z-40 top-16 lg:top-20"
+    >
+      <Breadcrumb />
+    </div>
+
     <!-- Main -->
-    <main class="flex-1" :class="route.path === '/' || route.path === '/network-game' ? 'overflow-hidden' : 'pt-16 lg:pt-20'">
+    <main class="flex-1 main-content" :class="route.path === '/' || route.path === '/network-game' ? 'overflow-hidden' : 'pt-[calc(4rem+36px)] lg:pt-[calc(5rem+36px)]'">
       <RouterView v-slot="{ Component }">
         <Transition name="page" mode="out-in">
           <component :is="Component" />
@@ -229,7 +243,7 @@ onBeforeUnmount(() => cleanup?.())
 
     <!-- Footer -->
     <footer v-if="route.path !== '/' && route.path !== '/network-game'"
-       class="border-t border-[#161310] bg-[#f5f0e8] !mt-0"
+       class="border-t border-[#161310] bg-[#f5f0e8] !mt-0 footer-content"
      >
        <div class="max-w-[1400px] mx-auto px-6 lg:px-10 py-12">
          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -260,7 +274,7 @@ onBeforeUnmount(() => cleanup?.())
               <li v-for="item in navItems" :key="item.path">
                 <RouterLink
                   :to="item.path"
-                  class="hover:text-primary transition-colors link-underline"
+                  class="hover:text-[#161310] transition-colors link-underline"
                 >
                   {{ item.label }}
                 </RouterLink>
@@ -276,7 +290,7 @@ onBeforeUnmount(() => cleanup?.())
                   href="https://github.com/xlx0131"
                   target="_blank"
                   rel="noopener"
-                  class="hover:text-primary transition-colors link-underline"
+                  class="hover:text-[#161310] transition-colors link-underline"
                 >
                   GitHub
                 </a>
@@ -284,7 +298,7 @@ onBeforeUnmount(() => cleanup?.())
               <li>
                 <a
                   href="mailto:hello@xulixin.dev"
-                  class="hover:text-primary transition-colors link-underline"
+                  class="hover:text-[#161310] transition-colors link-underline"
                 >
                   邮箱
                 </a>
@@ -294,7 +308,7 @@ onBeforeUnmount(() => cleanup?.())
                   href="https://www.douyin.com/user/MS4wLjABAAAANP0coDMAbHudr4XDL33le06LIbVV22r11vYKLPXzMr6-0EHRu-yIJ-qdliln74Qb"
                   target="_blank"
                   rel="noopener"
-                  class="hover:text-primary transition-colors link-underline"
+                  class="hover:text-[#161310] transition-colors link-underline"
                 >
                   抖音
                 </a>
@@ -302,7 +316,7 @@ onBeforeUnmount(() => cleanup?.())
               <li>
                 <RouterLink
                   to="/about"
-                  class="hover:text-primary transition-colors link-underline"
+                  class="hover:text-[#161310] transition-colors link-underline"
                 >
                   关于我
                 </RouterLink>
@@ -338,6 +352,9 @@ onBeforeUnmount(() => cleanup?.())
       </svg>
       <span>TOP</span>
     </button>
+
+    <!-- Mobile Bottom Nav -->
+    <MobileNav @open-drawer="openDrawer" />
 
     <!-- Secret Modal -->
     <div v-if="showSecretModal" class="secret-modal-overlay" @click.self="closeSecretModal">
@@ -392,9 +409,18 @@ onBeforeUnmount(() => cleanup?.())
 
 <style scoped>
 .page-enter-active,
-.page-leave-active { transition: opacity 0.2s ease; }
-.page-enter-from,
-.page-leave-to { opacity: 0; }
+.page-leave-active {
+  transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+              transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.page-enter-from {
+  opacity: 0;
+  transform: translateX(16px);
+}
+.page-leave-to {
+  opacity: 0;
+  transform: translateX(-16px);
+}
 
 /* ─── 社交卡片 (像素风格) ─── */
 .card {
@@ -549,8 +575,14 @@ onBeforeUnmount(() => cleanup?.())
 }
 
 @media (max-width: 768px) {
+  .main-content {
+    padding-bottom: 56px;
+  }
+  .footer-content {
+    padding-bottom: 56px;
+  }
   .back-to-top {
-    bottom: 20px;
+    bottom: 76px;
     right: 20px;
     width: 56px;
     height: 56px;

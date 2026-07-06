@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ScrollReveal from '@/components/ScrollReveal.vue'
+import ArticleToc from '@/components/ArticleToc.vue'
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { articleDetails, articles } from '@/data/contents.js'
@@ -43,7 +44,8 @@ function goToArticle(id: number) {
 
 <template>
   <div class="min-h-[100dvh] bg-[#f5f0e8] pt-24 pb-20" v-if="article">
-    <div class="max-w-[760px] mx-auto px-6 sm:px-10">
+    <ArticleToc />
+    <div class="max-w-[900px] mx-auto px-6 sm:px-10 lg:pl-[260px]">
       <button
         class="font-mono text-sm tracking-wider uppercase px-4 py-2 border-2 border-[#161310] bg-[#fffaef] text-[#161310] shadow-[4px_4px_0_0_#161310] transition-all duration-200 hover:-translate-y-0.5 hover:translate-x-0.5 mb-8"
         @click="goBack"
