@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "fetch:github": "node scripts/fetch-github.js"
   },
   "dependencies": {
     "@lucide/vue": "^1.23.0",
