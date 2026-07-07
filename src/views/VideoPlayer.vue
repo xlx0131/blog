@@ -47,7 +47,7 @@ let controlsTimer: number | null = null
 async function fetchVideoDetail(vodId: number) {
   loading.value = true
   try {
-    const res = await fetch(`/api/video/proxy?source=heimuer&path=detail&ac=detail&ids=${vodId}`)
+    const res = await fetch(`/api/video/proxy?source=ffzy&path=detail&ac=detail&ids=${vodId}`)
     if (!res.ok) throw new Error('API error')
     const data = await res.json()
     
@@ -82,7 +82,7 @@ async function fetchVideoDetail(vodId: number) {
           }))
         },
         {
-          source: 'heimuer',
+          source: 'ffzy',
           episodes: Array.from({ length: 12 }, (_, i) => ({
             name: `第${i + 1}集`,
             url: `https://example.com/video/${vodId}-${i + 1}.mp4`
@@ -241,10 +241,9 @@ function goToDetail() {
 }
 
 const sourceNames: Record<string, string> = {
-  ikun: 'IKUN源',
-  heimuer: '黑木耳',
-  ffzy: '非凡资源',
-  subo: '速播资源',
+    ikun: 'IKUN源',
+    ffzy: '非凡资源',
+    subo: '速播资源',
   kuaikan: '快看资源',
   okzyw: 'OK资源',
 }

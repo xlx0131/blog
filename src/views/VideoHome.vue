@@ -53,7 +53,7 @@ async function loadBanners() {
 }
 
 async function loadHotVideos() {
-  const apiData = await fetchVideoList('heimuer', 1, 1, 6)
+  const apiData = await fetchVideoList('ffzy', 1, 1, 6)
   if (apiData && apiData.length > 0) {
     hotVideos.value = apiData.slice(0, 6)
   } else {
@@ -62,7 +62,7 @@ async function loadHotVideos() {
 }
 
 async function loadCategoryVideos(typeId: number, targetRef: any) {
-  const apiData = await fetchVideoList('heimuer', typeId, 1, 6)
+  const apiData = await fetchVideoList('ffzy', typeId, 1, 6)
   if (apiData && apiData.length > 0) {
     targetRef.value = apiData.slice(0, 6)
   } else {

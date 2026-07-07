@@ -31,13 +31,12 @@ const hasSearched = ref(false)
 const activeSource = ref('all')
 
 const sources: SourceInfo[] = [
-  { key: 'all', name: '全部', active: true },
-  { key: 'heimuer', name: '黑木耳', active: false },
-  { key: 'ffzy', name: '非凡资源', active: false },
-  { key: 'subo', name: '速播资源', active: false },
-]
+    { key: 'all', name: '全部', active: true },
+    { key: 'ffzy', name: '非凡资源', active: false },
+    { key: 'subo', name: '速播资源', active: false },
+  ]
 
-const hotSearches = [
+  const hotSearches = [
   '星际远征', '像素勇士', '末日之城', '时光旅人',
   '黑客纪元', '龙骑士传说', '海洋之心', '暗夜追击'
 ]

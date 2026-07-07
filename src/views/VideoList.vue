@@ -93,7 +93,7 @@ async function fetchVideoList() {
     params.set('pg', String(currentPage.value))
     params.set('pagesize', String(pageSize))
     
-    const res = await fetch(`/api/video/proxy?source=heimuer&path=list&${params.toString()}`)
+    const res = await fetch(`/api/video/proxy?source=ffzy&path=list&${params.toString()}`)
     if (!res.ok) throw new Error('API error')
     const data = await res.json()
     
