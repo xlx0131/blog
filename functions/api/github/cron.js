@@ -6,11 +6,17 @@ const corsHeaders = {
 
 async function upsertProject(env, repo, category) {
   const repoName = repo.full_name
+  const fullName = repo.full_name
   const description = repo.description || ''
   const language = repo.language || ''
   const stars = repo.stargazers_count
   const forks = repo.forks_count
+  const watchers = repo.watchers_count
+  const openIssues = repo.open_issues_count
+  const topics = JSON.stringify(repo.topics || [])
+  const homepage = repo.homepage || ''
   const url = repo.html_url
+  const ownerLogin = repo.owner?.login || ''
   const ownerAvatar = repo.owner?.avatar_url || ''
 
   const existing = await env.DB.prepare(
@@ -18,23 +24,31 @@ async function upsertProject(env, repo, category) {
   ).bind(repoName).first()
 
   if (existing) {
-    await env.DB.prepare(
-      `UPDATE github_projects
-       SET description = ?, language = ?, stars = ?, forks = ?, url = ?, owner_avatar = ?, updated_at = datetime('now')
-       WHERE id = ?`
-    ).bind(description, language, stars, forks, url, ownerAvatar, existing.id).run()
+    if (category === 'ai') {
+      await env.DB.prepare(
+        `UPDATE github_projects
+         SET full_name = ?, description = ?, language = ?, stars = ?, forks = ?, watchers = ?, open_issues = ?, topics = ?, homepage = ?, url = ?, owner_login = ?, owner_avatar = ?, category = ?, updated_at = datetime('now')
+         WHERE id = ?`
+      ).bind(fullName, description, language, stars, forks, watchers, openIssues, topics, homepage, url, ownerLogin, ownerAvatar, category, existing.id).run()
+    } else {
+      await env.DB.prepare(
+        `UPDATE github_projects
+         SET full_name = ?, description = ?, language = ?, stars = ?, forks = ?, watchers = ?, open_issues = ?, topics = ?, homepage = ?, url = ?, owner_login = ?, owner_avatar = ?, updated_at = datetime('now')
+         WHERE id = ?`
+      ).bind(fullName, description, language, stars, forks, watchers, openIssues, topics, homepage, url, ownerLogin, ownerAvatar, existing.id).run()
+    }
     return existing.id
   } else {
     const result = await env.DB.prepare(
-      `INSERT INTO github_projects (repo_name, description, language, stars, forks, url, owner_avatar, category)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `INSERT INTO github_projects (repo_name, full_name, description, language, stars, forks, watchers, open_issues, topics, homepage, url, owner_login, owner_avatar, category)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
        RETURNING id`
-    ).bind(repoName, description, language, stars, forks, url, ownerAvatar, category).run()
+    ).bind(repoName, fullName, description, language, stars, forks, watchers, openIssues, topics, homepage, url, ownerLogin, ownerAvatar, category).run()
     return result.results[0].id
   }
 }
 
-async function saveSnapshot(env, projectId, date, repo, rank) {
+async function saveSnapshot(env, projectId, date, repo) {
   const existing = await env.DB.prepare(
     'SELECT id FROM github_daily_snapshots WHERE project_id = ? AND date = ?'
   ).bind(projectId, date).first()
@@ -45,14 +59,14 @@ async function saveSnapshot(env, projectId, date, repo, rank) {
   if (existing) {
     await env.DB.prepare(
       `UPDATE github_daily_snapshots
-       SET stars = ?, forks = ?, rank = ?, updated_at = datetime('now')
+       SET stars = ?, forks = ?, updated_at = datetime('now')
        WHERE id = ?`
-    ).bind(stars, forks, rank, existing.id).run()
+    ).bind(stars, forks, existing.id).run()
   } else {
     await env.DB.prepare(
-      `INSERT INTO github_daily_snapshots (project_id, date, stars, forks, rank)
-       VALUES (?, ?, ?, ?, ?)`
-    ).bind(projectId, date, stars, forks, rank).run()
+      `INSERT INTO github_daily_snapshots (project_id, date, stars, forks)
+       VALUES (?, ?, ?, ?)`
+    ).bind(projectId, date, stars, forks).run()
   }
 }
 
@@ -91,7 +105,7 @@ async function fetchAndStoreProjects(env) {
   for (let i = 0; i < totalRepos.length; i++) {
     const repo = totalRepos[i]
     const projectId = await upsertProject(env, repo, 'total')
-    await saveSnapshot(env, projectId, today, repo, i + 1)
+    await saveSnapshot(env, projectId, today, repo)
     stats.total.upserted++
   }
 
@@ -101,14 +115,13 @@ async function fetchAndStoreProjects(env) {
   for (let i = 0; i < aiRepos.length; i++) {
     const repo = aiRepos[i]
     const projectId = await upsertProject(env, repo, 'ai')
-    await saveSnapshot(env, projectId, today, repo, i + 1)
+    await saveSnapshot(env, projectId, today, repo)
     stats.ai.upserted++
   }
 
-  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
   const deleteResult = await env.DB.prepare(
-    'DELETE FROM github_daily_snapshots WHERE date < ?'
-  ).bind(thirtyDaysAgo).run()
+    "DELETE FROM github_daily_snapshots WHERE date < date('now', '-30 day')"
+  ).run()
   stats.cleanedSnapshots = deleteResult.meta?.changes || 0
 
   return stats
