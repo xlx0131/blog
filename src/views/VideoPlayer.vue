@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { mockVideoList, parsePlayUrl } from '@/data/video-mock.js'
+import { parsePlayUrl } from '@/data/video-mock.js'
 
 interface VideoDetail {
   vod_id: number
@@ -29,6 +29,7 @@ const route = useRoute()
 const video = ref<VideoDetail | null>(null)
 const playSources = ref<PlaySource[]>([])
 const loading = ref(true)
+const showError = ref('')
 const activeSourceIndex = ref(0)
 const currentEpisodeIndex = ref(0)
 const relatedVideos = ref<any[]>([])
@@ -54,49 +55,18 @@ async function fetchVideoDetail(vodId: number) {
     if (data.success && data.data && data.data.list && data.data.list.length > 0) {
       video.value = data.data.list[0]
     } else {
-      throw new Error('no data')
+      showError.value = '视频信息不存在'
+      loading.value = false
+      return
     }
   } catch {
-    const allVideos: VideoDetail[] = []
-    Object.values(mockVideoList as any).forEach((list: VideoDetail[]) => {
-      allVideos.push(...list)
-    })
-    
-    const found = allVideos.find(v => v.vod_id === vodId)
-    if (found) {
-      video.value = found
-    } else {
-      video.value = allVideos[0]
-    }
+    showError.value = '加载失败，请刷新重试'
+    loading.value = false
+    return
   }
   
   if (video.value) {
     playSources.value = parsePlayUrl(video.value.vod_play_from, video.value.vod_play_url)
-    if (playSources.value.length === 0) {
-      playSources.value = [
-        {
-          source: 'ikun',
-          episodes: Array.from({ length: 12 }, (_, i) => ({
-            name: `第${i + 1}集`,
-            url: `https://example.com/video/${vodId}-${i + 1}.mp4`
-          }))
-        },
-        {
-          source: 'ffzy',
-          episodes: Array.from({ length: 12 }, (_, i) => ({
-            name: `第${i + 1}集`,
-            url: `https://example.com/video/${vodId}-${i + 1}.mp4`
-          }))
-        },
-        {
-          source: 'ffzy',
-          episodes: Array.from({ length: 12 }, (_, i) => ({
-            name: `第${i + 1}集`,
-            url: `https://example.com/video/${vodId}-${i + 1}.mp4`
-          }))
-        },
-      ]
-    }
   }
   
   loadRelatedVideos()
@@ -104,14 +74,7 @@ async function fetchVideoDetail(vodId: number) {
 }
 
 function loadRelatedVideos() {
-  const allVideos: any[] = []
-  Object.values(mockVideoList as any).forEach((list: any[]) => {
-    allVideos.push(...list)
-  })
-  relatedVideos.value = allVideos
-    .filter(v => v.vod_id !== video.value?.vod_id)
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 8)
+  relatedVideos.value = []
 }
 
 function selectSource(index: number) {
@@ -129,7 +92,7 @@ function playCurrentEpisode() {
   if (videoRef.value) {
     const ep = currentEpisodes.value[currentEpisodeIndex.value]
     if (ep) {
-      videoRef.value.src = ep.url
+      videoRef.value.src = `/api/video/play?url=${encodeURIComponent(ep.url)}`
       videoRef.value.load()
       videoRef.value.play().catch(() => {})
     }
@@ -241,11 +204,8 @@ function goToDetail() {
 }
 
 const sourceNames: Record<string, string> = {
-    ikun: 'IKUN源',
-    ffzy: '非凡资源',
-    subo: '速播资源',
-  kuaikan: '快看资源',
-  okzyw: 'OK资源',
+  ffzy: '非凡资源',
+  subo: '速播资源',
 }
 
 const getSourceName = (source: string) => sourceNames[source] || source

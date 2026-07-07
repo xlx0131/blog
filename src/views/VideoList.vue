@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { mockVideoList, mockCategories } from '@/data/video-mock.js'
+import { mockCategories } from '@/data/video-mock.js'
 
 interface VideoItem {
   vod_id: number
@@ -104,29 +104,8 @@ async function fetchVideoList() {
       throw new Error('no data')
     }
   } catch {
-    const mockData = (mockVideoList as any)[activeTypeId.value] || (mockVideoList as any)[1] || []
-    let filtered = [...mockData]
-    
-    if (activeArea.value !== '全部') {
-      filtered = filtered.filter((v: VideoItem) => v.vod_area === activeArea.value)
-    }
-    
-    if (activeYear.value !== '全部') {
-      const yearNum = parseInt(activeYear.value)
-      if (!isNaN(yearNum)) {
-        filtered = filtered.filter((v: VideoItem) => v.vod_year === yearNum)
-      }
-    }
-    
-    if (sortBy.value === 'new') {
-      filtered.sort((a: VideoItem, b: VideoItem) => b.vod_year - a.vod_year)
-    } else if (sortBy.value === 'hot') {
-      filtered.sort(() => Math.random() - 0.5)
-    }
-    
-    total.value = filtered.length
-    const start = (currentPage.value - 1) * pageSize
-    videoList.value = filtered.slice(start, start + pageSize)
+    videoList.value = []
+    total.value = 0
   }
   loading.value = false
 }

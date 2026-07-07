@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { mockVideoList, mockBanners, mockCategories } from '@/data/video-mock.js'
+import { mockCategories } from '@/data/video-mock.js'
 
 interface VideoItem {
   vod_id: number
@@ -49,7 +49,7 @@ async function fetchVideoList(source: string, typeId: number, page = 1, pageSize
 }
 
 async function loadBanners() {
-  banners.value = mockBanners
+  banners.value = []
 }
 
 async function loadHotVideos() {
@@ -57,7 +57,7 @@ async function loadHotVideos() {
   if (apiData && apiData.length > 0) {
     hotVideos.value = apiData.slice(0, 6)
   } else {
-    hotVideos.value = (mockVideoList as any)[1].slice(0, 6)
+    hotVideos.value = []
   }
 }
 
@@ -66,7 +66,7 @@ async function loadCategoryVideos(typeId: number, targetRef: any) {
   if (apiData && apiData.length > 0) {
     targetRef.value = apiData.slice(0, 6)
   } else {
-    targetRef.value = (mockVideoList as any)[typeId]?.slice(0, 6) || []
+    targetRef.value = []
   }
 }
 

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { mockVideoList } from '@/data/video-mock.js'
 
 interface VideoItem {
   vod_id: number
@@ -64,21 +63,7 @@ async function doSearch() {
       throw new Error('no data')
     }
   } catch {
-    const allVideos: VideoItem[] = []
-    Object.values(mockVideoList as any).forEach((list: VideoItem[]) => {
-      allVideos.push(...list)
-    })
-    
-    const queryLower = query.toLowerCase()
-    searchResults.value = allVideos.filter(v => 
-      v.vod_name.toLowerCase().includes(queryLower) ||
-      (v.vod_actor && v.vod_actor.toLowerCase().includes(queryLower)) ||
-      (v.vod_director && v.vod_director.toLowerCase().includes(queryLower))
-    ).slice(0, 40).map((v, i) => ({
-      ...v,
-      _source: ['heimuer', 'ffzy', 'subo'][i % 3],
-      _sourceName: ['黑木耳', '非凡资源', '速播资源'][i % 3],
-    }))
+    searchResults.value = []
   }
   
   loading.value = false
