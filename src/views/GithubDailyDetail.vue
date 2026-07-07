@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { mockProjects } from '@/data/github-mock.js'
 
 interface GithubProjectDetail {
   id: number | string
@@ -26,70 +27,6 @@ const router = useRouter()
 const id = computed(() => route.params.id)
 const project = ref<GithubProjectDetail | null>(null)
 const loading = ref(true)
-
-const mockProject: GithubProjectDetail = {
-  id: 1,
-  repo_name: 'awesome-ai-tools',
-  full_name: 'microsoft/awesome-ai-tools',
-  description: 'A curated list of awesome AI tools, libraries, and resources for developers building intelligent applications.',
-  language: 'TypeScript',
-  stars: 125000,
-  forks: 15600,
-  watchers: 3200,
-  open_issues: 128,
-  daily_growth: 320,
-  topics: ['ai', 'machine-learning', 'tools', 'deep-learning', 'nlp', 'computer-vision'],
-  html_url: 'https://github.com/microsoft/awesome-ai-tools',
-  homepage: 'https://ai-tools.microsoft.com',
-  owner_avatar: 'https://avatars.githubusercontent.com/u/6154722?v=4',
-  owner_login: 'microsoft',
-  readme: `# Awesome AI Tools
-
-A curated list of awesome AI tools, libraries, and resources for developers building intelligent applications.
-
-## Features
-
-- 🤖 100+ AI tools and libraries
-- 📚 Comprehensive documentation
-- 🚀 Quick start guides
-- 💬 Active community support
-
-## Categories
-
-### Machine Learning
-- TensorFlow
-- PyTorch
-- scikit-learn
-- XGBoost
-
-### Natural Language Processing
-- Transformers
-- spaCy
-- NLTK
-- Hugging Face
-
-### Computer Vision
-- OpenCV
-- YOLO
-- Detectron2
-- Mediapipe
-
-## Getting Started
-
-\`\`\`bash
-git clone https://github.com/microsoft/awesome-ai-tools.git
-cd awesome-ai-tools
-npm install
-\`\`\`
-
-## License
-
-MIT License - feel free to use this project for learning and development.
-
-## Contributing
-
-Contributions are welcome! Please read our contributing guidelines before submitting pull requests.`,
-}
 
 const mockTrendData = Array.from({ length: 30 }, (_, i) => {
   const base = 80 + Math.sin(i / 4) * 30
@@ -130,7 +67,7 @@ async function loadProject() {
   // project.value = data.project
 
   await new Promise(resolve => setTimeout(resolve, 300))
-  project.value = mockProject
+  project.value = mockProjects.find(p => String(p.id) === String(id.value)) || null
   loading.value = false
 }
 

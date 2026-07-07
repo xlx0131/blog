@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import GithubProjectCard from '@/components/GithubProjectCard.vue'
 import AiSkillCard from '@/components/AiSkillCard.vue'
+import { mockProjects, mockAiSkills } from '@/data/github-mock.js'
 
 interface GithubProject {
   id: number | string
@@ -34,200 +35,6 @@ const searchQuery = ref('')
 const lastUpdate = ref('2026-07-07 10:00')
 const projects = ref<GithubProject[]>([])
 const aiSkills = ref<AiSkill[]>([])
-
-const mockProjects: GithubProject[] = [
-  {
-    id: 1,
-    repo_name: 'awesome-ai-tools',
-    full_name: 'microsoft/awesome-ai-tools',
-    description: 'A curated list of awesome AI tools, libraries, and resources for developers building intelligent applications.',
-    language: 'TypeScript',
-    stars: 125000,
-    forks: 15600,
-    daily_growth: 320,
-    topics: ['ai', 'machine-learning', 'tools'],
-    html_url: 'https://github.com/microsoft/awesome-ai-tools',
-    owner_avatar: 'https://avatars.githubusercontent.com/u/6154722?v=4',
-    owner_login: 'microsoft',
-  },
-  {
-    id: 2,
-    repo_name: 'langchain',
-    full_name: 'langchain-ai/langchain',
-    description: 'Build context-aware reasoning applications with LLMs through composable chains and agents.',
-    language: 'Python',
-    stars: 98500,
-    forks: 14200,
-    daily_growth: 280,
-    topics: ['llm', 'ai', 'python'],
-    html_url: 'https://github.com/langchain-ai/langchain',
-    owner_avatar: 'https://avatars.githubusercontent.com/u/126733545?v=4',
-    owner_login: 'langchain-ai',
-  },
-  {
-    id: 3,
-    repo_name: 'vue',
-    full_name: 'vuejs/vue',
-    description: 'The Progressive JavaScript Framework. Vue is a progressive framework for building user interfaces.',
-    language: 'TypeScript',
-    stars: 215000,
-    forks: 35600,
-    daily_growth: 150,
-    topics: ['vue', 'frontend', 'framework'],
-    html_url: 'https://github.com/vuejs/vue',
-    owner_avatar: 'https://avatars.githubusercontent.com/u/6128107?v=4',
-    owner_login: 'vuejs',
-  },
-  {
-    id: 4,
-    repo_name: 'open-interpreter',
-    full_name: 'KillianLucas/open-interpreter',
-    description: 'A natural language interface for computers. Let LLMs run code on your computer.',
-    language: 'Python',
-    stars: 52000,
-    forks: 6800,
-    daily_growth: 420,
-    topics: ['ai', 'llm', 'code-interpreter'],
-    html_url: 'https://github.com/KillianLucas/open-interpreter',
-    owner_avatar: 'https://avatars.githubusercontent.com/u/46334387?v=4',
-    owner_login: 'KillianLucas',
-  },
-  {
-    id: 5,
-    repo_name: 'tailwindcss',
-    full_name: 'tailwindlabs/tailwindcss',
-    description: 'A utility-first CSS framework for rapid UI development. Build beautiful designs without leaving your HTML.',
-    language: 'TypeScript',
-    stars: 82000,
-    forks: 9200,
-    daily_growth: 95,
-    topics: ['css', 'tailwindcss', 'frontend'],
-    html_url: 'https://github.com/tailwindlabs/tailwindcss',
-    owner_avatar: 'https://avatars.githubusercontent.com/u/67109815?v=4',
-    owner_login: 'tailwindlabs',
-  },
-  {
-    id: 6,
-    repo_name: 'screenshot-to-code',
-    full_name: 'abi/screenshot-to-code',
-    description: 'Drop in a screenshot and convert it to clean code (HTML/Tailwind/React/Vue). Powered by GPT-4V.',
-    language: 'TypeScript',
-    stars: 48000,
-    forks: 5600,
-    daily_growth: 560,
-    topics: ['ai', 'code-generation', 'design'],
-    html_url: 'https://github.com/abi/screenshot-to-code',
-    owner_avatar: 'https://avatars.githubusercontent.com/u/2460973?v=4',
-    owner_login: 'abi',
-  },
-  {
-    id: 7,
-    repo_name: 'rust',
-    full_name: 'rust-lang/rust',
-    description: 'Empowering everyone to build reliable and efficient software. The Rust programming language.',
-    language: 'Rust',
-    stars: 95000,
-    forks: 12800,
-    daily_growth: 85,
-    topics: ['rust', 'language', 'systems'],
-    html_url: 'https://github.com/rust-lang/rust',
-    owner_avatar: 'https://avatars.githubusercontent.com/u/5430905?v=4',
-    owner_login: 'rust-lang',
-  },
-  {
-    id: 8,
-    repo_name: 'dify',
-    full_name: 'langgenius/dify',
-    description: 'Dify is an open-source LLM app development platform. Visual workflow builder, RAG engine, and more.',
-    language: 'TypeScript',
-    stars: 42000,
-    forks: 5800,
-    daily_growth: 380,
-    topics: ['ai', 'llm', 'no-code'],
-    html_url: 'https://github.com/langgenius/dify',
-    owner_avatar: 'https://avatars.githubusercontent.com/u/130821368?v=4',
-    owner_login: 'langgenius',
-  },
-  {
-    id: 9,
-    repo_name: 'go',
-    full_name: 'golang/go',
-    description: 'The Go programming language. Go is an open source programming language that makes it easy to build software.',
-    language: 'Go',
-    stars: 122000,
-    forks: 17500,
-    daily_growth: 75,
-    topics: ['go', 'language', 'backend'],
-    html_url: 'https://github.com/golang/go',
-    owner_avatar: 'https://avatars.githubusercontent.com/u/4314092?v=4',
-    owner_login: 'golang',
-  },
-  {
-    id: 10,
-    repo_name: 'cursor',
-    full_name: 'getcursor/cursor',
-    description: 'An AI-first code editor. Cursor is a fork of VS Code that is built for AI pair programming.',
-    language: 'TypeScript',
-    stars: 38000,
-    forks: 3200,
-    daily_growth: 620,
-    topics: ['ai', 'ide', 'editor'],
-    html_url: 'https://github.com/getcursor/cursor',
-    owner_avatar: 'https://avatars.githubusercontent.com/u/102781808?v=4',
-    owner_login: 'getcursor',
-  },
-]
-
-const mockAiSkills: AiSkill[] = [
-  {
-    id: 1,
-    name: '代码审查助手',
-    description: 'AI 驱动的代码审查工具，自动检测代码缺陷、安全漏洞和最佳实践问题。',
-    category: '开发工具',
-    url: 'https://example.com/code-review',
-    icon: '🔍',
-  },
-  {
-    id: 2,
-    name: '文档生成器',
-    description: '自动从代码生成 API 文档、README 和技术文档，支持多种格式输出。',
-    category: '文档工具',
-    url: 'https://example.com/docs-gen',
-    icon: '📝',
-  },
-  {
-    id: 3,
-    name: '测试用例生成',
-    description: '智能分析代码逻辑，自动生成全面的单元测试和集成测试用例。',
-    category: '测试工具',
-    url: 'https://example.com/test-gen',
-    icon: '🧪',
-  },
-  {
-    id: 4,
-    name: 'UI 设计转代码',
-    description: '将设计稿一键转换为高质量的前端代码，支持 React、Vue、Tailwind 等。',
-    category: '前端开发',
-    url: 'https://example.com/ui2code',
-    icon: '🎨',
-  },
-  {
-    id: 5,
-    name: '数据库优化顾问',
-    description: '分析查询性能，提供索引建议和 SQL 优化方案，提升数据库效率。',
-    category: '数据库',
-    url: 'https://example.com/db-opt',
-    icon: '💾',
-  },
-  {
-    id: 6,
-    name: 'DevOps 智能助手',
-    description: '自动化 CI/CD 流水线优化、容器配置和基础设施即代码生成。',
-    category: 'DevOps',
-    url: 'https://example.com/devops-ai',
-    icon: '🚀',
-  },
-]
 
 const filteredProjects = computed(() => {
   let result = [...projects.value]
@@ -265,9 +72,9 @@ const tabCounts = computed(() => ({
 
 async function loadProjects() {
   // TODO: 部署后启用真实 API 调用
-  // const response = await fetch('/api/github-daily')
+  // const response = await fetch('/api/github/projects')
   // const data = await response.json()
-  // projects.value = data.projects
+  // projects.value = data.data
   // lastUpdate.value = data.lastUpdate
 
   projects.value = mockProjects
@@ -275,9 +82,9 @@ async function loadProjects() {
 
 async function loadAiSkills() {
   // TODO: 部署后启用真实 API 调用
-  // const response = await fetch('/api/ai-skills')
+  // const response = await fetch('/api/github/ai-skills')
   // const data = await response.json()
-  // aiSkills.value = data.skills
+  // aiSkills.value = data.data
 
   aiSkills.value = mockAiSkills
 }
