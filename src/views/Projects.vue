@@ -37,11 +37,7 @@ const filteredProjects = computed(() => {
 })
 
 function viewProject(project: Project) {
-  if (project.url.startsWith('/github-daily') || project.id === 3) {
-    router.push(project.url)
-  } else {
-    router.push(`/projects/${project.id}`)
-  }
+  router.push(`/projects/${project.id}`)
 }
 
 function reInitTilt() {

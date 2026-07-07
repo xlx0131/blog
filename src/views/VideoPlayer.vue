@@ -47,7 +47,7 @@ let controlsTimer: number | null = null
 async function fetchVideoDetail(vodId: number) {
   loading.value = true
   try {
-    const res = await fetch(`/api/video/heimuer/detail?ac=detail&ids=${vodId}`)
+    const res = await fetch(`/api/video/proxy?source=heimuer&path=detail&ac=detail&ids=${vodId}`)
     if (!res.ok) throw new Error('API error')
     const data = await res.json()
     

@@ -36,7 +36,7 @@ const categories = computed(() => mockCategories.filter((c: any) => [1, 2, 3, 4]
 
 async function fetchVideoList(source: string, typeId: number, page = 1, pageSize = 6) {
   try {
-    const res = await fetch(`/api/video/${source}/list?ac=list&t=${typeId}&pg=${page}&pagesize=${pageSize}`)
+    const res = await fetch(`/api/video/proxy?source=${source}&path=list&ac=list&t=${typeId}&pg=${page}&pagesize=${pageSize}`)
     if (!res.ok) throw new Error('API error')
     const data = await res.json()
     if (data.success && data.data && data.data.list) {

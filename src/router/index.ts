@@ -65,16 +65,6 @@ const router = createRouter({
       component: () => import('@/views/Writing.vue'),
     },
     {
-      path: '/github-daily',
-      name: 'github-daily',
-      component: () => import('@/views/GithubDaily.vue'),
-    },
-    {
-      path: '/github-daily/:id',
-      name: 'github-daily-detail',
-      component: () => import('@/views/GithubDailyDetail.vue'),
-    },
-    {
       path: '/video',
       name: 'video-home',
       component: () => import('@/views/VideoHome.vue'),

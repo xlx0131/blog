@@ -39,25 +39,6 @@ export const projects = [
   },
   {
     id: 3,
-    title: 'GitHub 每日热榜',
-    subtitle: '每日自动更新的 GitHub 热门项目精选',
-    description:
-      '每天自动抓取 GitHub 上 Star 增长最快的热门项目，包括总榜、AI 榜、日增榜三大分类，附带 AI 开发技能推荐。数据每日自动更新，存储在 Cloudflare D1 数据库中。',
-    url: '/github-daily',
-    tags: ['GitHub', '爬虫', '数据'],
-    tech: ['Cloudflare', 'D1', 'GitHub API', 'Vue 3', 'TypeScript'],
-    cover: 'github',
-    year: '2026',
-    highlights: [
-      '每日自动抓取 GitHub 热门项目',
-      '总榜 / AI 榜 / 日增榜 三大分类',
-      'Cloudflare D1 数据库存储，30天快照历史',
-      'AI 开发技能树推荐',
-      '像素风格界面设计',
-    ],
-  },
-  {
-    id: 4,
     title: 'QQ星TV',
     subtitle: '像素风专属视频站，海量影视资源聚合',
     description:

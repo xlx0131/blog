@@ -1,7 +1,7 @@
-import { getSource } from '../_sources.js'
+import { getSource } from './_sources.js'
 
 export async function onRequest(context) {
-  const { request, params } = context
+  const { request } = context
   const url = new URL(request.url)
   const method = request.method
 
@@ -23,17 +23,24 @@ export async function onRequest(context) {
       )
     }
 
-    const source = params.source
-    const path = params.path || ''
+    const source = url.searchParams.get('source') || url.pathname.split('/').pop()
+    const apiPath = url.searchParams.get('path') || 'list'
+    const sourceParam = url.searchParams.get('source')
 
-    if (!source) {
+    let finalSource = sourceParam
+    if (!finalSource) {
+      const match = url.pathname.match(/\/api\/video\/([^/]+)/)
+      if (match) finalSource = match[1]
+    }
+
+    if (!finalSource) {
       return Response.json(
         { success: false, error: '缺少 source 参数' },
         { status: 400, headers: corsHeaders }
       )
     }
 
-    const sourceConfig = getSource(source)
+    const sourceConfig = getSource(finalSource)
     if (!sourceConfig) {
       return Response.json(
         { success: false, error: '资源站不存在' },
@@ -48,8 +55,12 @@ export async function onRequest(context) {
       )
     }
 
-    const queryString = url.searchParams.toString()
-    const targetUrl = sourceConfig.baseUrl + (path ? '/' + path : '') + (queryString ? '?' + queryString : '')
+    const params = new URLSearchParams(url.searchParams)
+    params.delete('source')
+    params.delete('path')
+    const queryString = params.toString()
+
+    const targetUrl = sourceConfig.baseUrl + '/' + apiPath + (queryString ? '?' + queryString : '')
 
     const response = await fetch(targetUrl, {
       method: 'GET',
