@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { parsePlayUrl } from '@/data/video-mock.js'
+import Hls from 'hls.js'
 
 interface VideoDetail {
   vod_id: number
@@ -35,6 +36,7 @@ const currentEpisodeIndex = ref(0)
 const relatedVideos = ref<any[]>([])
 
 const videoRef = ref<HTMLVideoElement | null>(null)
+const hlsInstance = ref<Hls | null>(null)
 const isPlaying = ref(false)
 const currentTime = ref(0)
 const duration = ref(0)
@@ -89,13 +91,35 @@ function selectEpisode(index: number) {
 }
 
 function playCurrentEpisode() {
-  if (videoRef.value) {
-    const ep = currentEpisodes.value[currentEpisodeIndex.value]
-    if (ep) {
-      videoRef.value.src = `/api/video/play?url=${encodeURIComponent(ep.url)}`
-      videoRef.value.load()
-      videoRef.value.play().catch(() => {})
-    }
+  if (!videoRef.value) return
+  const ep = currentEpisodes.value[currentEpisodeIndex.value]
+  if (!ep) return
+  
+  const videoUrl = `/api/video/play?url=${encodeURIComponent(ep.url)}`
+  
+  // Destroy previous Hls instance
+  if (hlsInstance.value) {
+    hlsInstance.value.destroy()
+    hlsInstance.value = null
+  }
+  
+  // Safari native HLS support
+  if (videoRef.value.canPlayType('application/vnd.apple.mpegurl')) {
+    videoRef.value.src = videoUrl
+    videoRef.value.load()
+    videoRef.value.play().catch(() => {})
+  } else if (Hls.isSupported()) {
+    const hls = new Hls()
+    hlsInstance.value = hls
+    hls.loadSource(videoUrl)
+    hls.attachMedia(videoRef.value)
+    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      videoRef.value?.play().catch(() => {})
+    })
+  } else {
+    videoRef.value.src = videoUrl
+    videoRef.value.load()
+    videoRef.value.play().catch(() => {})
   }
 }
 
@@ -250,6 +274,10 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  if (hlsInstance.value) {
+    hlsInstance.value.destroy()
+    hlsInstance.value = null
+  }
   if (controlsTimer) {
     clearTimeout(controlsTimer)
   }
