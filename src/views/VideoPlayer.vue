@@ -206,6 +206,9 @@ function goToDetail() {
 const sourceNames: Record<string, string> = {
   ffzy: '非凡资源',
   subo: '速播资源',
+  feifan: '非凡',
+  ffm3u8: 'FFm3u8',
+  ffzyapi: '非凡源',
 }
 
 const getSourceName = (source: string) => sourceNames[source] || source

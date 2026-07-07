@@ -99,12 +99,23 @@ export const mockBanners = [
 
 export function parsePlayUrl(vod_play_from, vod_play_url) {
   if (!vod_play_from || !vod_play_url) return []
-  const fromList = vod_play_from.split('$$$')
-  const urlList = vod_play_url.split('$$$')
+  
+  // Support both $$$ and comma as separator
+  let fromList
+  if (vod_play_from.includes('$$$')) {
+    fromList = vod_play_from.split('$$$')
+  } else {
+    fromList = vod_play_from.split(',')
+  }
+  
+  const hasSeparator = vod_play_url.includes('$$$')
+  const urlList = hasSeparator ? vod_play_url.split('$$$') : []
   const result = []
   for (let i = 0; i < fromList.length; i++) {
-    const source = fromList[i]
-    const urlStr = urlList[i] || ''
+    const source = fromList[i].trim()
+    if (!source) continue
+    // If no $$$ in vod_play_url, all sources share the same URL list
+    const urlStr = hasSeparator ? (urlList[i] || '') : vod_play_url
     const episodes = urlStr.split('#').filter(e => e.includes('$')).map(e => {
       const [name, url] = e.split('$')
       return { name, url }
@@ -113,5 +124,13 @@ export function parsePlayUrl(vod_play_from, vod_play_url) {
       result.push({ source, episodes })
     }
   }
+  
+  // Prioritize ffm3u8 source - move it to front
+  const ffIdx = result.findIndex(s => s.source.includes('ffm3u8') || s.source.includes('m3u8'))
+  if (ffIdx > 0) {
+    const ff = result.splice(ffIdx, 1)[0]
+    result.unshift(ff)
+  }
+  
   return result
 }
