@@ -85,7 +85,7 @@ export async function onRequest(context) {
     params.delete('path')
     const queryString = params.toString()
 
-    const targetUrl = sourceConfig.baseUrl + '/' + apiPath + (queryString ? '?' + queryString : '')
+    const targetUrl = sourceConfig.baseUrl + (queryString ? '?' + queryString : '')
 
     const response = await fetch(targetUrl, {
       method: 'GET',
