@@ -37,7 +37,11 @@ const filteredProjects = computed(() => {
 })
 
 function viewProject(project: Project) {
-  router.push(`/projects/${project.id}`)
+  if (project.url && project.url.startsWith('/') && project.url !== `/projects/${project.id}`) {
+    router.push(project.url)
+  } else {
+    router.push(`/projects/${project.id}`)
+  }
 }
 
 function reInitTilt() {
