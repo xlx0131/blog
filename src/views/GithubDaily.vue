@@ -41,7 +41,7 @@ const filteredProjects = computed(() => {
 
   if (activeTab.value === 'ai') {
     result = result.filter((p) =>
-      p.topics.some((t) => ['ai', 'llm', 'machine-learning', 'code-generation', 'no-code', 'ide'].includes(t))
+      p.topics.some((t) => ['AI', '大模型', 'AI工具', 'AI应用', 'AI编程', 'AI平台', 'AI助手', '智能体', '知识库'].some(kw => t.includes(kw) || kw.includes(t)))
     )
   } else if (activeTab.value === 'daily') {
     result = result.sort((a, b) => (b.daily_growth || 0) - (a.daily_growth || 0))
@@ -65,7 +65,7 @@ const filteredProjects = computed(() => {
 const tabCounts = computed(() => ({
   total: projects.value.length,
   ai: projects.value.filter((p) =>
-    p.topics.some((t) => ['ai', 'llm', 'machine-learning', 'code-generation', 'no-code', 'ide'].includes(t))
+    p.topics.some((t) => ['AI', '大模型', 'AI工具', 'AI应用', 'AI编程', 'AI平台', 'AI助手', '智能体', '知识库'].some(kw => t.includes(kw) || kw.includes(t)))
   ).length,
   daily: projects.value.filter((p) => (p.daily_growth || 0) > 0).length,
 }))
