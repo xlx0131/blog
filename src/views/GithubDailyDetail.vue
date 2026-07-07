@@ -61,10 +61,24 @@ function truncateReadme(text: string, maxLength: number = 500): string {
 
 async function loadProject() {
   loading.value = true
-  // TODO: 部署后启用真实 API 调用
-  // const response = await fetch(`/api/github-daily/${id.value}`)
-  // const data = await response.json()
-  // project.value = data.project
+
+  try {
+    const res = await fetch(`/api/github/project/${id.value}`)
+    if (res.ok) {
+      const data = await res.json()
+      if (data.success && data.project) {
+        const p = data.project
+        project.value = {
+          ...p,
+          topics: typeof p.topics === 'string' ? JSON.parse(p.topics) : p.topics,
+        }
+        loading.value = false
+        return
+      }
+    }
+  } catch {
+    // fallback to mock
+  }
 
   await new Promise(resolve => setTimeout(resolve, 300))
   const allProjects = [...mockProjects, ...funProjects]

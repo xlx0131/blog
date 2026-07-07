@@ -3,7 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import GithubProjectCard from '@/components/GithubProjectCard.vue'
 import AiSkillCard from '@/components/AiSkillCard.vue'
-import { mockAiSkills, dailyArchives } from '@/data/github-mock.js'
+import { mockAiSkills, dailyArchives as mockDailyArchives } from '@/data/github-mock.js'
 
 interface GithubProject {
   id: number | string
@@ -35,35 +35,97 @@ interface DailyArchive {
   label: string
   projectCount: number
   aiCount: number
+  funCount: number
   projects: GithubProject[]
   isToday: boolean
 }
 
-type TabType = 'total' | 'ai' | 'daily' | 'fun'
+type TabType = 'total' | 'daily' | 'ai' | 'fun'
 
 const router = useRouter()
 const activeTab = ref<TabType>('total')
 const searchQuery = ref('')
-const activeDate = ref(dailyArchives[0].date)
+const dailyArchives = ref<DailyArchive[]>([])
 const aiSkills = ref<AiSkill[]>([])
+const loading = ref(true)
 
-const currentArchive = computed<DailyArchive>(() => {
-  return dailyArchives.find((d) => d.date === activeDate.value) || dailyArchives[0]
+async function fetchDailyList(date: string, category: string) {
+  try {
+    const res = await fetch(`/api/github/daily?date=${date}&category=${category}&limit=50`)
+    if (!res.ok) throw new Error('API error')
+    return await res.json()
+  } catch {
+    return null
+  }
+}
+
+async function loadDailyArchives() {
+  loading.value = true
+
+  const today = new Date()
+  const archives: DailyArchive[] = []
+
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today)
+    d.setDate(today.getDate() - i)
+    const dateStr = d.toISOString().split('T')[0]
+    const label = i === 0 ? '今天' : i === 1 ? '昨天' : dateStr
+
+    const data = await fetchDailyList(dateStr, 'total')
+
+    if (data && data.success && data.projects) {
+      archives.push({
+        date: dateStr,
+        label,
+        projectCount: data.stats?.total || data.projects.length,
+        aiCount: data.stats?.ai || 0,
+        funCount: data.stats?.fun || 0,
+        projects: data.projects,
+        isToday: i === 0,
+      })
+    } else {
+      const mock = mockDailyArchives.find((m: any) => m.date === dateStr)
+      if (mock) {
+        archives.push({
+          date: dateStr,
+          label,
+          projectCount: mock.projectCount,
+          aiCount: mock.aiCount,
+          funCount: mock.funCount || 0,
+          projects: mock.projects,
+          isToday: i === 0,
+        })
+      }
+    }
+  }
+
+  dailyArchives.value = archives
+  loading.value = false
+}
+
+const activeDate = computed(() => dailyArchives.value[0]?.date || '')
+
+const currentArchive = computed<DailyArchive | null>(() => {
+  return dailyArchives.value.find((d) => d.date === activeDate.value) || dailyArchives.value[0] || null
 })
 
-const lastUpdate = computed(() => currentArchive.value.date + ' 02:00')
+const lastUpdate = computed(() => (currentArchive.value?.date || '') + ' 02:00')
 
 const filteredProjects = computed(() => {
+  if (!currentArchive.value) return []
   let result = [...currentArchive.value.projects]
 
   if (activeTab.value === 'ai') {
     result = result.filter((p) =>
-      p.topics.some((t) => ['AI', '大模型', 'AI工具', 'AI应用', 'AI编程', 'AI平台', 'AI助手', '智能体', '知识库'].some((kw) => t.includes(kw) || kw.includes(t)))
+      p.topics.some((t: string) => ['AI', '大模型', 'AI工具', 'AI应用', 'AI编程', 'AI平台', 'AI助手', '智能体', '知识库'].some((kw) => t.includes(kw) || kw.includes(t)))
     )
   } else if (activeTab.value === 'daily') {
     result = result.sort((a, b) => (b.daily_growth || 0) - (a.daily_growth || 0))
   } else if (activeTab.value === 'fun') {
-    result = currentArchive.value.funProjects || []
+    result = result.filter((p: any) => p.is_fun === 1 || p.isFun === true)
+    if (result.length === 0 && (currentArchive.value as any).funProjects) {
+      result = (currentArchive.value as any).funProjects
+    }
   } else {
     result = result.sort((a, b) => b.stars - a.stars)
   }
@@ -83,19 +145,23 @@ const filteredProjects = computed(() => {
 
 const tabCounts = computed(() => {
   const archive = currentArchive.value
+  if (!archive) return { total: 0, ai: 0, daily: 0, fun: 0 }
   return {
     total: archive.projectCount,
     ai: archive.aiCount,
     daily: archive.projects.filter((p) => (p.daily_growth || 0) > 0).length,
-    fun: archive.funCount || 0,
+    fun: archive.funCount || archive.projects.filter((p: any) => p.is_fun === 1 || p.isFun === true).length,
   }
 })
 
-const totalProjects = computed(() => dailyArchives.reduce((sum, d) => sum + d.projectCount, 0))
-const totalDays = computed(() => dailyArchives.length)
+const totalProjects = computed(() => dailyArchives.value.reduce((sum, d) => sum + d.projectCount, 0))
+const totalDays = computed(() => dailyArchives.value.length)
 
 function selectDate(date: string) {
-  activeDate.value = date
+  const archive = dailyArchives.value.find((d) => d.date === date)
+  if (archive) {
+    activeTab.value = 'total'
+  }
   searchQuery.value = ''
 }
 
@@ -104,6 +170,7 @@ function loadAiSkills() {
 }
 
 onMounted(() => {
+  loadDailyArchives()
   loadAiSkills()
 })
 </script>
