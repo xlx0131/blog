@@ -39,7 +39,7 @@ interface DailyArchive {
   isToday: boolean
 }
 
-type TabType = 'total' | 'ai' | 'daily'
+type TabType = 'total' | 'ai' | 'daily' | 'fun'
 
 const router = useRouter()
 const activeTab = ref<TabType>('total')
@@ -62,6 +62,8 @@ const filteredProjects = computed(() => {
     )
   } else if (activeTab.value === 'daily') {
     result = result.sort((a, b) => (b.daily_growth || 0) - (a.daily_growth || 0))
+  } else if (activeTab.value === 'fun') {
+    result = currentArchive.value.funProjects || []
   } else {
     result = result.sort((a, b) => b.stars - a.stars)
   }
@@ -80,13 +82,12 @@ const filteredProjects = computed(() => {
 })
 
 const tabCounts = computed(() => {
-  const projects = currentArchive.value.projects
+  const archive = currentArchive.value
   return {
-    total: projects.length,
-    ai: projects.filter((p) =>
-      p.topics.some((t) => ['AI', '大模型', 'AI工具', 'AI应用', 'AI编程', 'AI平台', 'AI助手', '智能体', '知识库'].some((kw) => t.includes(kw) || kw.includes(t)))
-    ).length,
-    daily: projects.filter((p) => (p.daily_growth || 0) > 0).length,
+    total: archive.projectCount,
+    ai: archive.aiCount,
+    daily: archive.projects.filter((p) => (p.daily_growth || 0) > 0).length,
+    fun: archive.funCount || 0,
   }
 })
 
@@ -96,11 +97,6 @@ const totalDays = computed(() => dailyArchives.length)
 function selectDate(date: string) {
   activeDate.value = date
   searchQuery.value = ''
-}
-
-function goToDetail(project: GithubProject) {
-  const id = project.originalId || project.id
-  router.push(`/github-daily/${id}`)
 }
 
 function loadAiSkills() {
@@ -170,7 +166,7 @@ onMounted(() => {
                     </div>
                     <span class="font-mono text-xs opacity-70">{{ archive.projectCount }}个</span>
                   </div>
-                  <p class="font-mono text-xs mt-1 opacity-60">{{ archive.date }} · AI {{ archive.aiCount }}个</p>
+                  <p class="font-mono text-xs mt-1 opacity-60">{{ archive.date }} · AI {{ archive.aiCount }}个 · 趣味 {{ archive.funCount }}个</p>
                 </button>
               </div>
             </div>
@@ -214,6 +210,13 @@ onMounted(() => {
             >
               日增榜 ({{ tabCounts.daily }})
             </button>
+            <button
+              class="font-mono text-sm tracking-wider px-4 py-2 border-2 border-[#ff6b35] shadow-[4px_4px_0_0_#ff6b35] transition-all duration-200 hover:-translate-y-0.5 hover:translate-x-0.5"
+              :class="activeTab === 'fun' ? 'bg-[#ff6b35] text-[#fffaef]' : 'bg-[#fffaef] text-[#ff6b35]'"
+              @click="activeTab = 'fun'"
+            >
+              🎮 趣味精选 ({{ tabCounts.fun }})
+            </button>
           </div>
 
           <!-- Search Box -->
@@ -242,16 +245,13 @@ onMounted(() => {
 
           <!-- Project Grid -->
           <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div
+            <GithubProjectCard
               v-for="(project, index) in filteredProjects"
               :key="project.id"
-              @click="goToDetail(project)"
-            >
-              <GithubProjectCard
-                :project="project"
-                :rank="index + 1"
-              />
-            </div>
+              :project="project"
+              :rank="index + 1"
+              :detail-id="project.originalId || project.id"
+            />
 
             <!-- Empty State -->
             <div v-if="filteredProjects.length === 0" class="col-span-full py-16 flex flex-col items-center justify-center text-center">

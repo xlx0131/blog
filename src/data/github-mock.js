@@ -475,6 +475,386 @@ Cursor 是 VS Code 的一个分支，专为 AI 结对编程而设计。内置 AI
   },
 ]
 
+export const funProjects = [
+  {
+    id: 101,
+    repo_name: 'css-art-gallery',
+    full_name: 'css-art/css-art-gallery',
+    description: '纯 CSS 绘制的艺术品合集，从梵高的星空到蒙娜丽莎，全靠几行 CSS 就能画出来，手残党也能学会。',
+    language: 'CSS',
+    stars: 18500,
+    forks: 2100,
+    watchers: 420,
+    open_issues: 23,
+    daily_growth: 180,
+    topics: ['CSS艺术', '创意编程', '前端'],
+    html_url: 'https://github.com/css-art/css-art-gallery',
+    homepage: '',
+    owner_avatar: 'https://avatars.githubusercontent.com/u/9919?v=4',
+    owner_login: 'css-art',
+    readme: `# CSS Art Gallery - 纯 CSS 艺术品合集
+
+用纯 CSS 画出世界名画，没有一张图片都不用。
+
+## 关于这个项目
+
+你没看错，这些画全是 div + CSS 堆出来的。从梵高的星空、蒙娜丽莎的微笑、甚至神奈川冲浪里，全都只用 CSS 就能画。
+
+## 收录作品
+
+- 星月夜 - 梵高
+- 蒙娜丽莎 - 达芬奇
+- 神奈川冲浪里 - 葛饰北斋
+- 戴珍珠耳环的少女 - 维米尔
+- 呐喊 - 蒙克
+
+## 怎么做到的
+
+核心技巧：
+- border-radius 画曲线
+- box-shadow 复制元素
+- linear/radial-gradient 渐变
+- clip-path 裁剪
+- 大量的耐心
+
+## 试试看
+
+clone 下来打开 HTML 文件就能看，每幅画都有详细注释讲解思路。
+
+## 来投稿
+
+你也用 CSS 画了好玩的？欢迎 PR！`,
+    fun_reason: '纯 CSS 画世界名画，离谱但好看',
+  },
+  {
+    id: 102,
+    repo_name: 'terminal-game-collection',
+    full_name: 'tonymore/terminal-game-collection',
+    description: '终端里就能玩的复古小游戏合集，贪吃蛇、俄罗斯方块、2048、甚至还有仙剑奇侠传？上班摸鱼神器。',
+    language: 'Python',
+    stars: 32000,
+    forks: 3800,
+    watchers: 720,
+    open_issues: 45,
+    daily_growth: 250,
+    topics: ['终端游戏', '摸鱼神器', '复古游戏'],
+    html_url: 'https://github.com/tonymore/terminal-game-collection',
+    homepage: '',
+    owner_avatar: 'https://avatars.githubusercontent.com/u/12345?v=4',
+    owner_login: 'tonymore',
+    readme: `# 终端小游戏合集
+
+在终端里摸鱼的正确姿势。
+
+## 收录游戏
+
+### 经典游戏
+- 贪吃蛇 - 经典永不过时
+- 俄罗斯方块 - 用键盘转方块
+- 2048 - 数字合成游戏
+- 扫雷 - 考验推理能力
+- 五子棋 - 黑白对弈
+
+### RPG 游戏
+- 文字冒险 - 选择你的冒险
+- 地牢探险 - Roguelike
+- 仙剑奇侠传 - 像素版
+
+## 怎么玩
+
+pip install 然后运行命令就行，全键盘操作。
+
+## 支持平台
+
+- Linux / macOS / Windows 都支持
+- 只需要 Python 3.7+
+
+## 为什么做这个
+
+上班的时候想玩游戏又不想被发现？开个终端窗口就行，谁知道你在玩游戏还是写代码。
+
+⚠️ 适度游戏，别被老板抓了。`,
+    fun_reason: '终端里玩仙剑，摸鱼新高度',
+  },
+  {
+    id: 103,
+    repo_name: 'faker.js',
+    full_name: 'faker-js/faker',
+    description: '生成各种假数据的库，假名字假地址假头像，甚至还能生成假的笑话？测试数据生成神器。',
+    language: 'JavaScript',
+    stars: 48000,
+    forks: 5200,
+    watchers: 850,
+    open_issues: 67,
+    daily_growth: 120,
+    topics: ['工具库', '测试工具', '数据生成'],
+    html_url: 'https://github.com/faker-js/faker',
+    homepage: 'https://fakerjs.dev',
+    owner_avatar: 'https://avatars.githubusercontent.com/u/67109815?v=4',
+    owner_login: 'faker-js',
+    readme: `# Faker.js
+
+生成海量假数据，让你写测试再也不用瞎编名字了。
+
+## 这是什么
+
+一个可以生成各种假数据的 JS 库。假人名、假地址、假电话号码、假公司、假头像... 假的一切。
+
+## 能生成什么
+
+- 人名、地址、电话号码
+- 公司、职位、商业信息
+- 日期、数字、颜色
+- 图片、头像、二维码
+- 甚至还有假的 hacker 术语
+- 还有...emoji 表情
+
+## 用法
+
+import { faker } from '@faker-js/faker'
+
+然后 faker.person.fullName() 就给你个假名字。
+
+## 本地化
+
+支持几十种语言，中文也支持。
+
+## 有趣的用法
+
+- 生成测试数据
+- 做原型填充内容
+- 写文章举例子随便编名字
+- 匿名化真实数据
+
+别用来干坏事啊！`,
+    fun_reason: '一本正经地胡说八道数据生成器',
+  },
+  {
+    id: 104,
+    repo_name: 'ponyfoo-dom-cheatsheet',
+    full_name: 'bendrucker/ponyfoo-dom-cheatsheet',
+    description: 'DOM API 速查表，但是用小马宝莉的画风。学 DOM 再也不枯燥了。',
+    language: 'HTML',
+    stars: 8500,
+    forks: 680,
+    watchers: 180,
+    open_issues: 12,
+    daily_growth: 45,
+    topics: ['前端学习', '速查表', '萌系'],
+    html_url: 'https://github.com/bendrucker/ponyfoo-dom-cheatsheet',
+    homepage: '',
+    owner_avatar: 'https://avatars.githubusercontent.com/u/555?v=4',
+    owner_login: 'bendrucker',
+    readme: `# Ponyfoo DOM Cheatsheet
+
+用小马的方式学习 DOM API。
+
+## 这是什么
+
+一张可爱的 DOM API 速查表，但是所有示例都是用小马宝莉的角色来举例的。
+
+## 涵盖内容
+
+- 选择器 - 紫悦教你 querySelector
+- 事件 - 云宝黛西讲 addEventListener
+- DOM 操作 - 苹果杰克帮你 appendChild
+- 样式 - 珍奇讲 style 和 classList
+- 动画 - 碧琪带你 CSS 动画
+
+## 为什么做这个
+
+学 DOM 太无聊了？让小马们陪你学。
+
+## 怎么用
+
+打开 HTML 文件就能看，纯静态页面，不依赖任何东西。`,
+    fun_reason: '小马宝莉教你学 DOM',
+  },
+  {
+    id: 105,
+    repo_name: 'vim-golf',
+    full_name: 'igorgue/vim-golf',
+    description: 'Vim 高尔夫，用最少的击键次数完成编辑挑战。Vim 高手的炫技场。',
+    language: 'Vim Script',
+    stars: 15600,
+    forks: 1200,
+    watchers: 320,
+    open_issues: 34,
+    daily_growth: 65,
+    topics: ['Vim', '挑战游戏', '编辑器'],
+    html_url: 'https://github.com/igorgue/vim-golf',
+    homepage: 'https://www.vimgolf.com',
+    owner_avatar: 'https://avatars.githubusercontent.com/u/888?v=4',
+    owner_login: 'igorgue',
+    readme: `# Vim Golf
+
+用最少的按键完成编辑任务，打得越少分越高。
+
+## 什么是 Vim 高尔夫
+
+给你一段起始文本和目标文本，你要用 Vim 命令从起始变到目标，按键次数越少越好。
+
+## 怎么玩
+
+1. 选一个挑战
+2. 用 Vim 开始编辑
+3. 记录你的按键序列
+4. 看排行榜
+
+## 难度分级
+
+- 入门级 - 简单替换
+- 进阶级 - 宏和寄存器
+- 大神级 - 各种骚操作
+
+## 为什么
+
+Vim 用得好有多离谱？来比比谁是真正的键盘侠。
+
+## 社区
+
+每天都有新挑战，大家一起比谁操作更骚。`,
+    fun_reason: 'Vim 高手炫技大赛，比谁按键少',
+  },
+  {
+    id: 106,
+    repo_name: 'bad-advice-bot',
+    full_name: 'mischief/bad-advice-bot',
+    description: '专门给烂建议的 AI 机器人，问它什么都一本正经地胡说八道，千万别当真。',
+    language: 'Python',
+    stars: 12800,
+    forks: 980,
+    watchers: 250,
+    open_issues: 18,
+    daily_growth: 210,
+    topics: ['AI搞怪', '聊天机器人', '整活'],
+    html_url: 'https://github.com/mischief/bad-advice-bot',
+    homepage: '',
+    owner_avatar: 'https://avatars.githubusercontent.com/u/7777?v=4',
+    owner_login: 'mischief',
+    readme: `# 烂建议机器人
+
+一本正经给你出馊主意的 AI。
+
+## 这是什么
+
+一个专门给烂建议的聊天机器人。问它什么问题，它都会很认真地给你一个完全不靠谱的答案。
+
+## 示例对话
+
+Q: 怎么减肥？
+A: 很简单，把体重秤往后挪两格，你立马瘦十斤。
+
+Q: 怎么赚钱？
+A: 把你的存款乘以二，钱直接翻倍。
+
+Q: 睡不着怎么办？
+A: 闭上眼睛数羊，数到第 9999 只你就会发现... 天已经亮了。
+
+## 技术
+
+基于大模型，但是专门训练给烂建议。
+
+## 警告
+
+这个机器人的建议一个都别信！
+仅供娱乐，认真你就输了。`,
+    fun_reason: 'AI 界的反套路王，一个标点符号都别信',
+  },
+  {
+    id: 107,
+    repo_name: 'emoji-mosaic',
+    full_name: 'ericandrewlewis/emoji-mosaic',
+    description: '把图片转换成 emoji 马赛克，用成千上万个 emoji 拼出你的照片，表情包拉满。',
+    language: 'JavaScript',
+    stars: 22400,
+    forks: 1800,
+    watchers: 420,
+    open_issues: 28,
+    daily_growth: 150,
+    topics: ['图像处理', 'emoji', '创意工具'],
+    html_url: 'https://github.com/ericandrewlewis/emoji-mosaic',
+    homepage: '',
+    owner_avatar: 'https://avatars.githubusercontent.com/u/3333?v=4',
+    owner_login: 'ericandrewlewis',
+    readme: `# Emoji Mosaic
+
+用几千个 emoji 拼出一张照片。
+
+## 功能
+
+上传一张照片，它就用 emoji 把这张照片重绘出来，凑近看全是表情符号，远看是你的照片。
+
+## 怎么用
+
+- 网页版直接上传图片
+- 命令行版可以批量处理
+- 支持自定义 emoji 集合
+- 可以调整颗粒度
+
+## 技术原理
+
+1. 把图片切成小格子
+2. 每个格子算平均颜色
+3. 找颜色最接近的 emoji
+4. 拼起来就是了
+
+## 好玩在哪
+
+发朋友圈神器，谁的头像都是表情包。`,
+    fun_reason: '你的头像全是 emoji 拼的',
+  },
+  {
+    id: 108,
+    repo_name: 'keyboard-cat',
+    full_name: 'coleworld/keyboard-cat',
+    description: '键盘猫模拟器，打字的时候猫咪会在你键盘上走来走去，踩出各种奇怪的字符。',
+    language: 'TypeScript',
+    stars: 9600,
+    forks: 720,
+    watchers: 190,
+    open_issues: 15,
+    daily_growth: 85,
+    topics: ['桌面宠物', '摸鱼', '猫咪'],
+    html_url: 'https://github.com/coleworld/keyboard-cat',
+    homepage: '',
+    owner_avatar: 'https://avatars.githubusercontent.com/u/9999?v=4',
+    owner_login: 'coleworld',
+    readme: `# Keyboard Cat
+
+桌面上有只猫在你键盘上乱踩。
+
+## 这是什么
+
+一个桌面小玩意儿，一只像素小猫会在你打字的时候，在你的屏幕底部走来走去，还会偶尔踩出几个字符。
+
+## 功能
+
+- 像素风格小猫
+- 会在键盘区域溜达
+- 偶尔踩出几个随机字符
+- 可以摸它（点击互动）
+- 多种毛色可选
+
+## 为什么
+
+写代码太无聊了？有只猫陪你。
+
+它还会：
+- 打哈欠
+- 伸懒腰
+- 追自己尾巴
+- 睡大觉
+
+完美还原真实猫咪
+
+## 平台
+
+Windows / macOS / Linux 都有`,
+    fun_reason: '桌面上养只电子猫，帮你写 bug',
+  },
+]
+
 export const mockAiSkills = [
   {
     id: 1,
@@ -553,16 +933,33 @@ export const dailyArchives = (() => {
     date.setDate(today.getDate() - i)
     const dateStr = formatDate(date)
     const label = i === 0 ? '今天' : i === 1 ? '昨天' : dateStr
-    const projects = generateDailyProjects(mockProjects, i)
+
+    const mainProjects = generateDailyProjects(mockProjects, i)
+    const funSelection = funProjects
+      .filter((_, idx) => (idx + i) % 3 !== 0)
+      .slice(0, 5)
+      .map((p) => ({
+        ...p,
+        id: `${p.id}-day${i}`,
+        originalId: p.id,
+        stars: Math.max(1000, p.stars - Math.floor(i * 800) + Math.floor((Math.random() - 0.3) * 300)),
+        daily_growth: Math.max(10, p.daily_growth - Math.floor(i * 20) + Math.floor((Math.random() - 0.5) * 50)),
+      }))
+    const projects = [...mainProjects, ...funSelection]
+
     const aiCount = projects.filter((p) =>
       p.topics.some((t) => ['AI', '大模型', 'AI工具', 'AI应用', 'AI编程', 'AI平台', 'AI助手', '智能体', '知识库'].some((kw) => t.includes(kw) || kw.includes(t)))
     ).length
+    const funCount = funSelection.length
+
     result.push({
       date: dateStr,
       label,
       projectCount: projects.length,
       aiCount,
+      funCount,
       projects,
+      funProjects: funSelection,
       isToday: i === 0,
     })
   }

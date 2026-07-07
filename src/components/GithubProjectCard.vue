@@ -19,6 +19,7 @@ interface GithubProject {
 interface Props {
   project: GithubProject
   rank?: number
+  detailId?: number | string
 }
 
 const props = defineProps<Props>()
@@ -35,7 +36,8 @@ function formatNumber(num: number): string {
 }
 
 function handleClick() {
-  router.push(`/github-daily/${props.project.id}`)
+  const id = props.detailId || props.project.id
+  router.push(`/github-daily/${id}`)
 }
 </script>
 
