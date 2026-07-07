@@ -246,7 +246,7 @@ onMounted(() => {
           <div class="mb-6 flex items-end justify-between flex-wrap gap-4">
             <div>
               <h2 class="font-mono text-2xl font-bold text-[#161310]">
-                {{ currentArchive.label }}的榜单
+                {{ currentArchive?.label || '加载中...' }}的榜单
               </h2>
               <p class="font-mono text-xs text-[#3a332a] mt-1">
                 最后更新：{{ lastUpdate }}
