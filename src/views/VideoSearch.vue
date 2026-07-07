@@ -247,17 +247,26 @@ onMounted(() => {
           <div
             v-for="video in filteredResults"
             :key="video.vod_id + '_' + (video._source || '')"
-            class="video-card"
+            class="video-card cursor-pointer"
+            @click="goToDetail(video.vod_id)"
           >
-            <div class="relative aspect-[3/4] overflow-hidden border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] bg-[#fffaef] cursor-pointer group hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#161310] transition-all duration-200">
+            <div class="relative aspect-[3/4] overflow-hidden border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] bg-[#fffaef] group hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#161310] transition-all duration-200">
               <img
-                :src="video.vod_pic"
+                :src="video.vod_pic || ''"
                 :alt="video.vod_name"
                 class="w-full h-full object-cover image-rendering-pixelated group-hover:scale-105 transition-transform duration-300"
-                @click="goToDetail(video.vod_id)"
+                @error="$event.target.style.display='none'; $event.target.nextElementSibling.style.display='flex'"
               />
+              <div class="hidden absolute inset-0 bg-[#161310]/10 flex-col items-center justify-center text-[#161310] font-mono text-xs">
+                <svg class="w-10 h-10 mb-2 opacity-40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="2" y="2" width="20" height="20" rx="2"/>
+                  <circle cx="9" cy="9" r="2"/>
+                  <path d="m21 15-5-5L5 21"/>
+                </svg>
+                <span class="opacity-40">暂无封面</span>
+              </div>
               <div class="absolute top-2 right-2 px-2 py-0.5 bg-[#ff6b35] text-[#fffaef] font-mono text-[10px] font-bold border border-[#161310]">
-                {{ video.vod_remarks }}
+                {{ video.vod_remarks || '' }}
               </div>
               <div v-if="video._sourceName" class="absolute top-2 left-2 px-2 py-0.5 bg-[#161310] text-[#fffaef] font-mono text-[10px] font-bold border border-[#fffaef]">
                 {{ video._sourceName }}
@@ -271,10 +280,7 @@ onMounted(() => {
               </div>
             </div>
             <div class="mt-3">
-              <h3
-                class="font-mono text-sm font-bold text-[#161310] truncate cursor-pointer hover:text-[#ff6b35] transition-colors"
-                @click="goToDetail(video.vod_id)"
-              >
+              <h3 class="font-mono text-sm font-bold text-[#161310] truncate">
                 {{ video.vod_name }}
               </h3>
               <p class="font-mono text-xs text-[#3a332a] mt-1 truncate">
