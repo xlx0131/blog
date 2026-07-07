@@ -1,34 +1,72 @@
-import { SOURCES, getSource } from './_sources.js'
+const SOURCES = {
+  heimuer: {
+    name: '黑木耳',
+    baseUrl: 'https://www.heimuer.tv/api.php/provide/vod',
+    enabled: true,
+    description: '高清影视资源站，更新速度快',
+  },
+  ffzy: {
+    name: '非凡资源',
+    baseUrl: 'https://api.ffzyapi.com/api.php/provide/vod',
+    enabled: true,
+    description: '海量影视资源，种类齐全',
+  },
+  subo: {
+    name: '速播资源',
+    baseUrl: 'https://www.suboziyuan.net/api.php/provide/vod',
+    enabled: true,
+    description: '快速稳定的影视资源站',
+  },
+  kuaikan: {
+    name: '快看资源',
+    baseUrl: 'https://www.kuaikanzy.net/api.php/provide/vod',
+    enabled: true,
+    description: '热门剧集每日更新',
+  },
+  okzyw: {
+    name: 'OK资源网',
+    baseUrl: 'https://okzyw.vip/api.php/provide/vod',
+    enabled: true,
+    description: '优质高清影视资源',
+  },
+  ikun: {
+    name: 'ikun播',
+    baseUrl: 'https://ikunbo.com/api.php/provide/vod',
+    enabled: true,
+    description: '高清流畅影视资源',
+  },
+}
+
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Content-Type': 'application/json; charset=utf-8',
+}
+
+function json(data, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: CORS_HEADERS,
+  })
+}
 
 export async function onRequest(context) {
   const { request } = context
   const url = new URL(request.url)
-  const method = request.method
 
-  const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
+  if (request.method === 'OPTIONS') {
+    return new Response(null, { headers: CORS_HEADERS })
   }
 
-  if (method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders })
+  if (request.method !== 'GET') {
+    return json({ success: false, error: '不支持的请求方法' }, 405)
   }
 
   try {
-    if (method !== 'GET') {
-      return Response.json(
-        { success: false, error: '不支持的请求方法' },
-        { status: 405, headers: corsHeaders }
-      )
-    }
-
     const wd = url.searchParams.get('wd')
     if (!wd) {
-      return Response.json(
-        { success: false, error: '缺少搜索关键字 wd' },
-        { status: 400, headers: corsHeaders }
-      )
+      return json({ success: false, error: '缺少搜索关键字 wd' }, 400)
     }
 
     const sourcesParam = url.searchParams.get('sources')
@@ -41,21 +79,18 @@ export async function onRequest(context) {
     }
 
     const validSources = sourceKeys.filter(key => {
-      const config = getSource(key)
+      const config = SOURCES[key]
       return config && config.enabled
     })
 
     if (validSources.length === 0) {
-      return Response.json(
-        { success: false, error: '没有可用的资源站' },
-        { status: 400, headers: corsHeaders }
-      )
+      return json({ success: false, error: '没有可用的资源站' }, 400)
     }
 
     const searchPromises = validSources.map(async (sourceKey) => {
       try {
-        const sourceConfig = getSource(sourceKey)
-        const targetUrl = `${sourceConfig.baseUrl}?ac=list&wd=${encodeURIComponent(wd)}&pagesize=20`
+        const sourceConfig = SOURCES[sourceKey]
+        const targetUrl = sourceConfig.baseUrl + '?ac=list&wd=' + encodeURIComponent(wd) + '&pagesize=20'
 
         const response = await fetch(targetUrl, {
           method: 'GET',
@@ -64,10 +99,14 @@ export async function onRequest(context) {
             'Accept': 'application/json, text/plain, */*',
             'Referer': sourceConfig.baseUrl,
           },
+          cf: {
+            cacheTtl: 300,
+            cacheEverything: true,
+          },
         })
 
         if (!response.ok) {
-          return { source: sourceKey, list: [], error: `HTTP ${response.status}` }
+          return { source: sourceKey, list: [], error: 'HTTP ' + response.status }
         }
 
         const data = await response.json()
@@ -118,23 +157,17 @@ export async function onRequest(context) {
       }
     }
 
-    return Response.json(
-      {
-        success: true,
-        data: {
-          list: uniqueItems,
-          total: uniqueItems.length,
-          sources: sourceStats,
-          keyword: wd,
-        }
-      },
-      { headers: corsHeaders }
-    )
+    return json({
+      success: true,
+      data: {
+        list: uniqueItems,
+        total: uniqueItems.length,
+        sources: sourceStats,
+        keyword: wd,
+      }
+    })
 
   } catch (e) {
-    return Response.json(
-      { success: false, error: e.message },
-      { status: 500, headers: corsHeaders }
-    )
+    return json({ success: false, error: e.message || '服务器错误' }, 500)
   }
 }
