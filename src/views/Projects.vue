@@ -36,8 +36,12 @@ const filteredProjects = computed(() => {
   return projects.value.filter((p) => p.tech.includes(activeTab.value))
 })
 
-function viewProject(id: number) {
-  router.push(`/projects/${id}`)
+function viewProject(project: Project) {
+  if (project.url.startsWith('/github-daily') || project.id === 3) {
+    router.push(project.url)
+  } else {
+    router.push(`/projects/${project.id}`)
+  }
 }
 
 function reInitTilt() {
@@ -89,7 +93,7 @@ onMounted(() => {
 
       <!-- Pixel Mode -->
       <div v-if="cardViewMode === 'pixel'" class="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div v-for="project in filteredProjects" :key="project.id" class="group cursor-pointer bg-[#fffaef] border-2 border-[#161310] shadow-[6px_6px_0_0_#161310] transition-all duration-200 hover:-translate-y-1 hover:translate-x-0.5 tilt-card" @click="viewProject(project.id)">
+        <div v-for="project in filteredProjects" :key="project.id" class="group cursor-pointer bg-[#fffaef] border-2 border-[#161310] shadow-[6px_6px_0_0_#161310] transition-all duration-200 hover:-translate-y-1 hover:translate-x-0.5 tilt-card" @click="viewProject(project)">
           <div class="relative h-44 border-b-2 border-[#161310] overflow-hidden bg-[#2e5dd6]">
             <div class="absolute inset-0" style="background: linear-gradient(to bottom, #2e5dd6 0%, #2e5dd6 60%, #1f47b0 60%, #1f47b0 100%)"></div>
             <div class="absolute top-4 right-6 w-7 h-7 bg-[#fffaef] border-2 border-[#161310] shadow-[-4px_0_0_#fffaef,4px_0_0_#fffaef,0_-4px_0_#fffaef,0_4px_0_#fffaef]"></div>
@@ -99,6 +103,7 @@ onMounted(() => {
             <div class="absolute top-[60px] left-1/2 -translate-x-1/2 z-10 flex items-center justify-center w-14 h-14 bg-[#f5f0e8] border-2 border-[#161310] shadow-[3px_3px_0_0_#161310]">
               <svg v-if="project.cover === 'profile'" class="w-7 h-7 text-[#161310]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 16l4-8 4 4 4-6"/></svg>
               <svg v-else-if="project.cover === 'ops'" class="w-7 h-7 text-[#161310]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><path d="M6 6h.01M6 18h.01"/></svg>
+              <svg v-else-if="project.cover === 'github'" class="w-7 h-7 text-[#161310]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
               <svg v-else class="w-7 h-7 text-[#161310]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
             </div>
           </div>
@@ -120,10 +125,11 @@ onMounted(() => {
 
       <!-- Browser Mode - from 展开风格1.txt -->
       <div v-if="cardViewMode === 'browser'" class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 justify-items-center">
-        <div v-for="project in filteredProjects" :key="project.id" class="card" @click="viewProject(project.id)">
+        <div v-for="project in filteredProjects" :key="project.id" class="card" @click="viewProject(project)">
       <div class="container-image">
         <svg v-if="project.cover === 'profile'" class="image-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 16l4-8 4 4 4-6"/></svg>
         <svg v-else-if="project.cover === 'ops'" class="image-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><path d="M6 6h.01M6 18h.01"/></svg>
+        <svg v-else-if="project.cover === 'github'" class="image-circle" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
         <svg v-else class="image-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
       </div>
       <div class="content">
@@ -140,6 +146,7 @@ onMounted(() => {
             <div class="box-image-content">
               <svg v-if="project.cover === 'profile'" class="img-product" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 16l4-8 4 4 4-6"/></svg>
               <svg v-else-if="project.cover === 'ops'" class="img-product" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><path d="M6 6h.01M6 18h.01"/></svg>
+              <svg v-else-if="project.cover === 'github'" class="img-product" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
               <svg v-else class="img-product" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
               <button class="detail-btn">查看详情</button>
             </div>
