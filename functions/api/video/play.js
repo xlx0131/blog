@@ -17,92 +17,72 @@ export async function onRequest(context) {
   const host = url.searchParams.get('host')
   const path = url.searchParams.get('path')
 
-  // Mode 2: Proxy a segment (e.g. .ts file)
+  // Mode 2: Proxy a segment (.ts, .m3u8, etc.)
   if (host && path) {
     return proxySegment(host, path, request)
   }
 
-  // Mode 1: Fetch video URL (may return HTML player page or direct video)
+  // Mode 1: Fetch video URL
   const videoUrl = url.searchParams.get('url')
   if (!videoUrl) {
-    return new Response(JSON.stringify({ error: '缺少 url 参数' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
-    })
+    return jsonError('缺少 url 参数', 400)
   }
 
   try {
     const decodedUrl = decodeURIComponent(videoUrl)
-    const headers = {
-      'User-Agent': UA,
-      'Accept': '*/*',
-      'Referer': new URL(decodedUrl).origin + '/',
-    }
+    const origin = new URL(decodedUrl).origin
 
-    const response = await fetch(decodedUrl, { headers })
+    const response = await fetch(decodedUrl, {
+      headers: {
+        'User-Agent': UA,
+        'Accept': '*/*',
+        'Referer': origin + '/',
+      },
+    })
+
     const contentType = response.headers.get('content-type') || ''
 
-    // If it's HTML (CDN player page), extract m3u8 URL
+    // HTML response — likely a CDN player page or challenge page
     if (contentType.includes('text/html')) {
       const html = await response.text()
       return handlePlayerPage(html, decodedUrl)
     }
 
-    // Direct video file - proxy as-is
-    const resHeaders = {
-      'Access-Control-Allow-Origin': '*',
-      'Accept-Ranges': 'bytes',
-    }
-    const ct = response.headers.get('content-type')
-    if (ct) resHeaders['Content-Type'] = ct
-    const cl = response.headers.get('content-length')
-    if (cl) resHeaders['Content-Length'] = cl
-    if (response.headers.get('content-range')) {
-      resHeaders['Content-Range'] = response.headers.get('content-range')
-    }
-    return new Response(response.body, { status: response.status, headers: resHeaders })
+    // Not HTML — proxy directly (mp4, ts, m3u8 playlist, etc.)
+    return proxyDirect(response)
   } catch (e) {
-    return new Response(JSON.stringify({ error: e.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
-    })
+    return jsonError('CDN 请求失败: ' + e.message)
   }
 }
 
-// Parse the CDN player page HTML to find the m3u8 URL, then proxy the m3u8
+// Parse CDN player page HTML → extract m3u8 → proxy playlist with rewritten segments
 async function handlePlayerPage(html, pageUrl) {
-  try {
-    // Extract m3u8 URL from: const url = "/20221102/xxx/index.m3u8?sign=xxx"
-    const match = html.match(/const url = "([^"]+)"/)
-    if (!match) {
-      return new Response('无法解析视频地址', {
-        status: 500,
-        headers: { 'Content-Type': 'text/plain', ...CORS_HEADERS },
-      })
+  // Try to extract m3u8 URL from: const url = "/path/to/index.m3u8?sign=xxx"
+  const match = html.match(/const url = "([^"]+)"/)
+  if (!match) {
+    // Could be a Cloudflare challenge page or blocked request
+    if (html.includes('Checking your browser') || html.includes('cf-browser-verification')) {
+      return jsonError('CDN 防爬虫验证拦截，请尝试切换播放源')
     }
+    return jsonError('无法解析视频地址，请尝试切换播放源')
+  }
 
+  try {
     const cdnHost = new URL(pageUrl).origin
     const m3u8Path = match[1]
     const m3u8Url = cdnHost + m3u8Path
 
     // Fetch the m3u8 playlist
-    const headers = {
-      'User-Agent': UA,
-      'Referer': cdnHost + '/',
-      'Accept': '*/*',
-    }
-
-    const m3u8Res = await fetch(m3u8Url, { headers })
+    const m3u8Res = await fetch(m3u8Url, {
+      headers: { 'User-Agent': UA, 'Referer': cdnHost + '/', 'Accept': '*/*' },
+    })
     if (!m3u8Res.ok) {
-      return new Response('获取 m3u8 失败', {
-        status: 500,
-        headers: { 'Content-Type': 'text/plain', ...CORS_HEADERS },
-      })
+      return jsonError('获取视频流失败 (m3u8)')
     }
 
     const m3u8Text = await m3u8Res.text()
 
-    // Rewrite segment (.ts) URLs to go through our proxy
+    // Rewrite segment URLs to go through our proxy
     const basePath = m3u8Path.substring(0, m3u8Path.lastIndexOf('/'))
     const rewritten = m3u8Text.replace(/^([^#\s].+\.(ts|m3u8|m4s|mp4)(\?[^\s]*)?)$/gm, (line) => {
       const segmentPath = line.startsWith('/') ? line : basePath + '/' + line
@@ -118,14 +98,11 @@ async function handlePlayerPage(html, pageUrl) {
       },
     })
   } catch (e) {
-    return new Response(JSON.stringify({ error: e.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
-    })
+    return jsonError('处理视频流失败: ' + e.message)
   }
 }
 
-// Proxy a segment file (.ts, .m3u8, etc.)
+// Proxy segment files (.ts, .m3u8, etc.)
 async function proxySegment(cdnHost, segmentPath, request) {
   try {
     const targetUrl = cdnHost + segmentPath
@@ -134,8 +111,6 @@ async function proxySegment(cdnHost, segmentPath, request) {
       'Referer': cdnHost + '/',
       'Accept': '*/*',
     }
-
-    // Pass through Range header for seeking support
     if (request.headers.get('Range')) {
       headers['Range'] = request.headers.get('Range')
     }
@@ -146,7 +121,6 @@ async function proxySegment(cdnHost, segmentPath, request) {
       'Access-Control-Expose-Headers': 'Content-Length, Content-Range',
       'Accept-Ranges': 'bytes',
     }
-
     const ct = response.headers.get('content-type')
     if (ct) resHeaders['Content-Type'] = ct
     const cl = response.headers.get('content-length')
@@ -160,9 +134,29 @@ async function proxySegment(cdnHost, segmentPath, request) {
       headers: resHeaders,
     })
   } catch (e) {
-    return new Response(JSON.stringify({ error: e.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
-    })
+    return jsonError('片段加载失败: ' + e.message)
   }
+}
+
+// Proxy a direct video file
+function proxyDirect(response) {
+  const resHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Accept-Ranges': 'bytes',
+  }
+  const ct = response.headers.get('content-type')
+  if (ct) resHeaders['Content-Type'] = ct
+  const cl = response.headers.get('content-length')
+  if (cl) resHeaders['Content-Length'] = cl
+  if (response.headers.get('content-range')) {
+    resHeaders['Content-Range'] = response.headers.get('content-range')
+  }
+  return new Response(response.body, { status: response.status, headers: resHeaders })
+}
+
+function jsonError(msg, status = 500) {
+  return new Response(JSON.stringify({ error: msg }), {
+    status,
+    headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
+  })
 }

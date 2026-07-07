@@ -125,12 +125,5 @@ export function parsePlayUrl(vod_play_from, vod_play_url) {
     }
   }
   
-  // Prioritize ffm3u8 source - move it to front
-  const ffIdx = result.findIndex(s => s.source.includes('ffm3u8') || s.source.includes('m3u8'))
-  if (ffIdx > 0) {
-    const ff = result.splice(ffIdx, 1)[0]
-    result.unshift(ff)
-  }
-  
   return result
 }
