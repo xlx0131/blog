@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { mockProjects } from '@/data/github-mock.js'
+import { mockProjects, funProjects } from '@/data/github-mock.js'
 
 interface GithubProjectDetail {
   id: number | string
@@ -67,7 +67,8 @@ async function loadProject() {
   // project.value = data.project
 
   await new Promise(resolve => setTimeout(resolve, 300))
-  project.value = mockProjects.find(p => String(p.id) === String(id.value)) || null
+  const allProjects = [...mockProjects, ...funProjects]
+  project.value = allProjects.find(p => String(p.id) === String(id.value)) || null
   loading.value = false
 }
 
