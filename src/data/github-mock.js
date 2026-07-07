@@ -519,3 +519,52 @@ export const mockAiSkills = [
     icon: '🚀',
   },
 ]
+
+function generateDailyProjects(baseProjects, dayOffset) {
+  const factor = 1 - dayOffset * 0.03
+  return baseProjects.map((p, idx) => {
+    const starChange = Math.floor((Math.random() - 0.3) * 500 * (dayOffset + 1))
+    const dailyGrowth = Math.max(10, Math.floor(p.daily_growth * factor + (Math.random() - 0.5) * 200))
+    return {
+      ...p,
+      id: `${p.id}-day${dayOffset}`,
+      originalId: p.id,
+      stars: Math.max(1000, p.stars - Math.floor(dayOffset * 3000) + starChange),
+      forks: Math.max(500, p.forks - Math.floor(dayOffset * 200)),
+      daily_growth: dailyGrowth,
+      watchers: Math.max(100, p.watchers - Math.floor(dayOffset * 50)),
+      open_issues: Math.max(10, p.open_issues - Math.floor(dayOffset * 10)),
+    }
+  })
+}
+
+function formatDate(date) {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
+export const dailyArchives = (() => {
+  const result = []
+  const today = new Date()
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(today)
+    date.setDate(today.getDate() - i)
+    const dateStr = formatDate(date)
+    const label = i === 0 ? '今天' : i === 1 ? '昨天' : dateStr
+    const projects = generateDailyProjects(mockProjects, i)
+    const aiCount = projects.filter((p) =>
+      p.topics.some((t) => ['AI', '大模型', 'AI工具', 'AI应用', 'AI编程', 'AI平台', 'AI助手', '智能体', '知识库'].some((kw) => t.includes(kw) || kw.includes(t)))
+    ).length
+    result.push({
+      date: dateStr,
+      label,
+      projectCount: projects.length,
+      aiCount,
+      projects,
+      isToday: i === 0,
+    })
+  }
+  return result
+})()
