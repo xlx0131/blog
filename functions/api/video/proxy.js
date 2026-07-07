@@ -94,10 +94,6 @@ export async function onRequest(context) {
         'Accept': 'application/json, text/plain, */*',
         'Referer': sourceConfig.baseUrl,
       },
-      cf: {
-        cacheTtl: 300,
-        cacheEverything: true,
-      },
     })
 
     if (!response.ok) {
