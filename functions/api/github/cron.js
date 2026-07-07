@@ -27,20 +27,20 @@ async function upsertProject(env, repo, category) {
     if (category === 'ai') {
       await env.DB.prepare(
         `UPDATE github_projects
-         SET full_name = ?, description = ?, language = ?, stars = ?, forks = ?, watchers = ?, open_issues = ?, topics = ?, homepage = ?, url = ?, owner_login = ?, owner_avatar = ?, category = ?, updated_at = datetime('now')
+         SET full_name = ?, description = ?, language = ?, stars = ?, forks = ?, watchers = ?, open_issues = ?, topics = ?, homepage = ?, html_url = ?, owner_login = ?, owner_avatar = ?, category = ?, updated_at = datetime('now')
          WHERE id = ?`
       ).bind(fullName, description, language, stars, forks, watchers, openIssues, topics, homepage, url, ownerLogin, ownerAvatar, category, existing.id).run()
     } else {
       await env.DB.prepare(
         `UPDATE github_projects
-         SET full_name = ?, description = ?, language = ?, stars = ?, forks = ?, watchers = ?, open_issues = ?, topics = ?, homepage = ?, url = ?, owner_login = ?, owner_avatar = ?, updated_at = datetime('now')
+         SET full_name = ?, description = ?, language = ?, stars = ?, forks = ?, watchers = ?, open_issues = ?, topics = ?, homepage = ?, html_url = ?, owner_login = ?, owner_avatar = ?, updated_at = datetime('now')
          WHERE id = ?`
       ).bind(fullName, description, language, stars, forks, watchers, openIssues, topics, homepage, url, ownerLogin, ownerAvatar, existing.id).run()
     }
     return existing.id
   } else {
     const result = await env.DB.prepare(
-      `INSERT INTO github_projects (repo_name, full_name, description, language, stars, forks, watchers, open_issues, topics, homepage, url, owner_login, owner_avatar, category)
+      `INSERT INTO github_projects (repo_name, full_name, description, language, stars, forks, watchers, open_issues, topics, homepage, html_url, owner_login, owner_avatar, category)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
        RETURNING id`
     ).bind(repoName, fullName, description, language, stars, forks, watchers, openIssues, topics, homepage, url, ownerLogin, ownerAvatar, category).run()

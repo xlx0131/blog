@@ -24,7 +24,7 @@ export async function onRequest(context) {
 
       const project = await env.DB.prepare(
         `SELECT id, repo_name, full_name, description, language, stars, forks, watchers,
-                open_issues, topics, url as html_url, homepage, owner_avatar, owner_login,
+                open_issues, topics, html_url, homepage, owner_avatar, owner_login,
                 readme, category, created_at, updated_at
          FROM github_projects
          WHERE id = ?`

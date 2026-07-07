@@ -24,7 +24,7 @@ export async function onRequest(context) {
 
       if (type === 'total') {
         const { results: rows } = await env.DB.prepare(
-          `SELECT id, repo_name, full_name, description, language, stars, forks, topics, url as html_url, owner_avatar, owner_login
+          `SELECT id, repo_name, full_name, description, language, stars, forks, topics, html_url, owner_avatar, owner_login
            FROM github_projects
            ORDER BY stars DESC
            LIMIT ?`
@@ -32,7 +32,7 @@ export async function onRequest(context) {
         results = rows
       } else if (type === 'ai') {
         const { results: rows } = await env.DB.prepare(
-          `SELECT id, repo_name, full_name, description, language, stars, forks, topics, url as html_url, owner_avatar, owner_login
+          `SELECT id, repo_name, full_name, description, language, stars, forks, topics, html_url, owner_avatar, owner_login
            FROM github_projects
            WHERE category = 'ai'
            ORDER BY stars DESC
@@ -43,7 +43,7 @@ export async function onRequest(context) {
         const { results: rows } = await env.DB.prepare(
           `SELECT p.id, p.repo_name, p.full_name, p.description, p.language, p.stars, p.forks,
                   (s_today.stars - s_yesterday.stars) as daily_growth,
-                  p.topics, p.url as html_url, p.owner_avatar, p.owner_login
+                  p.topics, p.html_url, p.owner_avatar, p.owner_login
            FROM github_projects p
            JOIN github_daily_snapshots s_today ON p.id = s_today.project_id
            JOIN github_daily_snapshots s_yesterday ON p.id = s_yesterday.project_id
