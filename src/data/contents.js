@@ -56,6 +56,26 @@ export const projects = [
       '像素风格界面设计',
     ],
   },
+  {
+    id: 4,
+    title: 'QQ星TV',
+    subtitle: '像素风专属视频站，海量影视资源聚合',
+    description:
+      '聚合多个视频资源站的专属视频网站，支持电影、电视剧、动漫、综艺全分类浏览和搜索。多源切换、播放历史、收藏夹、自动续播，打造你的私人影院。',
+    url: '/video',
+    tags: ['视频', '影音', '聚合'],
+    tech: ['Vue 3', 'TypeScript', 'Cloudflare Functions', 'maccms10', 'DPlayer'],
+    cover: 'video',
+    year: '2026',
+    highlights: [
+      '聚合 5+ 视频资源站，海量影视内容',
+      '电影 / 电视剧 / 动漫 / 综艺 全分类',
+      '多源一键切换，高清秒播',
+      '观看历史 + 收藏夹，跨设备同步',
+      '像素风沉浸式界面设计',
+      'Cloudflare 边缘部署，全球加速',
+    ],
+  },
 ]
 
 // 作品详情
