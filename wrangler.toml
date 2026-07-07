@@ -6,3 +6,9 @@ compatibility_date = "2026-06-01"
 binding = "DB"
 database_name = "blog-db"
 database_id = "85e6ba58-b050-4df6-8508-aebd1f344447"
+
+# GitHub 每日项目定时抓取
+[triggers]
+crons = [
+  "0 18 * * *",  # UTC 18:00 = 北京时间 02:00
+]
