@@ -925,6 +925,16 @@ function formatDate(date) {
   return `${y}-${m}-${d}`
 }
 
+function shuffleWithSeed(arr, seed) {
+  const result = [...arr]
+  for (let i = result.length - 1; i > 0; i--) {
+    const s = Math.sin(seed * 999 + i * 7) * 10000
+    const j = Math.floor(Math.abs(s - Math.floor(s)) * (i + 1))
+    ;[result[i], result[j]] = [result[j], result[i]]
+  }
+  return result
+}
+
 export const dailyArchives = (() => {
   const result = []
   const today = new Date()
@@ -935,16 +945,14 @@ export const dailyArchives = (() => {
     const label = i === 0 ? '今天' : i === 1 ? '昨天' : dateStr
 
     const mainProjects = generateDailyProjects(mockProjects, i)
-    const funSelection = funProjects
-      .filter((_, idx) => (idx + i) % 3 !== 0)
-      .slice(0, 5)
-      .map((p) => ({
-        ...p,
-        id: `${p.id}-day${i}`,
-        originalId: p.id,
-        stars: Math.max(1000, p.stars - Math.floor(i * 800) + Math.floor((Math.random() - 0.3) * 300)),
-        daily_growth: Math.max(10, p.daily_growth - Math.floor(i * 20) + Math.floor((Math.random() - 0.5) * 50)),
-      }))
+    const shuffledFun = shuffleWithSeed(funProjects, i + 1)
+    const funSelection = shuffledFun.slice(0, 5).map((p) => ({
+      ...p,
+      id: `${p.id}-day${i}`,
+      originalId: p.id,
+      stars: Math.max(1000, p.stars - Math.floor(i * 800) + Math.floor((Math.random() - 0.3) * 300)),
+      daily_growth: Math.max(10, p.daily_growth - Math.floor(i * 20) + Math.floor((Math.random() - 0.5) * 50)),
+    }))
     const projects = [...mainProjects, ...funSelection]
 
     const aiCount = projects.filter((p) =>
