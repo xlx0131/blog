@@ -64,31 +64,7 @@ const router = createRouter({
       name: 'writing',
       component: () => import('@/views/Writing.vue'),
     },
-    {
-      path: '/video',
-      name: 'video-home',
-      component: () => import('@/views/VideoHome.vue'),
-    },
-    {
-      path: '/video/list',
-      name: 'video-list',
-      component: () => import('@/views/VideoList.vue'),
-    },
-    {
-      path: '/video/search',
-      name: 'video-search',
-      component: () => import('@/views/VideoSearch.vue'),
-    },
-    {
-      path: '/video/detail/:id',
-      name: 'video-detail',
-      component: () => import('@/views/VideoDetail.vue'),
-    },
-    {
-      path: '/video/player/:id',
-      name: 'video-player',
-      component: () => import('@/views/VideoPlayer.vue'),
-    },
+
   ],
 })
 

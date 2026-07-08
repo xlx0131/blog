@@ -1,0 +1,215 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'FreeOK-Icon';
+  src: url('/fonts/iconfont.ttf') format('truetype');
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f3f8f8;
+  color: #352e2a;
+}
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 240 10% 3.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 3.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 3.9%;
+  --primary: 0 68% 49%; /* FreeOK red color */
+  --primary-foreground: 0 0% 98%;
+  --secondary: 240 4.8% 95.9%;
+  --secondary-foreground: 240 5.9% 10%;
+  --muted: 240 4.8% 95.9%;
+  --muted-foreground: 240 3.8% 46.1%;
+  --accent: 240 4.8% 95.9%;
+  --accent-foreground: 240 5.9% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 5.9% 90%;
+  --input: 240 5.9% 90%;
+  --ring: 240 5.9% 10%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 240 5.9% 10%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --ring: 240 4.9% 83.9%;
+}
+
+/* FreeOK custom styles */
+.freeok-logo {
+  background: linear-gradient(45deg, #c63232, #e64a4a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+.sidebar-nav {
+  background-color: #fff;
+  border-right: 1px solid #f0f0f0;
+}
+
+.content-card {
+  transition: all 0.3s ease;
+}
+
+.content-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.category-heading {
+  font-weight: bold;
+  color: #352e2a;
+  position: relative;
+}
+
+.category-heading::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 30px;
+  height: 2px;
+  background-color: #c63232;
+}
+
+.rating-badge {
+  background-color: #4eaa72;
+  color: white;
+  font-size: 12px;
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+
+.play-icon {
+  color: #c63232;
+}
+
+/* 暗黑模式样式 */
+html.dark {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* 不需要反转的元素 */
+html.dark img,
+html.dark video,
+html.dark iframe,
+html.dark .no-invert {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* 暗黑模式切换按钮 */
+.theme-toggle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: none;
+  outline: none;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
+/* 导航栏工具按钮容器 */
+.nav-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+/* 历史记录按钮 */
+.history-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.history-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.history-button .icon {
+  width: 20px;
+  height: 20px;
+  color: var(--foreground);
+}
+
+.history-button .text {
+  font-size: 14px;
+  color: var(--foreground);
+}
+
+/* 在暗黑模式下的样式 */
+.dark .history-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 首页按钮 */
+.home-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  margin-right: 8px;
+}
+
+.home-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.home-button .icon {
+  width: 24px;
+  height: 24px;
+  color: var(--foreground);
+}
+
+/* 在暗黑模式下的样式 */
+.dark .home-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}

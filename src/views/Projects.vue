@@ -38,7 +38,11 @@ const filteredProjects = computed(() => {
 
 function viewProject(project: Project) {
   if (project.url && project.url.startsWith('/') && project.url !== `/projects/${project.id}`) {
-    router.push(project.url)
+    if (project.url.startsWith('/video')) {
+      window.location.href = project.url
+    } else {
+      router.push(project.url)
+    }
   } else {
     router.push(`/projects/${project.id}`)
   }

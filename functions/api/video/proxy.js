@@ -11,6 +11,30 @@ const SOURCES = {
     enabled: true,
     description: '快速稳定的影视资源站',
   },
+  ikun: {
+    name: '非凡云',
+    baseUrl: 'https://api.ffzyapi.com/api.php/provide/vod',
+    enabled: true,
+    description: '非凡采集源',
+  },
+  modu: {
+    name: '魔都云',
+    baseUrl: 'http://mdzyapi.com/api.php/provide/vod',
+    enabled: true,
+    description: '魔都采集源',
+  },
+  subocaiji: {
+    name: '速播云',
+    baseUrl: 'http://subocaiji.com/api.php/provide/vod',
+    enabled: true,
+    description: '速播采集源',
+  },
+  youzhi: {
+    name: '优质云',
+    baseUrl: 'http://api.yzzy-api.com/api.php/provide/vod',
+    enabled: true,
+    description: '优质采集源',
+  },
 }
 
 const CORS_HEADERS = {
