@@ -9,6 +9,7 @@ import {
   HiVideoCamera
 } from 'react-icons/hi';
 import { HiCog6Tooth } from 'react-icons/hi2';
+import { HiArrowLeft } from 'react-icons/hi';
 import Logo from './Logo';
 
 const Sidebar = () => {
@@ -54,19 +55,15 @@ const Sidebar = () => {
         </ul>
       </nav>
 
-      {/*<div className="mt-auto pt-4 border-t border-gray-100">*/}
-      {/*  <a*/}
-      {/*    href="/settings"*/}
-      {/*    className={`flex items-center gap-3 px-4 py-2.5 text-gray-600 rounded-lg transition-all duration-200 ${*/}
-      {/*      location.pathname === '/settings' */}
-      {/*        ? 'bg-gradient-to-r from-red-50 to-pink-50 text-red-600 shadow-sm' */}
-      {/*        : 'hover:bg-gray-50 hover:text-gray-900'*/}
-      {/*    }`}*/}
-      {/*  >*/}
-      {/*    <HiCog6Tooth className={`w-5 h-5 ${location.pathname === '/settings' ? 'text-red-500' : 'text-gray-400'}`} />*/}
-      {/*    <span className="font-medium">设置</span>*/}
-      {/*  </a>*/}
-      {/*</div>*/}
+      <div className="pt-4 mt-4 border-t-2 border-dashed border-[#d9cdb3]">
+        <a
+          href="/projects"
+          className="flex items-center gap-3 px-4 py-3 text-[#161310] transition-all duration-200 border-2 border-[#161310] bg-[#fffaef] hover:bg-[#e74c3c] hover:text-[#fffaef] hover:shadow-[3px_3px_0_0_#161310] hover:-translate-x-0.5 hover:-translate-y-0.5"
+        >
+          <HiArrowLeft className="w-5 h-5" />
+          <span className="font-bold text-sm tracking-wide">回到项目集</span>
+        </a>
+      </div>
     </div>
   );
 };

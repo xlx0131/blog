@@ -4,7 +4,7 @@ const Logo = () => {
   return (
     <div className="flex items-center">
       <img
-        src="/avatar.jpg"
+        src={`${import.meta.env.BASE_URL}avatar.jpg`}
         alt="QQ星TV"
         className="w-8 h-8 mr-2 border-2 border-[#161310]"
       />
