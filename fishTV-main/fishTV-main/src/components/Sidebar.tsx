@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { 
   HiHome, 
   HiFilm, 
@@ -37,8 +37,8 @@ const Sidebar = () => {
             const isActive = location.pathname === item.link;
             return (
               <li key={item.id}>
-                <a
-                  href={item.link}
+                <Link
+                  to={item.link}
                   className={`flex items-center gap-3 px-4 py-2.5 text-gray-600 rounded-lg transition-all duration-200 ${
                     isActive 
                       ? 'bg-gradient-to-r from-red-50 to-pink-50 text-red-600 shadow-sm' 
@@ -47,7 +47,7 @@ const Sidebar = () => {
                 >
                   <Icon className={`w-5 h-5 ${isActive ? 'text-red-500' : 'text-gray-400'}`} />
                   <span className="font-medium">{item.name}</span>
-                </a>
+                </Link>
               </li>
             );
           })}

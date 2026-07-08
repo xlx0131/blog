@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import ContentCard from './ContentCard';
 import { Video } from '../api/types';
 
@@ -50,9 +51,9 @@ const ContentSection = ({ title, items, seeMoreLink, loading = false }: ContentS
       <div className="flex items-center justify-between mb-3 md:mb-4">
         <h2 className="category-heading text-base md:text-lg font-medium">{title}</h2>
         {seeMoreLink && (
-          <a href={seeMoreLink} className="text-xs md:text-sm text-gray-500 hover:text-primary">
+          <Link to={seeMoreLink} className="text-xs md:text-sm text-gray-500 hover:text-primary">
             查看更多 &gt;
-          </a>
+          </Link>
         )}
       </div>
 
