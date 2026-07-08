@@ -9,7 +9,7 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="flex min-h-screen bg-[#f3f8f8]">
+    <div className="flex min-h-screen bg-[#f5f0e8]">
       {/* 只在桌面端显示侧边栏 */}
       <div className="hidden lg:block fixed left-0 top-0 h-screen w-[220px]">
         <Sidebar />

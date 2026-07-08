@@ -25,13 +25,13 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="sidebar-nav h-screen w-[220px] fixed left-0 top-0 p-6 flex flex-col bg-white border-r border-gray-100">
-      <div className="mb-10">
+    <div className="sidebar-nav h-screen w-[220px] fixed left-0 top-0 p-5 flex flex-col bg-[#fffaef] border-r-2 border-[#161310]">
+      <div className="mb-8">
         <Logo />
       </div>
 
       <nav className="flex-1">
-        <ul className="space-y-2">
+        <ul className="space-y-3">
           {menuItems.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.link;
@@ -39,14 +39,14 @@ const Sidebar = () => {
               <li key={item.id}>
                 <Link
                   to={item.link}
-                  className={`flex items-center gap-3 px-4 py-2.5 text-gray-600 rounded-lg transition-all duration-200 ${
+                  className={`flex items-center gap-3 px-4 py-3 text-[#161310] transition-all duration-200 border-2 ${
                     isActive 
-                      ? 'bg-gradient-to-r from-red-50 to-pink-50 text-red-600 shadow-sm' 
-                      : 'hover:bg-gray-50 hover:text-gray-900'
+                      ? 'bg-[#2e5dd6] text-[#fffaef] border-[#161310] shadow-[3px_3px_0_0_#161310] -translate-x-0.5 -translate-y-0.5' 
+                      : 'border-transparent hover:border-[#161310] hover:bg-[#f5f0e8] hover:shadow-[2px_2px_0_0_#161310]'
                   }`}
                 >
-                  <Icon className={`w-5 h-5 ${isActive ? 'text-red-500' : 'text-gray-400'}`} />
-                  <span className="font-medium">{item.name}</span>
+                  <Icon className={`w-5 h-5 ${isActive ? 'text-[#fffaef]' : 'text-[#161310]'}`} />
+                  <span className="font-bold text-sm tracking-wide">{item.name}</span>
                 </Link>
               </li>
             );

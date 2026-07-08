@@ -21,13 +21,13 @@ interface ContentSectionProps {
 
 const ContentCardSkeleton = () => {
   return (
-    <div className="content-card relative bg-white rounded-md overflow-hidden shadow-sm">
-      <div className="relative pb-[140%]">
-        <div className="absolute inset-0 w-full h-full bg-gray-200 animate-pulse" />
+    <div className="content-card relative bg-[#fffaef] overflow-hidden">
+      <div className="relative pb-[140%] border-b-2 border-[#161310]">
+        <div className="absolute inset-0 w-full h-full bg-[#d9cdb3] animate-pulse" />
       </div>
-      <div className="p-2">
-        <div className="h-4 bg-gray-200 rounded animate-pulse mb-1" />
-        <div className="h-3 bg-gray-200 rounded animate-pulse w-3/4" />
+      <div className="p-3">
+        <div className="h-4 bg-[#d9cdb3] animate-pulse mb-1" />
+        <div className="h-3 bg-[#d9cdb3] animate-pulse w-3/4" />
       </div>
     </div>
   );
@@ -49,10 +49,10 @@ const ContentSection = ({ title, items, seeMoreLink, loading = false }: ContentS
   return (
     <div className="mb-6 md:mb-8">
       <div className="flex items-center justify-between mb-3 md:mb-4">
-        <h2 className="category-heading text-base md:text-lg font-medium">{title}</h2>
+        <h2 className="category-heading text-base md:text-lg font-bold font-mono">{title}</h2>
         {seeMoreLink && (
-          <Link to={seeMoreLink} className="text-xs md:text-sm text-gray-500 hover:text-primary">
-            查看更多 &gt;
+          <Link to={seeMoreLink} className="text-xs md:text-sm font-mono text-[#3a332a] hover:text-[#2e5dd6] font-bold">
+            查看更多 ▸
           </Link>
         )}
       </div>

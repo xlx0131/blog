@@ -15,8 +15,8 @@ interface ContentCardProps {
 const ContentCard = ({ id, title, imageUrl, rating, episodeCount, isNew, source }: ContentCardProps) => {
   return (
     <Link to={`/detail/${id}${source ? `/${source}` : ''}`} className="block">
-      <div className="content-card relative bg-white rounded-md overflow-hidden shadow-sm">
-        <div className="relative pb-[140%]">
+      <div className="content-card relative bg-[#fffaef] overflow-hidden">
+        <div className="relative pb-[140%] border-b-2 border-[#161310]">
           <img
             src={imageUrl}
             alt={title}
@@ -25,38 +25,37 @@ const ContentCard = ({ id, title, imageUrl, rating, episodeCount, isNew, source 
 
           {/* Rating badge */}
           {rating && (
-            <div className="absolute top-1 left-1 rating-badge">
+            <div className="absolute top-2 left-2 rating-badge">
               {rating}
             </div>
           )}
 
           {/* Episode count */}
           {episodeCount && (
-            <div className="absolute top-1 right-1 bg-black bg-opacity-60 text-white text-xs px-1 py-0.5 rounded">
+            <div className="absolute top-2 right-2 bg-[#161310] text-[#fffaef] text-xs px-2 py-1 border-2 border-[#fffaef] font-mono font-bold">
               {episodeCount}
             </div>
           )}
 
           {/* New badge */}
           {isNew && (
-            <div className="absolute top-0 right-0 bg-red-500 text-white text-xs px-2 py-1">
+            <div className="absolute top-2 right-2 bg-[#e74c3c] text-[#fffaef] text-xs px-2 py-1 border-2 border-[#fffaef] font-mono font-bold">
               NEW
             </div>
           )}
 
           {/* Play button overlay */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black bg-opacity-40">
-            <div className="play-icon p-2 rounded-full bg-white bg-opacity-80">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-[#161310]/50">
+            <div className="play-icon p-3 bg-[#fffaef] border-2 border-[#161310] shadow-[3px_3px_0_0_#161310]">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
               </svg>
             </div>
           </div>
         </div>
 
-        <div className="p-2">
-          <h3 className="text-sm font-medium line-clamp-1" title={title}>
+        <div className="p-3">
+          <h3 className="text-sm font-mono font-bold line-clamp-1 text-[#161310]" title={title}>
             {title}
           </h3>
         </div>

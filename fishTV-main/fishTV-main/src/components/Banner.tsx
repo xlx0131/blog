@@ -8,27 +8,22 @@ interface BannerProps {
 
 const Banner = ({ title, imageUrl, description }: BannerProps) => {
   return (
-    <div className="relative w-full h-48 sm:h-56 md:h-64 lg:h-80 rounded-lg overflow-hidden mb-4 md:mb-6">
+    <div className="relative w-full h-48 sm:h-56 md:h-64 lg:h-80 overflow-hidden mb-4 md:mb-6 border-2 border-[#161310] shadow-[6px_6px_0_0_#161310]">
       <img
         src={imageUrl}
         alt={title}
-        className="absolute inset-0 w-full h-full object-cover bg-white"
+        className="absolute inset-0 w-full h-full object-cover bg-[#fffaef]"
       />
 
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent">
+      {/* Pixel style overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#161310]/90 via-[#161310]/40 to-transparent">
         <div className="absolute bottom-0 left-0 p-4 md:p-6">
-          <h2 className="text-white text-lg md:text-xl lg:text-2xl font-bold mb-1 md:mb-2">{title}</h2>
+          <div className="inline-block px-4 py-2 bg-[#fffaef] border-2 border-[#161310] shadow-[3px_3px_0_0_#161310] mb-3">
+            <h2 className="text-[#161310] text-lg md:text-xl lg:text-2xl font-mono font-black tracking-wide">{title}</h2>
+          </div>
           {description && (
-            <p className="text-white text-xs md:text-sm lg:text-base opacity-80 line-clamp-2">{description}</p>
+            <p className="text-[#fffaef] text-xs md:text-sm lg:text-base font-mono line-clamp-2 max-w-xl">{description}</p>
           )}
-
-          {/* <button className="mt-4 px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-            </svg>
-            立即播放
-          </button> */}
         </div>
       </div>
     </div>

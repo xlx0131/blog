@@ -36,53 +36,53 @@ const VideoDetail = ({
   const episodes = Array.from({ length: episodeCount }, (_, i) => i + 1);
 
   return (
-    <div className="bg-[#f3f8f8] pt-6">
+    <div className="pt-6">
       {/* Video header section */}
-      <div className="bg-white rounded-lg overflow-hidden mb-6">
+      <div className="bg-[#fffaef] border-2 border-[#161310] shadow-[6px_6px_0_0_#161310] overflow-hidden mb-6">
         <div className="p-6">
-          <h1 className="text-2xl font-bold mb-4 text-gray-800 border-l-4 border-primary pl-3">
+          <h1 className="text-2xl font-bold mb-6 text-[#161310] font-mono border-b-2 border-dashed border-[#d9cdb3] pb-3">
             {title}
           </h1>
 
           <div className="flex flex-col md:flex-row gap-6">
             {/* Left: Cover image */}
             <div className="w-1/2 mx-auto md:w-1/4">
-              <div className="relative pb-[140%]">
+              <div className="relative pb-[140%] border-2 border-[#161310] shadow-[4px_4px_0_0_#161310]">
                 <img
                   src={coverUrl}
                   alt={title}
-                  className="absolute inset-0 w-full h-full object-cover rounded-md"
+                  className="absolute inset-0 w-full h-full object-cover"
                 />
               </div>
             </div>
 
             {/* Right: Video details */}
             <div className="w-full md:w-3/4">
-              <div className="mb-4">
-                <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded mr-2">{year}</span>
-                <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded mr-2">{area}</span>
-                <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded">{type}</span>
+              <div className="mb-4 flex flex-wrap gap-2">
+                <span className="px-3 py-1 bg-[#2e5dd6] text-[#fffaef] border-2 border-[#161310] font-mono text-sm font-bold">{year}</span>
+                <span className="px-3 py-1 bg-[#f5f0e8] text-[#161310] border-2 border-[#161310] font-mono text-sm font-bold">{area}</span>
+                <span className="px-3 py-1 bg-[#f5f0e8] text-[#161310] border-2 border-[#161310] font-mono text-sm font-bold">{type}</span>
               </div>
 
               <div 
-                className="text-gray-700 mb-6 prose prose-sm max-w-none"
+                className="text-[#161310] mb-6 font-mono text-sm leading-relaxed"
                 dangerouslySetInnerHTML={typeof description === 'string' ? { __html: description } : description}
               />
 
-              <div className="flex gap-3 items-center">
+              <div className="flex gap-3 items-center flex-wrap">
                 <Link
                   to={`/play/${id}/${currentEpisode}/${currentSource}`}
-                  className="flex items-center px-6 py-2 bg-primary text-white rounded-md hover:bg-red-700 transition-colors"
+                  className="flex items-center px-6 py-2.5 bg-[#2e5dd6] text-[#fffaef] border-2 border-[#161310] shadow-[3px_3px_0_0_#161310] hover:shadow-[4px_4px_0_0_#161310] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all font-mono font-bold"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                    <path d="M6 4l10 6-10 6V4z" />
                   </svg>
                   立即播放
                 </Link>
 
-                <button className="flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                <button className="flex items-center px-5 py-2.5 border-2 border-[#161310] text-[#161310] bg-[#fffaef] shadow-[3px_3px_0_0_#161310] hover:shadow-[4px_4px_0_0_#161310] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all font-mono font-bold">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
                   收藏
                 </button>
@@ -93,19 +93,19 @@ const VideoDetail = ({
       </div>
 
       {/* Episode selection */}
-      <div className="bg-white rounded-lg p-6 mb-6">
-        <div className="mb-4 border-b border-gray-200 pb-2">
-          <h2 className="text-lg font-semibold">选集播放</h2>
+      <div className="bg-[#fffaef] border-2 border-[#161310] shadow-[6px_6px_0_0_#161310] p-6 mb-6">
+        <div className="mb-4 border-b-2 border-dashed border-[#d9cdb3] pb-3">
+          <h2 className="text-lg font-bold font-mono text-[#161310]">选集播放</h2>
 
           {/* Source tabs */}
-          <div className="flex gap-4 mt-4">
+          <div className="flex gap-3 mt-4 flex-wrap">
             {Object.entries(VIDEO_SOURCES).map(([key, source]) => (
               <button
                 key={key}
-                className={`px-4 py-1 rounded-full transition-colors ${
+                className={`px-4 py-1.5 border-2 border-[#161310] transition-all font-mono text-sm font-bold ${
                   currentSource === key
-                    ? 'bg-primary text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ? 'bg-[#2e5dd6] text-[#fffaef] shadow-[2px_2px_0_0_#161310] -translate-x-0.5 -translate-y-0.5'
+                    : 'bg-[#f5f0e8] text-[#161310] hover:bg-[#e8dfd0]'
                 }`}
                 onClick={() => onSourceChange?.(key as keyof typeof VIDEO_SOURCES)}
               >
@@ -121,8 +121,10 @@ const VideoDetail = ({
             <Link
               key={episode}
               to={`/play/${id}/${episode}/${currentSource}`}
-              className={`py-2 px-1 text-center border rounded hover:border-primary transition-colors ${
-                episode === currentEpisode ? 'border-primary text-primary' : 'border-gray-200 text-gray-700'
+              className={`py-2 px-1 text-center border-2 border-[#161310] transition-all font-mono text-sm font-bold ${
+                episode === currentEpisode 
+                  ? 'bg-[#2e5dd6] text-[#fffaef] shadow-[2px_2px_0_0_#161310] -translate-x-0.5 -translate-y-0.5' 
+                  : 'bg-[#fffaef] text-[#161310] hover:bg-[#f5f0e8]'
               }`}
             >
               {episodeNames[index] || `第${episode.toString().padStart(2, '0')}集`}

@@ -1,6 +1,6 @@
 {
-  "name": "FishTV",
-  "short_name": "FishTV",
+  "name": "QQ星TV",
+  "short_name": "QQ星TV",
   "description": "追剧平台",
   "start_url": "/",
   "display": "standalone",

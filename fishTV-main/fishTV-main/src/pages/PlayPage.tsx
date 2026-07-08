@@ -247,23 +247,23 @@ const PlayPage = () => {
 
   return (
     <Layout>
-      <div className="bg-[#f3f8f8] pt-4">
+      <div className="pt-4">
         {/* Video title section */}
         <div className="mb-4">
-          <div className="flex items-center">
-            <h1 className="text-xl font-bold text-gray-800">
-              <Link to={`/detail/${id}`} className="hover:text-primary">
+          <div className="flex items-center flex-wrap gap-2">
+            <h1 className="text-xl font-bold text-[#161310] font-mono">
+              <Link to={`/detail/${id}`} className="hover:text-[#2e5dd6]">
                 {video.vod_name}
               </Link>
             </h1>
-            <div className="flex ml-4 space-x-2">
-              <Link to="/list/3.html" className="px-2 py-1 bg-gray-100 text-sm text-gray-700 rounded hover:bg-gray-200">
+            <div className="flex ml-2 gap-2">
+              <span className="px-2 py-1 bg-[#2e5dd6] text-[#fffaef] text-sm border-2 border-[#161310] font-mono font-bold">
                 {video.type_name}
-              </Link>
-              <span className="px-2 py-1 bg-gray-100 text-sm text-gray-700 rounded">
+              </span>
+              <span className="px-2 py-1 bg-[#f5f0e8] text-[#161310] text-sm border-2 border-[#161310] font-mono font-bold">
                 {video.vod_year}
               </span>
-              <span className="px-2 py-1 bg-gray-100 text-sm text-gray-700 rounded">
+              <span className="px-2 py-1 bg-[#f5f0e8] text-[#161310] text-sm border-2 border-[#161310] font-mono font-bold">
                 {video.vod_area}
               </span>
             </div>
@@ -272,7 +272,7 @@ const PlayPage = () => {
 
         {/* Video player section */}
         <div className="flex flex-col lg:flex-row gap-4">
-          <div className="flex-1 bg-black rounded-lg overflow-hidden">
+          <div className="flex-1 bg-[#161310] border-2 border-[#161310] shadow-[6px_6px_0_0_#161310] overflow-hidden">
             <VideoPlayer
               id={id || ''}
               title={video.vod_name}
@@ -284,20 +284,20 @@ const PlayPage = () => {
           </div>
 
           {/* Episode selection section */}
-          <div className="lg:w-80 bg-white rounded-lg p-4">
-            <div className="flex flex-col space-y-6">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold">选集播放</h2>
+          <div className="lg:w-80 bg-[#fffaef] border-2 border-[#161310] shadow-[6px_6px_0_0_#161310] p-4">
+            <div className="flex flex-col space-y-4">
+              <div className="flex items-center justify-between border-b-2 border-dashed border-[#d9cdb3] pb-3">
+                <h2 className="text-lg font-bold font-mono text-[#161310]">选集播放</h2>
               </div>
 
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={handlePrevSources}
                   disabled={!canShowPrev}
-                  className={`p-1.5 rounded-lg transition-all ${
+                  className={`p-1.5 border-2 border-[#161310] transition-all font-mono ${
                     canShowPrev
-                      ? 'text-gray-600 hover:bg-gray-100'
-                      : 'text-gray-300 cursor-not-allowed'
+                      ? 'text-[#161310] bg-[#f5f0e8] hover:bg-[#e8dfd0]'
+                      : 'text-[#d9cdb3] bg-[#f5f0e8] cursor-not-allowed'
                   }`}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -309,10 +309,10 @@ const PlayPage = () => {
                   {visibleSources.map(([key, source]) => (
                     <button
                       key={key}
-                      className={`flex-1 px-3 py-2 rounded-lg transition-all text-sm font-medium whitespace-nowrap overflow-hidden ${
+                      className={`flex-1 px-2 py-2 border-2 border-[#161310] transition-all text-xs font-mono font-bold whitespace-nowrap overflow-hidden ${
                         selectedSource === key
-                          ? 'bg-primary text-white shadow-lg'
-                          : 'bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-800'
+                          ? 'bg-[#2e5dd6] text-[#fffaef] shadow-[2px_2px_0_0_#161310] -translate-x-0.5 -translate-y-0.5'
+                          : 'bg-[#f5f0e8] text-[#161310] hover:bg-[#e8dfd0]'
                       }`}
                       onClick={() => handleSourceChange(key as keyof typeof VIDEO_SOURCES)}
                     >
@@ -324,10 +324,10 @@ const PlayPage = () => {
                 <button
                   onClick={handleNextSources}
                   disabled={!canShowNext}
-                  className={`p-1.5 rounded-lg transition-all ${
+                  className={`p-1.5 border-2 border-[#161310] transition-all font-mono ${
                     canShowNext
-                      ? 'text-gray-600 hover:bg-gray-100'
-                      : 'text-gray-300 cursor-not-allowed'
+                      ? 'text-[#161310] bg-[#f5f0e8] hover:bg-[#e8dfd0]'
+                      : 'text-[#d9cdb3] bg-[#f5f0e8] cursor-not-allowed'
                   }`}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -335,15 +335,12 @@ const PlayPage = () => {
                   </svg>
                 </button>
               </div>
-
-              <div className="border-t border-gray-200 my-2"></div>
             </div>
 
             {/* Episodes grid */}
-            <div className="relative mt-6">
+            <div className="relative mt-4">
               <div className="grid grid-cols-3 gap-2 max-h-[400px] overflow-y-auto overflow-x-hidden">
                 {Array.from({ length: totalEpisodes }, (_, i) => i + 1).map((ep) => {
-                  // 解析播放地址，获取集数名称
                   const episodeNames = video.vod_play_url.split('#').map(ep => {
                     const parts = ep.split('$');
                     return parts[0] || '';
@@ -355,18 +352,16 @@ const PlayPage = () => {
                     <div key={ep} className="relative group">
                       <button
                         onClick={() => handleEpisodeChange(ep)}
-                        className={`w-full py-2 text-center border rounded hover:border-primary transition-colors ${
-                          ep === currentEpisode ? 'bg-primary text-white border-primary' : 'border-gray-200 text-gray-700'
+                        className={`w-full py-2 text-center border-2 border-[#161310] transition-all font-mono text-sm font-bold ${
+                          ep === currentEpisode 
+                            ? 'bg-[#2e5dd6] text-[#fffaef] shadow-[2px_2px_0_0_#161310] -translate-x-0.5 -translate-y-0.5' 
+                            : 'bg-[#fffaef] text-[#161310] hover:bg-[#f5f0e8]'
                         }`}
                       >
                         <span className="block truncate px-1">
                           {episodeName}
                         </span>
                       </button>
-                      <div className="absolute left-1/2 transform -translate-x-1/2 px-2 py-1 bg-gray-800 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none
-                        top-full mt-2 group-hover:block hidden">
-                        {episodeName}
-                      </div>
                     </div>
                   );
                 })}

@@ -67,7 +67,7 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-30">
+    <header className="bg-[#fffaef] border-b-2 border-[#161310] sticky top-0 z-30">
       <div className="w-full px-2 sm:px-4 py-3">
         <div className="flex items-center justify-between gap-2">
           {/* 手机端返回首页按钮 */}
@@ -83,11 +83,11 @@ const Header = () => {
                 placeholder="搜索电影、电视剧、动漫..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2 pl-10 pr-4 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-4 py-2.5 pl-10 pr-4 border-2 border-[#161310] bg-[#fffaef] text-[#161310] focus:outline-none focus:shadow-[3px_3px_0_0_#161310] focus:-translate-x-0.5 focus:-translate-y-0.5 transition-all duration-200 font-mono text-sm"
               />
               <button
                 type="submit"
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#161310] hover:text-[#2e5dd6] transition-colors"
               >
                 <HiSearch className="w-5 h-5" />
               </button>
@@ -96,10 +96,10 @@ const Header = () => {
               {showHistory && searchHistory.length > 0 && (
                 <div
                   ref={dropdownRef}
-                  className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 max-h-96 overflow-y-auto z-50"
+                  className="absolute top-full left-0 right-0 mt-2 bg-[#fffaef] border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] max-h-96 overflow-y-auto z-50"
                 >
-                  <div className="p-2 border-b border-gray-100 flex justify-between items-center">
-                    <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <div className="p-3 border-b-2 border-[#161310] flex justify-between items-center bg-[#f5f0e8]">
+                    <div className="flex items-center gap-2 text-sm text-[#161310] font-mono font-bold">
                       <HiClock className="w-4 h-4" />
                       <span>搜索历史</span>
                     </div>
@@ -109,7 +109,7 @@ const Header = () => {
                           clearHistory();
                         }
                       }}
-                      className="text-gray-400 hover:text-gray-600"
+                      className="text-[#161310] hover:text-[#e74c3c] transition-colors"
                     >
                       <HiTrash className="w-4 h-4" />
                     </button>
@@ -118,21 +118,21 @@ const Header = () => {
                     {searchHistory.map((item, index) => (
                       <li
                         key={index}
-                        className="group flex items-center justify-between px-3 py-2 hover:bg-gray-50 cursor-pointer"
+                        className="group flex items-center justify-between px-3 py-2 hover:bg-[#f5f0e8] cursor-pointer border-b border-dashed border-[#d9cdb3] last:border-b-0"
                       >
                         <div
                           className="flex-1 flex items-center gap-2"
                           onClick={() => handleHistoryItemClick(item.query)}
                         >
-                          <HiSearch className="w-4 h-4 text-gray-400" />
-                          <span className="text-sm">{item.query}</span>
+                          <HiSearch className="w-4 h-4 text-[#2e5dd6]" />
+                          <span className="text-sm font-mono text-[#161310]">{item.query}</span>
                         </div>
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             removeFromSearchHistory(index);
                           }}
-                          className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-gray-600"
+                          className="opacity-0 group-hover:opacity-100 text-[#161310] hover:text-[#e74c3c]"
                         >
                           <HiX className="w-4 h-4" />
                         </button>
@@ -150,27 +150,27 @@ const Header = () => {
             <div className="relative" onMouseEnter={handleWatchHistoryMouseEnter} onMouseLeave={handleWatchHistoryMouseLeave}>
               <Link
                 to="/history"
-                className="flex items-center gap-1 px-3 py-2 text-gray-600 hover:text-gray-900"
+                className="history-button"
               >
                 <HiClock className="w-5 h-5" />
-                <span className="hidden sm:inline">历史</span>
+                <span className="hidden sm:inline text">历史</span>
               </Link>
 
               {/* 观看历史下拉菜单 */}
               {showWatchHistory && history.length > 0 && (
                 <div
                   ref={watchHistoryRef}
-                  className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50"
+                  className="absolute right-0 top-full mt-2 w-80 bg-[#fffaef] border-2 border-[#161310] shadow-[4px_4px_0_0_#161310] z-50"
                 >
                   <div className="p-2">
                     {history.slice(0, 5).map((item) => (
-                      <div key={item.id} className="flex items-center space-x-3 p-2 hover:bg-gray-100 rounded-md group">
+                      <div key={item.id} className="flex items-center space-x-3 p-2 hover:bg-[#f5f0e8] group border-b border-dashed border-[#d9cdb3] last:border-b-0">
                         <Link
                           to={`/play/${item.id}/${item.episode || '1'}/${item.source || 'feifan'}`}
                           className="flex-1 flex items-center space-x-3 min-w-0"
                           onClick={() => setShowWatchHistory(false)}
                         >
-                          <div className="w-16 h-9 rounded overflow-hidden">
+                          <div className="w-16 h-9 border-2 border-[#161310] overflow-hidden">
                             <img
                               src={item.imageUrl}
                               alt={item.title}
@@ -178,9 +178,9 @@ const Header = () => {
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium truncate">{item.title}</p>
+                            <p className="text-sm font-mono font-bold text-[#161310] truncate">{item.title}</p>
                             {item.episode && (
-                              <p className="text-xs text-gray-500">看到第 {item.episode} 集</p>
+                              <p className="text-xs text-[#3a332a] font-mono">看到第 {item.episode} 集</p>
                             )}
                           </div>
                         </Link>
@@ -189,7 +189,7 @@ const Header = () => {
                             e.stopPropagation();
                             removeFromHistory(item.id);
                           }}
-                          className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-gray-600"
+                          className="opacity-0 group-hover:opacity-100 text-[#161310] hover:text-[#e74c3c]"
                         >
                           <HiX className="w-4 h-4" />
                         </button>

@@ -57,8 +57,8 @@ const styles = `
             height: 56.25vw !important;
             min-height: 200px !important;
             max-height: 400px !important;
-            margin: 12px auto !important;
-            border-radius: 8px !important;
+            margin: 0 !important;
+            border-radius: 0 !important;
             position: relative !important;
             padding-bottom: 56.25% !important;
         }
@@ -67,9 +67,9 @@ const styles = `
     @media (min-width: 641px) {
         .video-container {
             height: 400px !important;
-            margin: 16px auto !important;
-            border-radius: 8px !important;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+            margin: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
             position: relative !important;
             padding-bottom: 56.25% !important;
         }
