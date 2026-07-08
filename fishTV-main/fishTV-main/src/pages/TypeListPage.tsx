@@ -91,6 +91,23 @@ const TypeListPage: React.FC<TypeListPageProps> = ({ type }) => {
   }, [loading, hasMore]);
 
   useEffect(() => {
+    setVideos([]);
+    setPage(1);
+    setHasMore(true);
+    if (type === 'movies') {
+      setSelectedMovieType(6);
+    } else if (type === 'tv') {
+      setSelectedTvType(13);
+    } else if (type === 'anime') {
+      setSelectedAnimeType(29);
+    } else if (type === 'variety') {
+      setSelectedVarietyType(25);
+    } else if (type === 'short') {
+      setSelectedShortType(36);
+    }
+  }, [type]);
+
+  useEffect(() => {
     const fetchVideos = async () => {
       if (!type || !TYPE_MAP[type]) return;
       
@@ -108,7 +125,7 @@ const TypeListPage: React.FC<TypeListPageProps> = ({ type }) => {
           pagesize: 24,
         });
         
-        setVideos(prevVideos => [...prevVideos, ...response.list]);
+        setVideos(prevVideos => page === 1 ? response.list : [...prevVideos, ...response.list]);
         setTotalPages(response.pagecount);
         setHasMore(page < response.pagecount);
       } catch (error) {
