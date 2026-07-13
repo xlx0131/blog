@@ -1,0 +1,4038 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI运维完全学习手册 — 从0基础到AI大模型运维专家</title>
+<style>
+:root {
+  --bg:#f5f0e8;
+  --card:#fffaef;
+  --border:#161310;
+  --text:#161310;
+  --sub:#6b6b6b;
+  --accent:#2e5dd6;
+  --accent-bg:#e8efff;
+  --gold:#d97706;
+  --green:#059669;
+  --red:#dc2626;
+  --code-bg:#1e1e2e;
+  --code-fg:#cdd6f4;
+  --shadow:4px 4px 0 0 #161310;
+  --shadow-hover:6px 6px 0 0 #161310;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{
+  font-family:'Courier New','SF Mono',Fira Code,Consolas,'Microsoft YaHei',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.8;
+  font-size:14px;
+}
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  width:100%;
+  padding:14px 24px;
+  background:var(--card);
+  border-bottom:2px solid var(--border);
+  box-shadow:0 4px 0 0 rgba(22,19,16,0.1);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.topbar .logo{
+  font-size:18px;
+  font-weight:700;
+  letter-spacing:1px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.topbar .logo .back-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 14px;
+  border:2px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  text-decoration:none;
+  font-size:12px;
+  font-family:inherit;
+  box-shadow:2px 2px 0 0 #161310;
+  transition:all .12s;
+  cursor:pointer;
+  margin-right:10px;
+}
+.topbar .logo .back-btn:hover{
+  background:#fee2e2;
+  transform:translate(-1px,-1px);
+  box-shadow:3px 3px 0 0 #161310;
+}
+.topbar .logo span{color:var(--accent)}
+.topbar .meta{
+  font-size:12px;
+  color:var(--sub);
+  font-weight:600;
+}
+.layout{display:flex}
+.sidebar{
+  width:280px;
+  min-width:280px;
+  position:sticky;
+  top:60px;
+  height:calc(100vh - 60px);
+  overflow-y:auto;
+  background:var(--card);
+  border-right:2px solid var(--border);
+  padding:12px 0;
+}
+.sidebar::-webkit-scrollbar{width:6px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border)}
+.sidebar .ph-title{
+  padding:12px 20px 6px;
+  font-size:11px;
+  font-weight:700;
+  color:var(--accent);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-top:8px;
+}
+.sidebar a{
+  display:block;
+  padding:6px 24px;
+  font-size:12.5px;
+  color:var(--sub);
+  text-decoration:none;
+  border-left:3px solid transparent;
+  transition:all .12s;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  font-weight:600;
+}
+.sidebar a:hover,.sidebar a.active{
+  color:var(--text);
+  background:var(--accent-bg);
+  border-left-color:var(--accent);
+}
+.main{
+  flex:1;
+  padding:24px 36px 60px;
+  min-width:0;
+  max-width:1100px;
+  margin:0 auto;
+}
+.page-title{
+  text-align:center;
+  padding:30px 0 20px;
+  margin-bottom:10px;
+}
+.page-title h2{
+  font-size:28px;
+  font-weight:700;
+  color:var(--text);
+  letter-spacing:2px;
+  margin-bottom:8px;
+}
+.page-title p{
+  color:var(--sub);
+  font-size:13px;
+  font-weight:600;
+}
+.phase{
+  margin:36px 0 20px;
+  padding:20px 28px;
+  background:var(--text);
+  color:var(--card);
+  border:2px solid var(--border);
+  box-shadow:var(--shadow);
+}
+.phase h2{
+  font-size:20px;
+  margin-bottom:6px;
+  letter-spacing:1px;
+}
+.phase .meta{
+  font-size:12px;
+  opacity:0.85;
+  line-height:1.6;
+  font-weight:600;
+}
+.chapter{
+  background:var(--card);
+  border:2px solid var(--border);
+  margin-bottom:24px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  transition:all .15s;
+}
+.chapter:hover{
+  box-shadow:var(--shadow-hover);
+  transform:translate(-1px,-1px);
+}
+.chapter .ch-head{
+  padding:14px 22px;
+  background:var(--accent-bg);
+  border-bottom:2px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.chapter .ch-num{
+  width:32px;
+  height:32px;
+  background:var(--accent);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  font-weight:700;
+  flex-shrink:0;
+  border:2px solid var(--border);
+}
+.chapter .ch-head h4{
+  font-size:16px;
+  font-weight:700;
+  letter-spacing:.5px;
+}
+.chapter .ch-body{padding:0}
+.kp-card{
+  padding:18px 22px;
+  border-bottom:1px dashed var(--border);
+}
+.kp-card:last-child{border-bottom:none}
+.kp-card .kp-header{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:12px;
+}
+.kp-card .kp-num{
+  width:26px;
+  height:26px;
+  background:var(--text);
+  color:var(--card);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:700;
+  flex-shrink:0;
+  margin-top:2px;
+  border:2px solid var(--border);
+}
+.kp-card .kp-title{
+  font-size:15px;
+  font-weight:700;
+  color:var(--text);
+  flex:1;
+  line-height:1.5;
+}
+.kp-card .kp-tags{
+  display:flex;
+  gap:6px;
+  flex-shrink:0;
+}
+.kp-card .tag{
+  display:inline-block;
+  padding:3px 10px;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.5px;
+  border:2px solid var(--border);
+}
+.tag-must{background:#fee2e2;color:#991b1b}
+.tag-good{background:#dcfce7;color:#166534}
+.tag-tip{background:#dbeafe;color:#1e40af}
+.kp-section{margin-bottom:14px}
+.kp-section h5{
+  font-size:12px;
+  color:var(--accent);
+  margin-bottom:8px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  border-bottom:2px dashed var(--border);
+  padding-bottom:4px;
+}
+.kp-section p,.kp-section li{
+  font-size:14px;
+  color:var(--text);
+  line-height:1.9;
+}
+.kp-section ul,.kp-section ol{padding-left:22px}
+.kp-section li{margin-bottom:4px}
+.kp-section pre{
+  background:var(--code-bg);
+  color:var(--code-fg);
+  padding:14px 18px;
+  font-size:12.5px;
+  overflow-x:auto;
+  font-family:'Fira Code','Consolas','Courier New',monospace;
+  line-height:1.6;
+  margin:10px 0;
+  border:2px solid var(--border);
+  box-shadow:2px 2px 0 0 rgba(0,0,0,0.3);
+}
+.kp-section code{
+  background:#fef3c7;
+  color:#92400e;
+  padding:2px 6px;
+  font-size:13px;
+  font-family:'Fira Code','Consolas','Courier New',monospace;
+  font-weight:600;
+  border:1px solid #fcd34d;
+}
+.kp-section pre code{
+  background:transparent;
+  color:var(--code-fg);
+  padding:0;
+  border:none;
+}
+.exercise-box{
+  background:#fffbeb;
+  border:2px solid var(--border);
+  padding:18px 22px;
+  margin:20px 22px;
+  box-shadow:var(--shadow);
+}
+.exercise-box h5{
+  color:var(--gold);
+  font-size:15px;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-weight:700;
+}
+.exercise-box .ex-section{margin:12px 0}
+.exercise-box .ex-section h6{
+  font-size:13px;
+  color:var(--gold);
+  margin-bottom:6px;
+  font-weight:700;
+}
+.exercise-box .answer-toggle{
+  background:var(--green);
+  color:#fff;
+  border:2px solid var(--border);
+  padding:6px 16px;
+  font-size:11px;
+  cursor:pointer;
+  margin-top:8px;
+  font-weight:700;
+  font-family:inherit;
+  letter-spacing:.5px;
+  box-shadow:2px 2px 0 0 #161310;
+  transition:all .12s;
+}
+.exercise-box .answer-toggle:hover{
+  transform:translate(-1px,-1px);
+  box-shadow:3px 3px 0 0 #161310;
+}
+.exercise-box .answer-content{
+  display:none;
+  margin-top:10px;
+  padding:12px 16px;
+  background:#dcfce7;
+  font-size:13px;
+  border:2px solid var(--border);
+  border-left:4px solid var(--green);
+}
+.project{
+  border:2px solid var(--border);
+  padding:22px 28px;
+  margin:24px 0;
+  background:var(--accent-bg);
+  box-shadow:var(--shadow);
+}
+.project h3{
+  font-size:18px;
+  color:var(--accent);
+  margin-bottom:14px;
+  font-weight:700;
+  letter-spacing:.5px;
+}
+.project .proj-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  font-size:13px;
+}
+.project .proj-grid div{
+  background:var(--card);
+  padding:10px 14px;
+  border:2px solid var(--border);
+  font-weight:600;
+}
+@media print{
+  .topbar,.sidebar{display:none}
+  .layout{display:block;margin-top:0}
+  .main{padding:0;max-width:100%}
+  .chapter{break-inside:avoid;box-shadow:none}
+}
+@media(max-width:960px){
+  .sidebar{display:none}
+  .main{padding:16px}
+  .topbar .meta{display:none}
+  .phase{padding:14px 18px}
+  .phase h2{font-size:16px}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="logo">
+    <a href="/archive" class="back-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      返回归档
+    </a>
+    <span>AI运维</span> 完全学习手册
+  </div>
+  <div class="meta">基于黑马课程大纲 V5.0 | 10大阶段 · 33章 · 230+知识点 · 10大项目实战 | 从0基础到AI大模型运维专家</div>
+</div>
+<div class="layout">
+<nav class="sidebar" id="nav">
+  <div class="ph-title">入门试学课 (6天)</div>
+  <a href="#p0c1">第1章 Linux操作系统基础</a>
+  <a href="#p0c2">第2章 云平台ECS与云监控</a>
+  <a href="#p0c3">第3章 AI模型/博客系统部署</a>
+  <div class="ph-title">阶段一 Linux系统与网络</div>
+  <a href="#p1c1">第1章 Linux高级</a>
+  <a href="#p1c2">第2章 Linux核心系统服务</a>
+  <a href="#p1c3">第3章 网络基础与进阶</a>
+  <a href="#p1c4">第4章 Shell脚本开发</a>
+  <a href="#proj1">项目一 网络通信与Shell</a>
+  <div class="ph-title">阶段二 DBA数据库运维</div>
+  <a href="#p2c1">第1章 MySQL8安装与配置</a>
+  <a href="#p2c2">第2章 MySQL8基本使用</a>
+  <a href="#p2c3">第3章 MySQL8性能优化</a>
+  <a href="#p2c4">第4章 数据库迁移</a>
+  <a href="#proj2">项目二 数据库迁移</a>
+  <div class="ph-title">阶段三 中间件运维</div>
+  <a href="#p3c1">第1章 Redis</a>
+  <a href="#p3c2">第2章 MongoDB</a>
+  <a href="#p3c3">第3章 Kafka</a>
+  <a href="#p3c4">第4章 Ceph存储</a>
+  <a href="#proj3">项目三 私有云盘</a>
+  <div class="ph-title">阶段四 高可用WEB集群</div>
+  <a href="#p4c1">第1章 Nginx深度剖析</a>
+  <a href="#p4c2">第2章 高可用架构</a>
+  <a href="#p4c3">第3章 Ansible自动化</a>
+  <a href="#p4c4">第4章 Zabbix监控</a>
+  <a href="#proj4">项目四 CRMEB电商</a>
+  <div class="ph-title">阶段五 云原生容器</div>
+  <a href="#p5c1">第1章 Docker容器化</a>
+  <a href="#p5c2">第2章 Containerd运行时</a>
+  <a href="#p5c3">第3章 K8s容器编排</a>
+  <a href="#proj5">项目五 CRMEB容器化</a>
+  <a href="#proj6">项目六 中州养老</a>
+  <div class="ph-title">阶段六 DevOps CI/CD</div>
+  <a href="#p6c1">第1章 CI/CD持续交付</a>
+  <a href="#p6c2">第2章 Prometheus监控</a>
+  <a href="#p6c3">第3章 ELK日志管理</a>
+  <a href="#proj7">项目七 全链路CI/CD</a>
+  <div class="ph-title">阶段七 云计算与微服务</div>
+  <a href="#p7c1">第1章 云平台组件</a>
+  <a href="#p7c2">第2章 微服务运维</a>
+  <a href="#proj8">项目八 若依微服务</a>
+  <div class="ph-title">阶段八 AI大模型运维</div>
+  <a href="#p8c1">第1章 GPU基础环境</a>
+  <a href="#p8c2">第2章 K8s部署大模型</a>
+  <a href="#p8c3">第3章 GPU监控优化</a>
+  <a href="#proj9">项目九 EDU RAG大模型</a>
+  <div class="ph-title">阶段九 国产化信创</div>
+  <a href="#p9c1">第1章 麒麟操作系统</a>
+  <a href="#p9c2">第2章 达梦数据库</a>
+  <a href="#p9c3">第3章 政务办公系统</a>
+  <a href="#proj10">项目十 政务办公</a>
+</nav>
+<div class="main">
+<div class="page-title">
+<h2>AI运维完全学习手册</h2>
+<p>基于黑马程序员 AI运维课程大纲 V5.0 深度扩展 | 从零基础到AI大模型运维专家</p>
+</div>
+
+<!-- ==================== 入门试学课 (6天) ==================== -->
+<div class="phase" id="p0">
+<h2>入门试学课</h2>
+<div class="meta">学习天数：6天 | 3章 | 目标：掌握运维核心职责、Linux系统操作、云服务器使用、大模型部署及博客系统全流程上线</div>
+</div>
+
+<!-- ===== 第1章 Linux操作系统基础 ===== -->
+<div class="chapter" id="p0c1">
+<div class="ch-head"><div class="ch-num">1</div><h4>第1章 Linux操作系统基础</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">运维基本导论与Linux操作系统入门</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>运维（Operations）</strong>是IT领域三大核心职能之一（产品/研发/运维）。运维工程师的职责可以概括为三个关键词：<strong>监控、故障处理、自动化</strong>。</p>
+<p><strong>为什么要学运维？</strong> 任何线上服务都需要7×24小时稳定运行。没有运维，系统出故障时就没有人第一时间发现和修复；没有运维，新代码就无法安全地部署到生产环境。运维是保障业务连续性的最后一道防线。</p>
+<p><strong>云计算定义与优势</strong>：通过互联网按需提供计算资源。核心优势：按需自助、广泛网络接入、资源池化、快速弹性、可计量服务。</p>
+<p><strong>服务器分类</strong>：塔式（小型企业）、机架式（数据中心标准19英寸机架）、刀片（密度最高，共享电源散热）。</p>
+<p><strong>硬件组成</strong>：主板→CPU（大脑）→内存RAM（临时存储，断电丢失）→硬盘（HDD便宜容量大/SSD快贵）→网卡→电源（双冗余）。</p>
+<p><strong>企业IT角色</strong>：产品经理（定义需求）→研发（编码）→测试（验证Bug）→运维（部署监控故障处理）。</p>
+<p><strong>环境分类</strong>：开发dev→测试test→预发布staging→生产prod（面向真实用户，操作需谨慎）。</p>
+<p><strong>网络设备</strong>：HUB（已淘汰）、交换机（L2，独享带宽）、路由器（L3，跨网段通信）。介质：双绞线（100米以内）、光纤（远距离高速）。</p>
+<p><strong>通信三要素</strong>：IP（地址，唯一标识）、端口（服务标识，0-65535）、协议（通信规则，TCP可靠/UDP快速）。</p>
+<p><strong>CentOS Stream vs Ubuntu双系统</strong>：CentOS Stream滚动更新（Fedora↔RHEL之间），Ubuntu社区活跃文档齐全，双系统通过GRUB引导菜单选择。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 查看CPU信息
+cat /proc/cpuinfo | grep "model name" | head -1
+# 查看内存/磁盘
+free -h && lsblk
+# 查看网卡
+ip a
+# 判断环境：通过主机名(prod-xxx)、IP段(10.x内网)区分</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">目录命令（pwd/ls/cd/mkdir）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p>Linux文件系统是<strong>倒挂树形结构</strong>，根目录<code>/</code>是一切起点。</p>
+<p><code>pwd</code>显示当前绝对路径，脚本中判断位置时必备。</p>
+<p><code>ls -lah</code>是最常用组合：<code>-l</code>详细信息（权限/所有者/大小/时间），<code>-a</code>含隐藏文件（.开头），<code>-h</code>人类可读大小（1K/234M），<code>-t</code>按时间排序。</p>
+<p><code>cd</code>切换目录：<code>cd ~</code>回家目录，<code>cd -</code>回上一个目录，<code>cd ..</code>回上级。</p>
+<p><code>mkdir -p</code>递归创建多级目录，如<code>mkdir -p /data/app/logs</code>一次性创建所有父目录。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 创建项目目录结构
+mkdir -p /opt/myapp/{bin,conf,logs,data}
+# 脚本中判断目录是否存在
+[ -d "/opt/myapp" ] || mkdir -p /opt/myapp/logs</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">3</div><div class="kp-title">文件操作（touch/cp/mv/rm）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><code>touch</code>创建空文件或更新时间戳（触发监控脚本/日志轮转时有用）。</p>
+<p><code>cp -a</code>归档模式复制，保留权限/时间戳/软链接等所有属性，备份配置文件时必备。</p>
+<p><code>mv</code>移动=重命名（同一目录）或剪切（不同目录）。</p>
+<p><code>rm</code><strong>最危险命令之一</strong>。<code>-r</code>递归，<code>-f</code>强制。生产环境绝不能用<code>rm -rf /</code>或<code>rm -rf /*</code>。建议先<code>mv</code>到回收站再确认删除。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 备份配置（保留权限和时间戳）
+cp -a /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak.$(date +%Y%m%d)
+# 批量重命名 .txt → .bak
+for f in *.txt; do mv "$f" "${f%.txt}.bak"; done</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">4</div><div class="kp-title">文本编辑（vi/vim三种模式）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>为什么要学Vim？</strong> SSH远程连接服务器后唯一保证可用的编辑器，无需图形界面。</p>
+<p><strong>命令模式（默认）</strong>：<code>dd</code>删行、<code>yy</code>复制、<code>p</code>粘贴、<code>u</code>撤销、<code>/关键词</code>搜索、<code>gg</code>文件头、<code>G</code>文件尾。</p>
+<p><strong>插入模式</strong>：<code>i</code>当前位置插入、<code>a</code>后插入、<code>o</code>下行插入、<code>Esc</code>返回命令模式。</p>
+<p><strong>末行模式</strong>：<code>:w</code>保存、<code>:q</code>退出、<code>:wq</code>保存退出、<code>:q!</code>强制退出、<code>:%s/旧/新/g</code>全文替换。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>vim /etc/nginx/nginx.conf
+# 批量注释：Ctrl+v→选多行→Shift+i→输#→Esc
+# 全文替换：:%s/80/8080/g</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">5</div><div class="kp-title">文件查看（cat/tail/less）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><code>cat</code>一次性输出全部内容，适合小文件（<code>-n</code>加行号）。</p>
+<p><code>tail -f</code><strong>运维最常用命令之一</strong>：实时跟踪日志文件末尾新增内容，Ctrl+C退出。<code>-F</code>比<code>-f</code>更健壮（文件被删除旋转后自动重新打开）。<code>-n 100</code>显示最后100行。</p>
+<p><code>less</code>分页查看大文件：空格下一页、b上一页、<code>/关键词</code>搜索、q退出。比more强大（可向前翻页）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 实时监控nginx访问日志
+tail -f /var/log/nginx/access.log
+# 查看包含ERROR的最后50行
+grep "ERROR" /var/log/app.log | tail -50</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">6</div><div class="kp-title">解压缩（tar/zip）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><code>tar</code> Linux最常用归档工具。记忆法：c=create、x=extract、v=verbose、f=file（必须最后）、z=gzip(.tar.gz)、j=bzip2(.tar.bz2更高压缩率但更慢)。最常用：<code>tar -czvf</code>打包压缩、<code>tar -xzvf</code>解压。</p>
+<p><code>zip/unzip</code>跨平台兼容好，Windows/macOS原生支持。<code>zip -r</code>递归压缩目录，<code>unzip -d 目标目录</code>解压到指定位置。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 打包压缩
+tar -czvf myproject.tar.gz /opt/myproject/
+# 解压到指定目录
+tar -xzvf myproject.tar.gz -C /opt/
+# 不解压查看内容
+tar -tzvf myproject.tar.gz</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">7</div><div class="kp-title">包管理（dnf与rpm）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>dnf</strong>是yum的下一代版本，自动处理依赖关系。<code>dnf install 包名</code>安装、<code>dnf remove 包名</code>删除、<code>dnf update</code>更新全部、<code>dnf search 关键词</code>搜索、<code>dnf info 包名</code>查看详情。</p>
+<p><strong>rpm</strong>底层包管理，直接操作.rpm文件。<code>rpm -ivh 包.rpm</code>安装（不自动处理依赖）、<code>rpm -e 包名</code>卸载、<code>rpm -qa</code>列出所有已安装包、<code>rpm -ql 包名</code>查看包安装了哪些文件、<code>rpm -qf /路径/文件</code>反向查文件属于哪个包。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>dnf install -y nginx
+dnf search mysql
+rpm -qa | grep kernel
+rpm -qf /etc/ssh/sshd_config   # 查文件属于哪个包</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">8</div><div class="kp-title">服务管理（systemctl）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>systemd</strong>是现代Linux的初始化系统和服务管理器，替代传统SysV init。核心命令：<code>systemctl start/stop/restart 服务名</code>启停重启、<code>enable/disable</code>开机自启设置、<code>status</code>查看状态（是否运行/PID/最近日志）、<code>is-active</code>检查是否运行中、<code>list-units --type=service</code>列出所有服务。</p>
+<p><code>journalctl -u 服务名 -f</code>实时查看该服务的日志。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>systemctl start nginx && systemctl enable nginx
+systemctl status nginx
+journalctl -u nginx -f    # 实时查看nginx日志</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">9</div><div class="kp-title">定时任务（crontab）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>cron守护进程</strong>每分钟检查crontab文件，匹配即执行。语法：<code>分 时 日 月 周 命令</code>（0-59 0-23 1-31 1-12 0-7）。<code>*</code>任意、<code>*/5</code>每5单位、<code>1,3,5</code>枚举。</p>
+<p><code>crontab -e</code>编辑、<code>-l</code>列出、<code>-r</code>删除。建议任务输出重定向到日志文件<code>>> /var/log/xxx.log 2>&1</code>。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 每天凌晨2点备份
+0 2 * * * /opt/scripts/backup.sh >> /var/log/backup.log 2>&1
+# 每5分钟健康检查
+*/5 * * * * /opt/scripts/health_check.sh</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">10</div><div class="kp-title">防火墙管理（firewalld/ufw）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>防火墙是服务器安全第一道防线</strong>，精确控制哪些端口对外暴露。</p>
+<p><strong>firewalld</strong>（RHEL/CentOS系）：基于zone+service管理。<code>firewall-cmd --add-port=80/tcp --permanent</code>永久开放、<code>--reload</code>重载生效。注意<code>--permanent</code>只写配置文件不立即生效。</p>
+<p><strong>ufw</strong>（Ubuntu/Debian系）：语法更简洁。<code>ufw allow 80/tcp</code>开放、<code>ufw enable</code>启用。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># firewalld
+firewall-cmd --add-service=http --permanent
+firewall-cmd --add-port=8080/tcp --permanent
+firewall-cmd --reload
+# ufw
+ufw allow 22/tcp && ufw allow 80/tcp && ufw enable</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">11</div><div class="kp-title">进程管理（ps/kill/ss）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><code>ps aux</code>查看所有进程快照。关键字段：USER（所有者）、PID（进程ID）、%CPU、%MEM、STAT（R运行/S睡眠/Z僵尸）。<code>ps aux --sort=-%mem | head -6</code>查内存TOP5。</p>
+<p><code>kill -15 PID</code>优雅终止（SIGTERM，给进程清理机会），<code>kill -9 PID</code>强制杀死（SIGKILL，无法忽略），<code>kill -1 PID</code>重载配置（SIGHUP）。<strong>优先用-15</strong>。</p>
+<p><code>ss -tlnp</code>查看TCP监听端口及进程（netstat现代替代品，速度更快）。<code>ss -tlnp | grep 8080</code>查谁占用了8080端口。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>ss -tlnp | grep 8080        # 查端口占用
+ps aux | grep nginx          # 查nginx进程
+kill -1 $(cat /var/run/nginx.pid)  # 优雅重载nginx</code></pre>
+</div>
+</div>
+
+<!-- 章节练习 -->
+<div class="exercise-box">
+<h5>课后练习 — 第1章 Linux操作系统基础</h5>
+<div class="ex-section"><h6>一、选择题</h6>
+<ol>
+<li>以下哪个命令用于显示当前工作目录？<br>A. ls &nbsp; B. cd &nbsp; C. pwd &nbsp; D. mkdir</li>
+<li>vim中从插入模式返回命令模式按哪个键？<br>A. Enter &nbsp; B. Esc &nbsp; C. Tab &nbsp; D. Ctrl+C</li>
+<li>查看日志实时更新的命令是？<br>A. cat -f &nbsp; B. tail -f &nbsp; C. less -f &nbsp; D. head -f</li>
+</ol></div>
+<div class="ex-section"><h6>二、实操题</h6>
+<ol>
+<li>在/opt下创建myapp/{bin,conf,logs,data}目录结构，一行命令完成。</li>
+<li>启动nginx并设置开机自启。</li>
+<li>编写crontab：每天凌晨2点执行/opt/scripts/backup.sh，日志写入/var/log/backup.log。</li>
+</ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">
+<h6>选择题：</h6>1.C 2.B 3.B<br>
+<h6>实操题：</h6>1.<code>mkdir -p /opt/myapp/{bin,conf,logs,data}</code><br>2.<code>systemctl start nginx && systemctl enable nginx</code><br>3.<code>0 2 * * * /opt/scripts/backup.sh >> /var/log/backup.log 2>&1</code>
+</div>
+</div>
+
+</div></div>
+
+<!-- ===== 第2章 云平台ECS服务器与云监控 ===== -->
+<div class="chapter" id="p0c2">
+<div class="ch-head"><div class="ch-num">2</div><h4>第2章 云平台ECS服务器与云监控</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">云服务器定义、厂商、特点、优势</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>云服务器ECS（Elastic Compute Service）</strong>本质上是一台运行在云厂商数据中心里的虚拟机。你通过互联网远程管理它，就像管理一台真实的物理服务器一样，但不需要关心硬件采购、机房网络、电力空调等底层基础设施。</p>
+<p><strong>主要云厂商</strong>：国内以阿里云（市场份额第一）、腾讯云、华为云为主；国际以AWS（亚马逊）、Azure（微软）、GCP（谷歌）为主。各家提供的核心服务类似（计算/存储/网络/数据库），但API和产品名称不同。</p>
+<p><strong>核心特点</strong>：<strong>虚拟化</strong>（一台物理机运行多台虚拟机，共享硬件降低成本）、<strong>按需分配</strong>（需要多少买多少，随时扩容缩容）、<strong>弹性伸缩</strong>（业务高峰期自动增加服务器，低谷期自动减少）、<strong>即开即用</strong>（几分钟内创建一台服务器，不用等采购流程）。</p>
+<p><strong>优势</strong>：相比自建机房，云服务器免去了硬件采购（通常2-4周）、机房托管、网络带宽申请等繁琐流程；按量付费（用多少付多少，不用不花钱）比一次性买断硬件更灵活；全球多地域部署（一键在东京/新加坡/法兰克福开服，自建机房做不到）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 阿里云CLI创建ECS实例
+aliyun ecs CreateInstance --RegionId cn-hangzhou \
+  --InstanceType ecs.g7.large --ImageId centos_stream_9</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">阿里云ECS实例选择与购买流程</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>实例规格选择</strong>：经济型e（最便宜，适合测试学习）、通用算力型u（性价比之选，适合Web应用）、计算型c（CPU密集场景如批量处理）、内存型r（大内存需求如数据库/缓存）。规格名如<code>ecs.g7.large</code>中g7代表第7代通用型、large代表2vCPU+8G内存。</p>
+<p><strong>计费方式</strong>：<strong>按量付费</strong>（按小时/秒计费，随时释放不花钱，适合测试学习）、<strong>包年包月</strong>（预付打折，适合长期运行的正式业务）、<strong>抢占式实例</strong>（最高1折但可能被回收，适合无状态批处理任务）。</p>
+<p><strong>购买流程</strong>：选择地域（离用户越近延迟越低）→ 选择可用区（同城不同机房，做高可用用）→ 选择实例规格 → 选择镜像（CentOS/Ubuntu/Windows等）→ 配置网络（VPC虚拟私有网络/安全组防火墙）→ 配置存储（系统盘+数据盘）→ 设置密钥对或密码 → 确认订单付款。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<ul>
+<li>学习阶段选"按量付费+最低规格（1vCPU 0.5G内存）"，每天几毛钱。</li>
+<li>安全组创建规则：只开放必要端口（22 SSH / 80 HTTP / 443 HTTPS），来源IP设为0.0.0.0/0或限定自己的IP。</li>
+</ul>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">3</div><div class="kp-title">ECS使用：重启/资源调整/安全组/远程连接</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>重启</strong>：控制台点"重启"按钮或SSH登录后执行<code>reboot</code>。注意重启会导致短暂服务中断。</p>
+<p><strong>资源调整（升降配）</strong>：云服务器最方便的功能之一——随时调整CPU核数、内存大小、带宽上限，不需要重装系统（但通常需要先关机）。</p>
+<p><strong>安全组</strong>：相当于云上的虚拟防火墙。入方向（Ingress）控制谁可以访问你的ECS；出方向（Egress）控制ECS可以访问谁。规则由协议类型、端口范围、源IP/安全组组成。</p>
+<p><strong>远程连接</strong>：SSH（Linux）是最常用方式：<code>ssh root@公网IP</code>。或者使用控制台自带的VNC远程连接（不需要公网IP也能连，适合网络出问题时紧急排查）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># SSH远程连接（使用密钥对）
+ssh -i ~/.ssh/mykey.pem root@123.123.123.123
+# 安全组规则示例（仅开放SSH给指定IP）
+# 控制台操作：入方向 → 添加规则 → 协议TCP 端口22 源IP:你的IP/32</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">4</div><div class="kp-title">云监控：介绍/开通/主机监控/报警/可视化大屏</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>云监控（CloudMonitor）</strong>是阿里云提供的免费监控服务。它能自动采集ECS的CPU使用率、内存使用率、磁盘IO、网络流量等指标，无需安装额外Agent（部分指标需要安装云监控插件）。</p>
+<p><strong>主机监控</strong>：默认展示CPU使用率、内存使用率、磁盘使用率、公网带宽等核心指标。你可以设置Dashboard仪表盘，把多台服务器的关键指标放在同一个页面查看。</p>
+<p><strong>资源报警</strong>：设置阈值触发告警通知——如"CPU使用率>90%持续5分钟"就发送短信/邮件/钉钉通知。报警规则包含：监控项（如CPU）、统计周期（1分钟/5分钟）、统计方法（平均值/最大值）、阈值、触发次数、沉默时间（避免重复告警轰炸）。</p>
+<p><strong>可视化大屏</strong>：将多个监控图表组合成全屏Dashboard，适合投屏到办公室大电视实时展示业务健康状态。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 典型报警规则配置
+# 监控项：CPU使用率
+# 统计周期：5分钟  统计方法：平均值
+# 阈值：>= 90%  触发次数：连续3次
+# 通知方式：短信+钉钉机器人
+# 沉默时间：30分钟（避免重复骚扰）</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第2章 云平台ECS服务器与云监控</h5>
+<div class="ex-section"><h6>一、选择题</h6>
+<ol>
+<li>阿里云ECS的按量付费适合什么场景？<br>A. 长期运行的正式业务 &nbsp; B. 短期测试学习 &nbsp; C. 数据库主库 &nbsp; D. 以上都不对</li>
+<li>安全组的作用是什么？<br>A. 数据加密 &nbsp; B. 虚拟防火墙 &nbsp; C. 负载均衡 &nbsp; D. 日志收集</li>
+</ol></div>
+<div class="ex-section"><h6>二、实操题</h6>
+<ol>
+<li>在阿里云控制台购买一台按量付费ECS（最低规格），选择CentOS Stream 9镜像，配置安全组仅开放22/80/443端口。</li>
+<li>为这台ECS配置CPU使用率>80%的报警规则，通知方式选择短信。</li>
+</ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content"><h6>选择题：</h6>1.B 2.B<br><h6>实操题：</h6>1.按购买流程操作：地域选离自己近的→按量付费→最低规格→CentOS Stream 9→安全组添22/80/443→密钥对→确认<br>2.云监控→报警规则→创建规则→ECS→CPU使用率→>=80%持续3周期→短信通知</div>
+</div>
+
+</div></div>
+
+<!-- ===== 第3章 AI模型算法平台部署 / 博客系统上云部署（二选一） ===== -->
+<div class="chapter" id="p0c3">
+<div class="ch-head"><div class="ch-num">3</div><h4>第3章 智能聊天机器人大模型生产上线部署与监控实战（方案A）/ 博客系统云上线部署与监控实战（方案B）</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">Anaconda安装与ChatGLM 6B模型下载</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Anaconda</strong>是Python数据科学领域的发行版，它最大的价值在于<strong>环境管理</strong>。不同AI项目可能依赖不同版本的Python和第三方库（如PyTorch），conda可以为每个项目创建独立的虚拟环境，避免版本冲突。对于AI运维工程师来说，conda是部署大模型的基础工具链。</p>
+<p><strong>ChatGLM 6B</strong>是清华大学和智谱AI联合开发的开源大语言模型，有62亿参数。选择ChatGLM作为入门是因为：①开源可商用、②对硬件要求相对较低（最低6G显存）、③有完善的文档和社区支持。下载方式：<code>git clone</code>从HuggingFace克隆模型文件，或通过网络直连/离线上传（网络受限环境）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 下载Anaconda
+wget https://repo.anaconda.com/archive/Anaconda3-2024.02-Linux-x86_64.sh
+bash Anaconda3-2024.02-Linux-x86_64.sh  # 按提示初始化
+# 创建Python虚拟环境
+conda create -n chatglm python=3.10
+conda activate chatglm
+# 克隆ChatGLM模型
+git clone https://huggingface.co/THUDM/chatglm2-6b</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">依赖安装与CLI客户端运行</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p>大模型项目通常有<code>requirements.txt</code>文件列出所有Python依赖。核心依赖包括：<code>torch</code>（PyTorch深度学习框架）、<code>transformers</code>（HuggingFace模型加载库）、<code>sentencepiece</code>（分词器）。安装时注意PyTorch版本要与CUDA版本匹配（CPU版不含GPU支持，速度慢但部署简单）。</p>
+<p>CLI客户端（<code>cli_demo.py</code>）是模型的命令行交互接口，让你在终端里直接和大模型对话。运行前可能需要修改代码中的模型路径指向你下载的位置。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 安装依赖
+pip install -r requirements.txt
+# 修改cli_demo.py中的模型路径
+# MODEL_PATH = "/path/to/chatglm2-6b"
+# 运行CLI对话
+python cli_demo.py</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">3</div><div class="kp-title">可视化界面运行（公网IP:80）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p>大模型通常自带Web UI（基于Gradio或Streamlit框架），提供浏览器交互界面。Gradio自动生成一个网页，你可以在浏览器中输入问题、看到模型回复。</p>
+<p>默认情况下，Gradio监听127.0.0.1（仅本机可访问），需要修改为0.0.0.0才能通过公网IP访问。端口也需要从默认的7860改为80（HTTP标准端口，方便用户访问）。同时要确保ECS安全组已开放80端口。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 修改web_demo.py中的启动参数
+demo.launch(server_name="0.0.0.0", server_port=80, share=False)
+# 浏览器访问
+http://你的ECS公网IP</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">4</div><div class="kp-title">API服务接口运行（本地8000端口POST调用）</div><div class="kp-tags"><span class="tag tag-good">良好</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p>API服务是将大模型封装成HTTP REST接口，其他应用程序可以通过发送POST请求来调用模型。这是大模型生产部署的标准方式。通常使用FastAPI或Flask框架将模型推理包装为API端点。</p>
+<p>API模式的优势：①任何编程语言都能调用（Python/Java/Go/JS都支持HTTP请求）、②可以加认证鉴权（API Key）、③可以加限流保护（防止过度调用）、④可以水平扩展（前面加Nginx负载均衡到多台GPU服务器）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 启动API服务（修改api.py中端口为8000）
+python api.py
+# 从其他机器调用API
+curl -X POST http://ECS公网IP:8000/chat \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"你好，请介绍Linux"}'
+# 确保安全组开放8000端口</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">5</div><div class="kp-title">GPU驱动下载安装（CentOS版）</div><div class="kp-tags"><span class="tag tag-good">良好</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p>GPU驱动是连接操作系统和NVIDIA显卡的底层软件。没有正确的驱动，操作系统无法识别和使用GPU。NVIDIA驱动分为：开源驱动nouveau（功能有限，需要禁用）、官方闭源驱动（功能完整）。</p>
+<p>安装步骤：①确认GPU型号（<code>lspci | grep -i nvidia</code>）②禁用nouveau驱动 ③安装依赖（kernel-devel/gcc）④从NVIDIA官网下载对应驱动 ⑤关闭图形界面执行安装。安装后<code>nvidia-smi</code>验证。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 查看GPU型号
+lspci | grep -i nvidia
+# 禁用nouveau
+echo "blacklist nouveau" >> /etc/modprobe.d/blacklist.conf
+# 安装驱动
+chmod +x NVIDIA-Linux-x86_64-*.run
+./NVIDIA-Linux-x86_64-*.run
+# 验证
+nvidia-smi</code></pre>
+</div>
+</div>
+
+<!-- 方案B 博客系统 -->
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">6</div><div class="kp-title">[方案B] 博客系统：JDK/MySQL/Tomcat/Nginx部署</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>博客系统全链路部署</strong>是经典的Java Web项目上线流程，涵盖了运维工程师日常80%的工作内容。</p>
+<p><strong>JDK</strong>：Java运行环境，是所有Java程序的运行时。<code>java -version</code>验证安装。环境变量JAVA_HOME配置很重要，很多中间件（Tomcat/Hadoop/Spark等）都依赖这个变量找到Java路径。</p>
+<p><strong>MySQL</strong>：关系型数据库，存储博客文章、用户、评论等数据。部署步骤：添加MySQL官方仓库→dnf安装→获取初始临时密码→安全配置（改密码/删匿名用户/禁远程root）。</p>
+<p><strong>Tomcat</strong>：Java Web应用服务器（Servlet容器），运行.war包。部署：上传解压到/opt/tomcat → 配置环境变量 → 通过startup.sh启动 → 确认8080端口监听。</p>
+<p><strong>Nginx</strong>：高性能Web服务器和反向代理。它接收用户请求（80端口），转发给后端的Tomcat（8080端口）。这样用户不需要记住8080端口号，而且Nginx可以处理静态文件（图片/CSS/JS）比Tomcat快得多。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># JDK
+dnf install -y java-11-openjdk-devel
+echo 'export JAVA_HOME=/usr/lib/jvm/java-11' >> /etc/profile
+# MySQL
+dnf install -y mysql-server
+systemctl start mysqld
+grep 'temporary password' /var/log/mysqld.log  # 获取初始密码
+mysql_secure_installation  # 安全配置（改密码等）
+# Tomcat
+tar -xzf apache-tomcat-9.tar.gz -C /opt/
+/opt/tomcat/bin/startup.sh
+# Nginx反向代理
+# /etc/nginx/conf.d/blog.conf:
+# location / { proxy_pass http://127.0.0.1:8080; }</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第3章 大模型/博客系统部署</h5>
+<div class="ex-section"><h6>一、选择题</h6>
+<ol>
+<li>conda的主要作用是什么？<br>A. 编辑器 &nbsp; B. Python环境管理 &nbsp; C. 数据库管理 &nbsp; D. 版本控制</li>
+<li>Nginx在博客系统架构中的角色是？<br>A. 数据库 &nbsp; B. 反向代理+静态文件服务 &nbsp; C. 应用服务器 &nbsp; D. 缓存</li>
+</ol></div>
+<div class="ex-section"><h6>二、实操题</h6>
+<ol>
+<li>在ECS上安装conda并创建名为"chatglm"的Python 3.10环境。</li>
+<li>部署JDK11+MySQL8+Tomcat9+Nginx，完成博客系统上线。</li>
+</ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content"><h6>选择题：</h6>1.B 2.B<br><h6>实操题：</h6>1.<code>bash Anaconda3-*.sh → conda create -n chatglm python=3.10 → conda activate chatglm</code><br>2.按JDK→MySQL→Tomcat→Nginx顺序部署，最后配置Nginx反向代理到Tomcat 8080</div>
+</div>
+
+</div></div>
+
+<!-- ==================== 阶段一 Linux系统与网络运维 ==================== -->
+<div class="phase" id="p1">
+<h2>阶段一：Linux系统与网络运维</h2>
+<div class="meta">就业班 | 第1章 Linux高级 → 第2章 Linux核心系统服务 → 第3章 网络基础与进阶 → 第4章 Shell脚本开发 → 项目一</div>
+</div>
+
+<!-- ===== 第1章 Linux高级 ===== -->
+<div class="chapter" id="p1c1">
+<div class="ch-head"><div class="ch-num">1</div><h4>第1章 Linux高级 — 用户与系统核心命令</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">用户与组基本概念、用户组操作、用户操作</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Linux是多用户操作系统</strong>，一台服务器可以同时被多个用户登录使用。用户管理是运维安全的基础——每个应用、每个运维人员都应该有独立账号，严禁所有人共用root。</p>
+<p><strong>用户(UID)</strong>：Linux用数字UID标识用户（root=0，系统用户1-999，普通用户≥1000）。<code>/etc/passwd</code>存储用户信息。</p>
+<p><strong>组(GID)</strong>：用户属于一个主组(GID)和多个附加组。组的存在让权限管理更高效——把多个用户加到一个组，统一授权。<code>/etc/group</code>存储组信息。</p>
+<p><strong>核心命令</strong>：<code>useradd 用户名</code>创建用户（自动创建家目录/home/用户名、设置默认shell为/bin/bash、分配UID），<code>-m</code>强制创建家目录，<code>-s /sbin/nologin</code>创建不能登录的系统账号。创建用户后需<code>passwd 用户名</code>设置密码。<code>usermod -aG 组名 用户名</code>将用户加入附加组（<strong>必须加-a否则会覆盖原有组</strong>）。<code>userdel -r 用户名</code>删除用户及家目录。</p>
+<p><code>groupadd 组名</code>创建组，<code>groupdel 组名</code>删除组。<code>id 用户名</code>查看用户的UID/GID和所属组。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 创建应用专用账号（不能登录）
+useradd -s /sbin/nologin -M nginx
+# 创建运维人员账号并加入wheel组（sudo权限组）
+useradd -m devops
+passwd devops
+usermod -aG wheel devops
+# 验证
+id devops
+# 查看所有用户
+cat /etc/passwd</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">权限管理、umask默认权限、特殊权限</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Linux权限模型</strong>：每个文件/目录有三组权限——所有者(u)、所属组(g)、其他人(o)，每组有读(r=4)、写(w=2)、执行(x=1)三种权限。<code>chmod 755 file</code>数字法：所有者rwx(7)、组r-x(5)、其他人r-x(5)。<code>chmod u+x file</code>符号法：给所有者加执行权限。</p>
+<p><strong>umask</strong>：定义新建文件/目录的默认权限。默认值022，新建文件权限=666-022=644（rw-r--r--），新建目录权限=777-022=755（rwxr-xr-x）。临时修改：<code>umask 027</code>，永久修改：写入<code>/etc/profile</code>或<code>~/.bashrc</code>。</p>
+<p><strong>特殊权限</strong>：<strong>SUID(冒险位S)</strong>：如果可执行文件设置了SUID，任何用户执行它时都以文件所有者的身份运行（如<code>/usr/bin/passwd</code>，普通用户修改密码需要写<code>/etc/shadow</code>，但该文件仅root可写——passwd命令设置了SUID，执行时临时获得root权限）。<strong>SGID</strong>：类似SUID但是以组身份运行。<strong>粘滞位(Sticky bit, T)</strong>：只有目录有意义（如<code>/tmp</code>），设置后用户只能删除自己的文件，不能删除别人的文件。<code>ls -l /tmp</code>看到<code>drwxrwxrwt</code>最后的t就是粘滞位。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 设置权限
+chmod 755 /opt/app/bin/start.sh
+chmod 600 /opt/app/conf/secret.key  # 仅所有者可读写
+# 设置SUID
+chmod u+s /usr/local/bin/mytool
+# 粘滞位（共享目录）
+chmod +t /data/shared
+# 递归修改所有者
+chown -R appuser:appgroup /opt/app/</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">3</div><div class="kp-title">ACL权限控制</div><div class="kp-tags"><span class="tag tag-good">良好</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>ACL（Access Control List）</strong>是传统rwx权限模型的扩展。传统模型只能为一个所有者+一个组+其他人设权限，ACL允许为任意多个用户/组设置独立权限。</p>
+<p><strong>为什么需要ACL？</strong> 例如：<code>/data/project</code>目录，开发者组需要读写、测试组只需读、项目经理需要读、运维需要完全控制——传统rwx模型只能设一个组权限，无法满足。ACL完美解决这个问题。</p>
+<p><code>setfacl -m u:用户名:权限 文件</code>设置用户ACL，<code>setfacl -m g:组名:权限 文件</code>设置组ACL。<code>getfacl 文件</code>查看ACL。ACL权限在<code>ls -l</code>中显示为<code>+</code>号（如<code>-rwxrwxr-x+</code>）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 给devops用户读权限
+setfacl -m u:devops:r /data/project/config.ini
+# 给dev组读写权限
+setfacl -m g:dev:rw /data/project/
+# 查看ACL
+getfacl /data/project/
+# 删除某条ACL
+setfacl -x u:devops /data/project/
+# 删除所有ACL
+setfacl -b /data/project/</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">4</div><div class="kp-title">定时任务、防火墙、网络服务、系统状态监控</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>crontab进阶</strong>：除了<code>crontab -e</code>编辑个人定时任务外，还有<code>/etc/crontab</code>系统级定时任务（可以指定以哪个用户身份执行）。<code>/etc/cron.d/</code>目录存放额外的cron配置。cron日志在<code>/var/log/cron</code>。</p>
+<p><strong>NetworkManager与nmcli</strong>：NetworkManager是现代Linux的网络配置管理服务，<code>nmcli</code>是其命令行工具。<code>nmcli connection show</code>查看网络连接，<code>nmcli device status</code>查看网卡状态，<code>nmcli connection modify ens33 ipv4.addresses 192.168.1.100/24</code>配置静态IP。</p>
+<p><strong>系统状态监控</strong>：<code>top</code>实时查看进程和系统负载（按1看每核CPU、按M按内存排序、按P按CPU排序），<code>htop</code>是top的增强版（彩色、鼠标操作、进程树）。<code>df -h</code>查看磁盘空间，<code>free -h</code>查看内存使用。</p>
+<p><strong>进程后台运行</strong>：<code>nohup 命令 &</code>让命令在后台运行且不受终端关闭影响（输出默认写到nohup.out）。<code>screen</code>/<code>tmux</code>是更强大的终端复用工具——可以创建多个窗口、断开后重新连接、多人共享同一终端（非常适合远程协作排错）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 静态IP配置
+nmcli connection modify ens33 ipv4.method manual \
+  ipv4.addresses 192.168.1.100/24 \
+  ipv4.gateway 192.168.1.1 \
+  ipv4.dns 8.8.8.8
+nmcli connection up ens33
+# 后台启动Java应用
+nohup java -jar app.jar > app.log 2>&1 &
+# screen基本操作
+screen -S mysession    # 创建新会话
+# Ctrl+A,D             # 暂时断开
+screen -r mysession    # 重新连接</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 阶段一第1章 Linux高级</h5>
+<div class="ex-section"><h6>一、选择题</h6>
+<ol>
+<li>usermod -aG docker devops 中 -a 参数的作用是？<br>A. 添加用户 &nbsp; B. 追加到附加组（不覆盖原有组）&nbsp; C. 删除用户 &nbsp; D. 修改密码</li>
+<li>/tmp目录的粘滞位(t)的作用是？<br>A. 任何人可读写 &nbsp; B. 用户只能删除自己的文件 &nbsp; C. 提高性能 &nbsp; D. 加密文件</li>
+</ol></div>
+<div class="ex-section"><h6>二、实操题</h6>
+<ol>
+<li>创建devops用户，加入wheel组，设置密码。</li>
+<li>为/data/shared目录设置粘滞位，使得多用户可以共享文件但互不删除。</li>
+<li>使用ACL给testuser用户授予/data/project目录的读写权限。</li>
+</ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content"><h6>选择题：</h6>1.B 2.B<br><h6>实操题：</h6>1.<code>useradd -m devops && passwd devops && usermod -aG wheel devops</code><br>2.<code>chmod +t /data/shared</code><br>3.<code>setfacl -m u:testuser:rw /data/project</code></div>
+</div>
+
+</div></div>
+
+<!-- ===== 第2章 Linux核心系统服务 ===== -->
+<div class="chapter" id="p1c2">
+<div class="ch-head"><div class="ch-num">2</div><h4>第2章 Linux核心系统服务</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">SSH服务与DNS服务</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>SSH（Secure Shell）</strong>是运维的"瑞士军刀"。它本质是加密的远程登录协议，替代了明文的telnet。SSH工作原理：客户端发起连接→服务端发送公钥→双方协商加密算法→建立加密通道→验证用户身份（密码或密钥对）→建立会话。</p>
+<p><strong>SSH密钥对登录</strong>比密码登录更安全：①私钥在本地，密码从不经过网络传输；②私钥可以加密码短语保护；③一台服务器的authorized_keys可以放多个公钥（多人管理）。配置步骤：<code>ssh-keygen -t rsa</code>生成密钥对→<code>ssh-copy-id user@host</code>把公钥复制到远程服务器→直接<code>ssh user@host</code>免密登录。</p>
+<p><strong>DNS（Domain Name System）</strong>是互联网的"电话簿"，把域名（www.baidu.com）翻译成IP地址（110.242.68.66）。DNS是分层结构：根域名服务器(.)→顶级域名(.com)→权威域名服务器(baidu.com)→具体记录。运维需要掌握：A记录（域名→IPv4）、AAAA（域名→IPv6）、CNAME（别名，如www→主域名）、MX（邮件服务器）、NS（域名服务器）。</p>
+<p><strong>BIND</strong>是最流行的开源DNS服务器软件。配置内外网分离解析：内网用户查询返回内网IP（速度快不走公网），外网用户查询返回公网IP。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 生成SSH密钥对
+ssh-keygen -t rsa -b 4096 -C "devops@company.com"
+# 免密登录配置
+ssh-copy-id root@192.168.1.100
+# SCP免密传输
+scp -r /local/dir root@192.168.1.100:/remote/dir
+# BIND安装
+dnf install -y bind bind-utils
+# 测试DNS解析
+nslookup www.baidu.com
+dig @8.8.8.8 www.example.com</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">数据同步与FTP服务</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Rsync</strong>是Linux下最强大的文件同步工具。它的核心优势是<strong>增量传输</strong>——只传输变化的文件部分，不是整个文件重传。这对运维非常重要：备份几百G的数据，如果每次都全量拷贝会浪费大量带宽和时间。</p>
+<p>Rsync常用选项：<code>-a</code>归档模式（保留所有属性），<code>-v</code>详细输出，<code>-z</code>传输时压缩，<code>--delete</code>删除目标端多余文件（保持完全一致），<code>--exclude</code>排除指定文件。结合cron可以设置定时同步。</p>
+<p><strong>Inotify</strong>是Linux内核提供的文件系统事件监控机制。Inotify+Rsync可以实现<strong>实时同步</strong>——当源目录有文件变化时，自动触发Rsync同步。相比定时同步（可能延迟几分钟），实时同步几乎是秒级。</p>
+<p><strong>FTP（File Transfer Protocol）</strong>：最古老的文件传输协议。主动模式（PORT）：服务器主动连接客户端的数据端口（客户端防火墙可能拦截）。被动模式（PASV）：客户端连接服务器的数据端口（更防火墙友好，推荐）。<strong>vsftpd</strong>是最安全快速的Linux FTP服务器。注意FTP是明文协议，生产环境建议用SFTP（基于SSH加密）或FTPS（FTP over TLS）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># Rsync定时同步
+rsync -avz /data/source/ /data/backup/
+# Rsync远程同步
+rsync -avz -e ssh /local/ user@remote:/backup/
+# 定时同步到crontab
+0 */4 * * * rsync -avz --delete /data/ backup@backup-server::data
+# vsftpd安装
+dnf install -y vsftpd
+systemctl start vsftpd && systemctl enable vsftpd</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">3</div><div class="kp-title">NFS与NTP时间同步服务</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>NFS（Network File System）</strong>：让多台服务器共享同一个目录，像访问本地文件一样访问远程文件。典型场景：多台Web服务器共享上传目录（用户上传的图片存在NFS上，所有Web服务器都能读取）。</p>
+<p><strong>Chrony</strong>是NTP（Network Time Protocol）的现代实现，比传统ntpd更快更精准。为什么时间同步对运维这么重要？①分布式系统中服务器时间不一致会导致日志排查困难（A服务器日志说"10:05出错"，B服务器日志说"10:03出问题"，但你不知道谁的时间不对）；②数据库主从复制依赖时间戳；③安全认证协议（如Kerberos）要求时间差不超过5分钟。Chrony配置很简单：<code>/etc/chrony.conf</code>中指定上游时间服务器，如<code>server ntp.aliyun.com iburst</code>。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># NFS服务端
+dnf install -y nfs-utils
+echo "/data/shared 192.168.1.0/24(rw,sync,no_root_squash)" >> /etc/exports
+systemctl start nfs-server
+# NFS客户端
+mount -t nfs 192.168.1.10:/data/shared /mnt/shared
+# 写入/etc/fstab实现开机自动挂载
+# Chrony时间同步
+dnf install -y chrony
+systemctl start chronyd && systemctl enable chronyd
+chronyc sources -v  # 查看时间源状态</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">4</div><div class="kp-title">日志管理与深层防火墙</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>系统日志</strong>是故障排查的第一手资料。<code>/var/log/messages</code>（通用系统日志）、<code>/var/log/secure</code>（认证安全日志，SSH登录记录）、<code>/var/log/cron</code>（定时任务日志）、<code>/var/log/nginx/</code>（Web服务日志）。<strong>RSYSLOG</strong>是Linux默认的日志服务，支持日志远程转发（多台服务器日志集中到一台日志服务器）。</p>
+<p><strong>logrotate日志轮替</strong>：防止日志文件无限增长占满磁盘。按天/周/月轮替，保留最近N份，旧日志自动压缩删除。<code>/etc/logrotate.conf</code>是全局配置，<code>/etc/logrotate.d/</code>下是各服务的单独配置。</p>
+<p><strong>SELinux</strong>（Security-Enhanced Linux）是NSA开发的强制访问控制系统。它在传统权限之上加了一层安全上下文（context），即使文件权限是777，SELinux仍然可以阻止访问。很多运维初学者遇到"权限正确但访问被拒"的问题就是SELinux导致的。生产环境建议保持enforcing模式（不要直接关掉），而是学习如何配置正确的上下文。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 查看实时认证日志（监控SSH登录）
+tail -f /var/log/secure
+# RSYSLOG远程转发配置
+# /etc/rsyslog.conf: *.* @log-server:514
+# logrotate 配置示例（/etc/logrotate.d/myapp）
+/var/log/myapp/*.log {
+    daily; rotate 30; compress; missingok; notifempty
+}
+# SELinux查看和临时关闭
+getenforce
+setenforce 0  # 临时关闭（重启恢复）
+# 永久修改需编辑 /etc/selinux/config</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">5</div><div class="kp-title">磁盘管理：MBR/GPT分区、LVM逻辑卷</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>磁盘结构</strong>：物理硬盘→分区→格式化（创建文件系统）→挂载到目录→才能使用。</p>
+<p><strong>MBR vs GPT</strong>：MBR（Master Boot Record）传统分区表，最大支持2TB磁盘和4个主分区（需扩展分区来解决4主分区限制）。GPT（GUID Partition Table）新一代分区表，支持超过2TB磁盘和128个分区，使用UEFI启动。现在新装系统都推荐GPT。</p>
+<p><strong>文件系统</strong>：ext4（Linux传统，稳定成熟）、XFS（RHEL/CentOS默认，支持更大文件和更好并发性能）、Btrfs（新一代，支持快照和压缩）。</p>
+<p><strong>LVM（Logical Volume Manager）</strong>：在物理磁盘和文件系统之间加了一层抽象。核心概念：PV（物理卷，实际的磁盘分区）→ VG（卷组，多个PV组成的存储池）→ LV（逻辑卷，从VG中划分出来的虚拟分区）。LVM最大的好处是<strong>动态扩容</strong>——数据库的LV空间不够了，加一块硬盘做成PV加入VG，然后在线扩展LV，不需要重启服务！没有LVM的话，磁盘扩容需要停机、备份数据、重新分区、恢复数据，影响业务。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 查看磁盘
+lsblk && fdisk -l
+# 创建LVM（完整流程）
+pvcreate /dev/sdb              # 创建PV
+vgcreate vg_data /dev/sdb      # 创建VG
+lvcreate -L 100G -n lv_mysql vg_data  # 创建LV
+mkfs.xfs /dev/vg_data/lv_mysql        # 格式化
+mount /dev/vg_data/lv_mysql /data/mysql  # 挂载
+# 在线扩容（LV还有剩余空间时）
+lvextend -L +50G /dev/vg_data/lv_mysql
+xfs_growfs /data/mysql</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 阶段一第2章 Linux核心系统服务</h5>
+<div class="ex-section"><h6>一、选择题</h6>
+<ol>
+<li>SSH密钥对登录比密码登录更安全的原因是？<br>A. 更快 &nbsp; B. 私钥从不经过网络传输 &nbsp; C. 不需要密码 &nbsp; D. 以上都是</li>
+<li>LVM相比传统分区的最大优势是？<br>A. 更快 &nbsp; B. 支持在线动态扩容 &nbsp; C. 更省空间 &nbsp; D. 自动备份</li>
+</ol></div>
+<div class="ex-section"><h6>二、实操题</h6>
+<ol>
+<li>配置SSH密钥对登录，实现serverA免密登录serverB。</li>
+<li>搭建NFS服务，将serverA的/data/shared目录共享给serverB挂载。</li>
+<li>在新磁盘上创建LVM：PV→VG→LV→格式化XFS→挂载到/data/mysql。</li>
+</ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content"><h6>选择题：</h6>1.B 2.B<br><h6>实操题参考：</h6>见上文对应代码块。</div>
+</div>
+
+</div></div>
+
+<!-- ===== 第3章 网络基础与进阶 ===== -->
+<div class="chapter" id="p1c3">
+<div class="ch-head"><div class="ch-num">3</div><h4>第3章 网络基础与进阶</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">网络设备与TCP/IP模型</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>L2交换机</strong>：工作在数据链路层，基于MAC地址转发。同一VLAN内的设备通过交换机通信。L2交换机能学习MAC地址和端口的对应关系（MAC地址表），实现精确转发而非广播。</p>
+<p><strong>L3交换机</strong>：具有路由功能的交换机，既能做VLAN间路由，又能做二层转发。比"路由器+交换机"组合更高效（路由转发在硬件层面完成）。</p>
+<p><strong>防火墙</strong>：控制网络流量的安全设备。下一代防火墙（NGFW）不仅根据IP/端口过滤，还能识别应用（如能区分"HTTP流量"和"微信流量"）。负载均衡器：将流量分发到多台后端服务器，避免单点过载。</p>
+<p><strong>TCP/IP四层模型</strong>（自下而上）：<strong>网络接口层</strong>（物理介质/网卡驱动/MAC地址）→ <strong>网络层</strong>（IP协议/路由器/ICMP）→ <strong>传输层</strong>（TCP可靠传输/UDP快速传输）→ <strong>应用层</strong>（HTTP/SSH/DNS等具体应用协议）。理解分层模型是网络排错的基础：ping通说明网络层以下正常；telnet IP port通说明传输层正常；curl通说明应用层正常。</p>
+<p><strong>IP地址与子网掩码</strong>：IP地址分为网络部分和主机部分，子网掩码标明分界线。如192.168.1.100/24，网络部分是192.168.1，主机部分是100，/24表示子网掩码255.255.255.0（前24位是网络位）。同一个网络的设备可以直接通信，不同网络的设备需要路由器转发。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 查看本机IP和子网掩码
+ip a
+# 查看路由表
+ip route
+# 分层排错
+ping 8.8.8.8                    # 网络层
+telnet 192.168.1.100 3306      # 传输层（MySQL端口）
+curl http://192.168.1.100:8080 # 应用层</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">交换机与VLAN、在线实验平台（eNSP/EVPN）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>VLAN（Virtual LAN）</strong>：在一台物理交换机上划分多个逻辑隔离的广播域。没有VLAN时，整个交换机的所有端口在同一个广播域，任意主机发广播包所有主机都收到。划分VLAN后，VLAN10的主机和VLAN20的主机在逻辑上是隔离的，不能直接通信。</p>
+<p><strong>为什么要用VLAN？</strong> ①安全隔离（财务部门VLAN10不能直接访问研发部门VLAN20）；②减少广播风暴（广播包被限制在VLAN内）；③灵活的管理（物理位置分散的同事可以属于同一个VLAN）。</p>
+<p><strong>eNSP</strong>（华为）和<strong>EVE-NG</strong>是网络模拟器，让你在电脑上搭建虚拟网络拓扑，不用买真实的交换机路由器就能学习VLAN、路由、NAT等网络技术。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># eNSP中配置VLAN（华为命令）
+system-view
+vlan 10
+ port GigabitEthernet 0/0/1 to 0/0/5
+vlan 20
+ port GigabitEthernet 0/0/6 to 0/0/10</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">3</div><div class="kp-title">路由基础、VLAN间路由、NAT、ACL</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>路由</strong>：决定数据包从源到目的地的路径。路由器根据路由表（目标网络→下一跳/出接口）转发数据。<strong>静态路由</strong>：手动配置，简单可靠但无法自动适应拓扑变化。<strong>动态路由</strong>（OSPF/BGP等）：路由器之间自动交换路由信息，适合大型复杂网络。</p>
+<p><strong>VLAN间路由</strong>：不同VLAN的主机默认不能通信，需要通过L3设备（路由器或L3交换机）做VLAN间路由。有两种方式：①单臂路由（一个物理接口划分多个子接口，每个子接口对应一个VLAN的网关）②L3交换机SVI（Switch Virtual Interface，给每个VLAN配置一个IP作为该VLAN的网关）。</p>
+<p><strong>NAT（Network Address Translation）</strong>：网络地址转换，解决IPv4地址不够用的问题。内网使用私有IP（192.168.x.x/10.x.x.x/172.16-31.x.x），通过NAT路由器转换成公网IP访问互联网。SNAT（源地址转换）让内网上网；DNAT（目标地址转换）让外网访问内网服务器（端口映射）。</p>
+<p><strong>ACL（Access Control List）</strong>：访问控制列表，在路由器/防火墙上过滤流量。规则按顺序匹配，命中即执行（放行或拒绝），最后默认拒绝。ACL可以基于源IP、目标IP、协议、端口组合条件。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># Linux 添加静态路由
+ip route add 10.0.0.0/8 via 192.168.1.254
+# Linux 实现SNAT（iptables）
+iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -j MASQUERADE
+# 端口映射（DNAT）
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to 192.168.1.10:8080</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">4</div><div class="kp-title">DHCP、Wireshark抓包分析、故障排查</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>DHCP（Dynamic Host Configuration Protocol）</strong>：自动分配IP地址。客户端发广播（DHCP Discover）→服务器响应（DHCP Offer）→客户端请求（DHCP Request）→服务器确认（DHCP ACK）。运维需要理解DHCP是因为：①云上ECS默认DHCP获取IP，②排查"为什么服务器没有IP"。</p>
+<p><strong>Wireshark抓包分析</strong>：运维最重要的网络排错工具。它捕获经过网卡的所有数据包，让你看到网络中到底发生了什么。<strong>过滤语法</strong>最常用：<code>tcp.port==80</code>只看HTTP流量，<code>ip.addr==192.168.1.100</code>只看某IP，<code>http.request.method==GET</code>只看HTTP GET请求。通过"Follow TCP Stream"可以还原完整的TCP会话。典型场景：用户说"网站打不开"，抓包发现TCP三次握手失败→检查防火墙；抓包发现HTTP返回500→检查应用日志。</p>
+<p><strong>故障排查方法</strong>：<code>ping</code>测试连通性（网络层）、<code>traceroute</code>追踪路径（看数据包经过哪些路由器）、<code>nslookup/dig</code>排查DNS问题、<code>telnet IP port</code>测试端口是否开放。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 抓取80端口流量并保存
+tcpdump -i eth0 port 80 -w capture.pcap
+# Wireshark常用过滤
+tcp.port == 3306               # MySQL流量
+http.response.code >= 500      # HTTP 5xx错误
+ip.addr == 192.168.1.100       # 某IP的所有流量
+# 追踪路由
+traceroute 8.8.8.8
+# 测试端口
+telnet 192.168.1.100 3306</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 阶段一第3章 网络基础与进阶</h5>
+<div class="ex-section"><h6>一、选择题</h6>
+<ol>
+<li>VLAN的作用是？<br>A. 提高网速 &nbsp; B. 逻辑隔离广播域 &nbsp; C. 加密数据 &nbsp; D. 自动分配IP</li>
+<li>SNAT的主要用途是？<br>A. 端口映射 &nbsp; B. 让内网设备访问互联网 &nbsp; C. 防火墙过滤 &nbsp; D. 负载均衡</li>
+</ol></div>
+<div class="ex-section"><h6>二、实操题</h6>
+<ol>
+<li>使用Wireshark抓取一次完整的HTTP请求-响应过程，识别TCP三次握手和HTTP请求头。</li>
+<li>在eNSP中搭建一个VLAN隔离+单臂路由+NAT上网的拓扑。</li>
+</ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content"><h6>选择题：</h6>1.B 2.B<br><h6>实操题：</h6>1.打开Wireshark→选网卡→过滤http→浏览器访问网站→停止抓包→Follow TCP Stream查看完整会话<br>2.eNSP拖入交换机/路由器/PC→配置VLAN→配置子接口→配置NAT→测试PC ping通外网</div>
+</div>
+
+</div></div>
+
+<!-- ===== 第4章 Shell脚本开发 ===== -->
+<div class="chapter" id="p1c4">
+<div class="ch-head"><div class="ch-num">4</div><h4>第4章 Shell脚本开发</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">Shell基础语法：变量、环境变量、引号、特殊变量、运算符</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Shell脚本</strong>是运维自动化的核心武器。它能将一系列命令组合起来自动执行，替代重复手工操作。一个50行的Shell脚本可能替代每天2小时的手工运维工作。</p>
+<p><strong>变量</strong>：<code>name="hello"</code>定义（等号两边不能有空格！），<code>$name</code>或<code>${name}</code>引用（花括号用于明确变量边界，如<code>${name}_suffix</code>）。<strong>环境变量</strong>：<code>export VAR=value</code>使变量对子进程可见。<code>env</code>查看所有环境变量。</p>
+<p><strong>单引号vs双引号</strong>：双引号内变量会展开（<code>echo "$name"</code>输出hello），单引号内一切原样输出（<code>echo '$name'</code>输出$name）。反引号或<code>$()</code>执行命令并将结果赋值：<code>today=$(date +%Y%m%d)</code>。</p>
+<p><strong>特殊内置变量</strong>：<code>$0</code>脚本名、<code>$1-$9</code>第1-9个参数、<code>$#</code>参数个数、<code>$*</code>所有参数（作为一个字符串）、<code>$@</code>所有参数（作为独立字符串）、<code>$?</code>上一条命令的退出码（0成功/非0失败）、<code>$$</code>当前进程PID。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>#!/bin/bash
+# 变量定义和使用
+app_name="myapp"
+version="1.0.0"
+echo "Deploying ${app_name} v${version}"
+# 命令结果赋值
+current_time=$(date '+%Y-%m-%d %H:%M:%S')
+echo "Current time: $current_time"
+# 参数使用
+echo "Script: $0, Arg1: $1, Arg2: $2, Total: $#"</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">Shell小工具（cut/sort/uniq/tee/diff/paste/tr）与判断语法</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>cut</strong>：按列截取文本。<code>cut -d':' -f1 /etc/passwd</code>（以冒号为分隔符取第1列，得到所有用户名）。<strong>sort</strong>：排序。<code>-n</code>按数值排序，<code>-r</code>倒序，<code>-k2</code>按第2列排序。<strong>uniq</strong>：去重（必须先排序！）。<code>-c</code>统计出现次数。</p>
+<p><strong>tee</strong>：同时输出到屏幕和文件（像T型水管接头）。<strong>diff</strong>：比较两个文件/目录差异。<strong>tr</strong>：字符转换/删除，如<code>tr 'a-z' 'A-Z'</code>转大写。</p>
+<p><strong>if判断</strong>：<code>if [ 条件 ]; then ... elif [ 条件 ]; then ... else ... fi</code>。数值比较：<code>-eq</code>等于、<code>-ne</code>不等、<code>-gt</code>大于、<code>-lt</code>小于。字符串比较：<code>=</code>或<code>==</code>等于、<code>!=</code>不等、<code>-z</code>为空。文件判断：<code>-f</code>是普通文件、<code>-d</code>是目录、<code>-e</code>存在、<code>-x</code>可执行。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 统计Nginx访问日志中访问次数最多的10个IP
+cut -d' ' -f1 access.log | sort | uniq -c | sort -rn | head -10
+# if判断 - 检查nginx是否运行
+if systemctl is-active --quiet nginx; then
+    echo "Nginx is running"
+else
+    echo "Nginx is DOWN! Restarting..."
+    systemctl restart nginx
+fi</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">3</div><div class="kp-title">流程结构：if/case/while/for</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>case</strong>：多分支选择，比多个if-elif更清晰。<code>case $var in 模式1) 命令;; 模式2) 命令;; *) 默认;; esac</code>。典型场景：服务管理脚本（start/stop/restart/status四个分支）。</p>
+<p><strong>for循环</strong>：遍历列表。<code>for i in {1..10}; do echo $i; done</code>遍历1到10。<code>for file in *.log; do gzip $file; done</code>压缩所有log文件。<strong>while循环</strong>：条件为真时持续执行。<code>while read line; do echo $line; done < file.txt</code>逐行读取文件。</p>
+<p><strong>嵌套循环+随机数</strong>：<code>$RANDOM</code>生成0-32767的随机数。可以用<code>echo $((RANDOM%100))</code>生成0-99的随机数。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># case - 服务管理脚本
+case "$1" in
+  start)  systemctl start nginx ;;
+  stop)   systemctl stop nginx ;;
+  restart) systemctl restart nginx ;;
+  status) systemctl status nginx ;;
+  *) echo "Usage: $0 {start|stop|restart|status}" ;;
+esac
+# for - 批量创建用户
+for user in dev1 dev2 dev3; do
+    useradd -m $user && echo "Created $user"
+done
+# while - 等待服务启动
+while ! curl -s http://localhost:8080/health > /dev/null; do
+    echo "Waiting for service..." && sleep 2
+done
+echo "Service is ready!"</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">4</div><div class="kp-title">Shell函数与正则表达式、expect工具</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>函数</strong>：复用代码块。<code>function 函数名() { ... }</code>，<code>return</code>返回值（0-255），调用时<code>函数名 参数1 参数2</code>。函数内通过<code>$1 $2</code>获取参数。</p>
+<p><strong>正则表达式</strong>：文本模式匹配的利器。<code>^</code>行首、<code>$</code>行尾、<code>.</code>任意字符、<code>*</code>前一个字符0次或多次、<code>+</code>1次或多次、<code>[]</code>字符集、<code>[^]</code>取反、<code>()</code>分组、<code>|</code>或。运维最常用正则：①提取IP：<code>grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'</code>②匹配日志中的ERROR。</p>
+<p><strong>expect</strong>：自动化交互工具。SSH、scp、FTP等需要交互输入密码的场景，expect可以模拟用户输入。核心命令：<code>spawn</code>启动进程、<code>expect</code>等待特定输出、<code>send</code>发送输入。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 自定义日志函数
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] [$1] $2" | tee -a /var/log/deploy.log
+}
+log "INFO" "Starting deployment..."
+# expect自动登录
+#!/usr/bin/expect
+spawn ssh root@192.168.1.100
+expect "password:" { send "mypassword\r" }
+interact</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">5</div><div class="kp-title">Shell三剑客：grep/sed/awk</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>grep</strong>：文本搜索。最常用选项：<code>-i</code>忽略大小写、<code>-v</code>反向匹配、<code>-r</code>递归搜索目录、<code>-n</code>显示行号、<code>-c</code>统计匹配行数、<code>-E</code>使用扩展正则、<code>-o</code>只输出匹配部分。组合使用：<code>grep -rn "ERROR" /var/log/</code>递归搜索所有日志中的ERROR并显示行号。</p>
+<p><strong>sed</strong>：流编辑器，逐行处理文本。最常用操作：<code>s/旧/新/g</code>替换、<code>d</code>删除行、<code>p</code>打印、<code>i</code>前插入、<code>a</code>后追加。<code>-i</code>直接修改文件（不要轻易用，先不加-i看效果），<code>-n</code>静默模式（只输出p指定的行）。地址范围：<code>sed -n '10,20p' file</code>输出10-20行，<code>sed '/start/,/end/d' file</code>删除start到end之间的行。</p>
+<p><strong>awk</strong>：最强大的文本处理工具，是完整的编程语言。基本结构：<code>awk '条件{动作}' file</code>。内置变量：<code>$1</code>第1列、<code>$NF</code>最后一列、<code>NR</code>行号、<code>FS</code>输入分隔符（默认空格）、<code>OFS</code>输出分隔符。awk支持条件判断、循环、数组、格式化输出，可以处理复杂的文本分析需求。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># grep：递归搜索配置文件中的IP
+grep -rn "192.168." /etc/
+# sed：修改nginx端口 80→8080
+sed -i 's/listen 80/listen 8080/g' /etc/nginx/nginx.conf
+# awk：统计nginx日志状态码分布
+awk '{print $9}' access.log | sort | uniq -c | sort -rn
+# awk：计算日志中所有响应时间的平均值
+awk '{sum+=$10; count++} END {print sum/count}' access.log</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">6</div><div class="kp-title">生产脚本实践：服务器初始化、一键部署、安全加固</div><div class="kp-tags"><span class="tag tag-good">良好</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p>生产脚本是运维核心产出物。一个好的运维脚本需要：①健壮（set -e遇到错误退出，set -u未定义变量报错）；②日志（每一步都记录时间戳和结果）；③幂等（多次执行结果一致，不会重复创建）；④可回滚（有备份和恢复机制）。</p>
+<p><strong>服务器初始化脚本</strong>：新服务器到手后的标准操作——关闭SELinux、配置yum源、安装基础工具（vim/wget/curl/net-tools等）、配置时间同步、配置SSH安全（改端口/禁root密码登录）、创建运维账号、配置防火墙规则。</p>
+<p><strong>一键部署脚本</strong>：将复杂的手工部署流程自动化。以"一键部署Nginx+PHP+MySQL"为例——安装软件包→修改配置文件→启动服务→设置开机自启→验证服务正常。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>#!/bin/bash
+set -e  # 任何命令失败则退出
+LOG="/var/log/init_$(date +%Y%m%d_%H%M%S).log"
+log() { echo "[$(date '+%H:%M:%S')] $1" | tee -a "$LOG"; }
+
+log "开始服务器初始化..."
+# 1. 安装基础工具
+dnf install -y vim wget curl net-tools htop &>> "$LOG"
+log "基础工具安装完成"
+# 2. 时间同步
+dnf install -y chrony
+systemctl start chronyd && systemctl enable chronyd
+log "时间同步配置完成"
+# 3. SSH安全加固
+sed -i 's/#Port 22/Port 2222/' /etc/ssh/sshd_config
+sed -i 's/PermitRootLogin yes/PermitRootLogin prohibit-password/' /etc/ssh/sshd_config
+systemctl restart sshd
+log "SSH安全加固完成（端口改为2222）"
+# 4. 防火墙
+firewall-cmd --add-port=2222/tcp --permanent
+firewall-cmd --reload
+log "服务器初始化完成！"</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 阶段一第4章 Shell脚本开发</h5>
+<div class="ex-section"><h6>一、选择题</h6>
+<ol>
+<li>Shell中获取上一条命令退出码的变量是？<br>A. $0 &nbsp; B. $# &nbsp; C. $? &nbsp; D. $$</li>
+<li>awk中表示当前行号的变量是？<br>A. NF &nbsp; B. NR &nbsp; C. FS &nbsp; D. RS</li>
+</ol></div>
+<div class="ex-section"><h6>二、实操题</h6>
+<ol>
+<li>编写脚本实现：检查nginx进程是否存在，不存在则自动启动并发送邮件告警。</li>
+<li>使用awk统计nginx access.log中每个状态码的出现次数和百分比。</li>
+<li>编写服务器初始化脚本，实现新服务器到手后的一键标准化配置。</li>
+</ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content"><h6>选择题：</h6>1.C 2.B<br><h6>实操题参考：</h6>见上文代码块。</div>
+</div>
+
+</div></div>
+
+<!-- 项目一 -->
+<div class="project" id="proj1">
+<h3>项目一：网络通信与Shell生产实践</h3>
+<div class="proj-grid">
+<div><strong>目标</strong>：独立规划中小型企业网络、编写健壮Shell脚本实现批量自动化运维</div>
+<div><strong>核心技能</strong>：VLAN隔离/NAT上网/ACL过滤/Wireshark排错/Shell三剑客/服务器初始化脚本</div>
+<div><strong>达标标准</strong>：完成三层网络拓扑搭建+服务器批量初始化脚本+日志异常监控脚本</div>
+<div><strong>产出物</strong>：网络拓扑设计方案、服务器初始化Shell脚本、服务监控告警脚本</div>
+</div>
+</div>
+
+<!-- ==================== 阶段二 Web服务运维 ==================== -->
+<div class="phase" id="p2">
+<h2>阶段二：Web服务运维</h2>
+<div class="meta">就业班 | 第1章 Nginx网站服务 → 第2章 MySQL数据库 → 第3章 NoSQL数据库 → 项目二</div>
+</div>
+
+<!-- ===== 第1章 Nginx网站服务 ===== -->
+<div class="chapter" id="p2c1">
+<div class="ch-head"><div class="ch-num">1</div><h4>第1章 Nginx网站服务</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">Nginx安装、基本配置、模块化结构</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Nginx</strong>是俄罗斯人Igor Sysoev开发的高性能Web服务器，现在是全球使用量最大的Web服务器（超过Apache）。它的核心优势是<strong>异步事件驱动</strong>架构——一个worker进程可以同时处理数千个并发连接（Apache是每个连接一个进程/线程，并发高时内存爆炸）。</p>
+<p><strong>为什么Nginx这么重要？</strong> 几乎所有互联网公司的Web层都用Nginx：作为静态资源服务器（图片/CSS/JS直接返回，速度快）、作为反向代理（转发动态请求到后端应用服务器如Tomcat/Node.js/Python）、作为负载均衡器（分发流量到多台后端服务器）、作为SSL终端（统一处理HTTPS加解密，减轻后端压力）。</p>
+<p><strong>模块化设计</strong>：Nginx核心很小，功能通过模块实现。<code>nginx -V</code>查看编译了哪些模块。核心模块（http_core处理HTTP请求）、标准模块（ngx_http_ssl_module处理HTTPS、ngx_http_proxy_module反向代理）、第三方模块（ngx_http_lua_module用Lua扩展Nginx）。</p>
+<p><strong>配置文件结构</strong>：<code>/etc/nginx/nginx.conf</code>主配置文件→<code>http{}</code>块里<code>include /etc/nginx/conf.d/*.conf</code>按站点拆分配置→每个server{}块定义一个虚拟主机（域名绑定）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 安装Nginx
+dnf install -y nginx
+# 查看版本和模块
+nginx -V 2>&1 | tr ' ' '\n' | grep module
+# 配置文件语法检查（修改配置后必做！）
+nginx -t
+# 启动/重载
+systemctl start nginx
+nginx -s reload   # 优雅重载（不中断现有连接）</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">虚拟主机、root与alias、location规则</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>虚拟主机</strong>：一台物理服务器上运行多个网站（通过不同域名区分）。原理：HTTP请求头中有<code>Host: www.example.com</code>，Nginx根据Host头匹配对应的server块。</p>
+<p><strong>root vs alias</strong>（高频面试题）：<code>root</code>是把location路径追加到root路径后面，<code>alias</code>是替换。例如<code>location /app/ { root /var/www; }</code>意味着访问/app/index.html→实际文件/var/www/app/index.html。而<code>location /app/ { alias /var/www/myapp/; }</code>意味着访问/app/index.html→实际文件/var/www/myapp/index.html（location的/app被alias替换了）。</p>
+<p><strong>location匹配优先级</strong>（从高到低）：①<code>=</code>精确匹配（如= /favicon.ico）②<code>^~</code>前缀匹配（匹配后不再检查正则）③<code>~</code>或<code>~*</code>正则匹配（~区分大小写，~*不区分）④普通前缀匹配（最长匹配优先）。理解优先级是配置Nginx的必修课。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 虚拟主机配置
+server {
+    listen 80;
+    server_name www.example.com;
+    root /var/www/example;
+}
+server {
+    listen 80;
+    server_name blog.example.com;
+    root /var/www/blog;
+}
+# location优先级示例
+location = /health { return 200 "OK"; }          # 最高优先级
+location ^~ /static/ { root /data; }              # 次高
+location ~ \.php$ { fastcgi_pass ...; }           # 正则
+location / { root /var/www; }                     # 兜底</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">3</div><div class="kp-title">反向代理与SSL证书部署</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>反向代理</strong>：客户端→Nginx（反向代理）→后端服务器。客户端只知道Nginx的地址，不知道后端服务器的存在。反向代理的好处：①安全（隐藏后端真实IP）、②负载均衡（一台Nginx后面接多台应用服务器）、③SSL卸载（Nginx处理HTTPS，后端用HTTP减轻加解密负担）、④缓存加速（Nginx缓存静态内容直接返回）。</p>
+<p><strong>proxy_pass</strong>配置反向代理核心指令。<code>proxy_set_header</code>转发客户端真实信息（Host头、真实IP X-Real-IP、代理链 X-Forwarded-For），否则后端只能看到Nginx的IP。</p>
+<p><strong>SSL/TLS证书</strong>：HTTPS的加密基础。证书类型：①DV（域名验证，免费Let's Encrypt，适合个人网站）②OV（组织验证，适合企业官网）③EV（扩展验证，地址栏显示绿色公司名，适合金融/电商）。<strong>Let's Encrypt + Certbot</strong>免费自动签发续期（90天有效，自动续期），是中小项目首选。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 反向代理配置
+location /api/ {
+    proxy_pass http://backend-cluster;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+}
+# Certbot免费SSL证书
+dnf install -y certbot python3-certbot-nginx
+certbot --nginx -d example.com -d www.example.com
+# 配置自动续期（crontab）
+0 3 * * * certbot renew --quiet</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">4</div><div class="kp-title">负载均衡算法、高可用Keepalived</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>upstream模块</strong>定义后端服务器组。负载均衡算法：①<strong>轮询（默认）</strong>：依次分配，适合后端服务器性能一致。②<strong>权重(weight)</strong>：性能好的服务器权重高，分配到更多请求。③<strong>IP哈希(ip_hash)</strong>：同一客户端IP始终分配到同一台后端（解决Session问题）。④<strong>最少连接(least_conn)</strong>：分配给当前连接数最少的服务器（适合长连接场景如WebSocket）。</p>
+<p><strong>健康检查</strong>：<code>max_fails=3 fail_timeout=30s</code>表示30秒内失败3次则标记为down，停用30秒后再试。主动健康检查（需安装nginx_upstream_check_module模块）。</p>
+<p><strong>Keepalived高可用</strong>：解决Nginx本身的单点故障。两台Nginx服务器（一主一备），共享一个虚拟IP（VIP）。主挂掉后，备机自动接管VIP。Keepalived通过VRRP协议（心跳检测）实现故障切换——主备之间持续发送心跳包，如果备机连续3个心跳周期没收到，就认为自己成了新的master。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 负载均衡配置
+upstream backend {
+    server 192.168.1.10:8080 weight=3;  # 权重3
+    server 192.168.1.11:8080 weight=1;
+    server 192.168.1.12:8080 backup;    # 备用
+}
+# Keepalived主配置（/etc/keepalived/keepalived.conf）
+vrrp_instance VI_1 {
+    state MASTER
+    interface eth0
+    virtual_router_id 51
+    priority 100          # 主100 备90
+    virtual_ipaddress { 192.168.1.200 }  # VIP
+}</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 阶段二第1章 Nginx网站服务</h5>
+<div class="ex-section"><h6>一、选择题</h6>
+<ol>
+<li>Nginx中root和alias的区别是？<br>A. 无区别 &nbsp; B. root追加路径，alias替换路径 &nbsp; C. root替换，alias追加 &nbsp; D. root用于PHP，alias用于静态文件</li>
+<li>Keepalived通过什么协议实现故障切换？<br>A. HTTP &nbsp; B. ICMP &nbsp; C. VRRP &nbsp; D. DNS</li>
+</ol></div>
+<div class="ex-section"><h6>二、实操题</h6>
+<ol>
+<li>配置Nginx虚拟主机：www.example.com和api.example.com分别指向不同目录。</li>
+<li>搭建Nginx反向代理，将所有/api/请求转发到后端Tomcat集群（3台8080端口）。</li>
+<li>申请免费SSL证书并为网站启用HTTPS，配置HTTP自动跳转HTTPS。</li>
+</ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content"><h6>选择题：</h6>1.B 2.C<br><h6>实操题参考：</h6>见上文配置示例。</div>
+</div>
+
+</div></div>
+
+<!-- ===== 第2章 MySQL数据库 ===== -->
+<div class="chapter" id="p2c2">
+<div class="ch-head"><div class="ch-num">2</div><h4>第2章 MySQL数据库</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">数据库概述、SQL分类、MySQL安装与连接</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>关系型数据库（RDBMS）</strong>：以表（行+列）的形式组织数据，通过SQL语言操作。MySQL是全球最流行的开源关系型数据库（被Oracle收购后还有MariaDB分支）。其他常见：PostgreSQL（功能最强开源）、Oracle（商业王者，金融/电信）、SQL Server（微软生态）。</p>
+<p><strong>SQL分类</strong>：①<strong>DDL</strong>数据定义（CREATE/ALTER/DROP表结构）②<strong>DML</strong>数据操作（SELECT/INSERT/UPDATE/DELETE数据）③<strong>DCL</strong>数据控制（GRANT/REVOKE权限）④<strong>TCL</strong>事务控制（COMMIT/ROLLBACK）。</p>
+<p><strong>MySQL 8.0安装</strong>：添加MySQL官方yum仓库→dnf install→获取root临时密码→安全初始化（改密码+删匿名用户+禁远程root）。MySQL配置文件<code>/etc/my.cnf</code>，数据目录<code>/var/lib/mysql</code>。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 安装MySQL 8.0
+dnf install -y https://dev.mysql.com/get/mysql80-community-release-el9-1.noarch.rpm
+dnf install -y mysql-server
+systemctl start mysqld
+sudo grep 'temporary password' /var/log/mysqld.log
+sudo mysql_secure_installation
+# 连接
+mysql -u root -p
+mysql -h 192.168.1.100 -u appuser -p mydb</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">数据库CRUD、WHERE条件、排序分页、聚合函数</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>CRUD</strong>是数据库最核心的四项操作：Create（INSERT）、Read（SELECT）、Update（UPDATE）、Delete（DELETE）。运维不需要像DBA那样精通SQL，但必须能写查询来分析数据、排查问题。</p>
+<p><strong>WHERE条件</strong>：<code>AND/OR/NOT</code>逻辑运算、<code>BETWEEN ... AND ...</code>区间、<code>IN (...)</code>多值匹配、<code>LIKE '%关键词%'</code>模糊匹配（%任意字符）。</p>
+<p><strong>ORDER BY 列名 ASC/DESC</strong>排序，<strong>LIMIT N OFFSET M</strong>分页（跳过M条取N条，等价于LIMIT M,N）。</p>
+<p><strong>聚合函数</strong>：<code>COUNT(*)</code>计数、<code>SUM()</code>求和、<code>AVG()</code>平均值、<code>MAX()</code>/<code>MIN()</code>最大最小。<strong>GROUP BY</strong>分组聚合（必须和聚合函数搭配），<strong>HAVING</strong>过滤分组后的结果（WHERE过滤行，HAVING过滤组）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>-- 创建表
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+-- 复杂查询：按部门统计平均薪资，只显示平均>5000的
+SELECT dept, COUNT(*) AS cnt, AVG(salary) AS avg_sal
+FROM employees
+WHERE status = 'active'
+GROUP BY dept
+HAVING avg_sal > 5000
+ORDER BY avg_sal DESC;</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">3</div><div class="kp-title">数据类型与约束：数值/字符串/日期时间/主键外键</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>数值类型</strong>：<code>INT</code>整数（4字节）、<code>BIGINT</code>大整数（8字节）、<code>DECIMAL(M,D)</code>精确小数（金融计算必须用这个，FLOAT/DOUBLE有精度问题）、<code>TINYINT</code>微小整数（1字节，常用于布尔值0/1）。</p>
+<p><strong>字符串类型</strong>：<code>CHAR(N)</code>定长（永远占用N字符，速度快但浪费空间）、<code>VARCHAR(N)</code>变长（实际占用内容长度+1-2字节，省空间但速度略慢）。<code>TEXT</code>大文本（最多64KB）。</p>
+<p><strong>日期类型</strong>：<code>DATE</code>日期、<code>TIME</code>时间、<code>DATETIME</code>日期时间、<code>TIMESTAMP</code>时间戳（自动更新，范围1970-2038）。</p>
+<p><strong>约束</strong>保证数据完整性：<code>PRIMARY KEY</code>主键（唯一+非空，建议用自增ID而非业务字段）、<code>FOREIGN KEY</code>外键（保证引用完整性）、<code>UNIQUE</code>唯一、<code>NOT NULL</code>非空、<code>DEFAULT</code>默认值。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>CREATE TABLE orders (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    amount DECIMAL(10,2) NOT NULL COMMENT '金额，精确到分',
+    status ENUM('pending','paid','shipped','cancelled') DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">4</div><div class="kp-title">多表关联：JOIN/子查询/事务与隔离级别</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>JOIN类型</strong>：①<strong>INNER JOIN</strong>（内连接，取两表匹配的行）②<strong>LEFT JOIN</strong>（左连接，左表全部行+右表匹配行，不匹配为NULL）③<strong>RIGHT JOIN</strong>（右连接）④<strong>CROSS JOIN</strong>（笛卡尔积，少用）。LEFT JOIN是运维最常用的——如"查询所有用户及其订单（没有订单的用户也要显示）"。</p>
+<p><strong>子查询</strong>：在SELECT/WHERE/FROM中嵌套查询。<code>WHERE id IN (SELECT user_id FROM orders WHERE amount > 1000)</code>。子查询可读性差时可以改用JOIN。</p>
+<p><strong>事务（Transaction）</strong>：一组SQL操作要么全部成功，要么全部回滚。ACID特性：原子性（不可分割）、一致性（数据完整）、隔离性（并发互不干扰）、持久性（提交后不丢失）。<code>START TRANSACTION → SQL操作 → COMMIT/ROLLBACK</code>。</p>
+<p><strong>隔离级别</strong>（从低到高）：READ UNCOMMITTED（脏读）→ READ COMMITTED（不可重复读，Oracle默认）→ REPEATABLE READ（幻读，MySQL默认）→ SERIALIZABLE（串行）。隔离越高并发越差。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>-- LEFT JOIN：所有用户及其订单
+SELECT u.name, o.amount, o.created_at
+FROM users u LEFT JOIN orders o ON u.id = o.user_id;
+-- 事务转账
+START TRANSACTION;
+UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+UPDATE accounts SET balance = balance + 100 WHERE id = 2;
+COMMIT;  -- 或 ROLLBACK 回滚</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">5</div><div class="kp-title">数据库设计：E-R模型、范式、用户权限管理</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>E-R模型</strong>：实体-关系图。实体（矩形）代表表，属性（椭圆）代表字段，关系（菱形）代表表之间的关联（1:1一对一/1:N一对多/M:N多对多）。画E-R图是数据库设计的第一步，帮助理清业务逻辑。</p>
+<p><strong>数据库范式</strong>：①1NF：列不可再分（每列都是原子值，不能存JSON数组当一列）。②2NF：非主键列完全依赖主键（不能部分依赖，联合主键时常见问题）。③3NF：非主键列只依赖主键（消除传递依赖）。实际工作中通常满足3NF即可，过度规范化会导致查询需要大量JOIN影响性能。</p>
+<p><strong>用户权限管理</strong>：<code>CREATE USER 'username'@'host' IDENTIFIED BY 'password';</code>创建用户。host可以是<code>'%'</code>（任意主机）、<code>'192.168.1.%'</code>（网段）、<code>'localhost'</code>（仅本机）。<code>GRANT SELECT,INSERT ON db.table TO 'username'@'host';</code>授予权限。<code>REVOKE</code>回收权限。遵循最小权限原则：只给必要的权限。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>-- 创建只读用户
+CREATE USER 'readonly'@'192.168.1.%' IDENTIFIED BY 'Str0ngP@ss';
+GRANT SELECT ON mydb.* TO 'readonly'@'192.168.1.%';
+-- 创建应用账号（仅CRUD）
+CREATE USER 'appuser'@'%' IDENTIFIED BY 'AppP@ss123';
+GRANT SELECT, INSERT, UPDATE, DELETE ON mydb.* TO 'appuser'@'%';
+FLUSH PRIVILEGES;</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 阶段二第2章 MySQL数据库</h5>
+<div class="ex-section"><h6>一、选择题</h6>
+<ol>
+<li>LEFT JOIN和INNER JOIN的区别是？<br>A. 无区别 &nbsp; B. LEFT JOIN左表所有行都保留 &nbsp; C. LEFT JOIN更快 &nbsp; D. LEFT JOIN用于外键</li>
+<li>MySQL默认事务隔离级别是？<br>A. READ UNCOMMITTED &nbsp; B. READ COMMITTED &nbsp; C. REPEATABLE READ &nbsp; D. SERIALIZABLE</li>
+</ol></div>
+<div class="ex-section"><h6>二、实操题</h6>
+<ol>
+<li>设计一个博客系统数据库：用户表、文章表、评论表，写出CREATE TABLE语句并标注关系。</li>
+<li>创建一个只读用户，仅允许从内网（192.168.1.%）查询mydb数据库。</li>
+</ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content"><h6>选择题：</h6>1.B 2.C<br><h6>实操题：</h6>1.users(id,name) - 1:N - posts(id,user_id,title,content) - 1:N - comments(id,post_id,user_id,content)。2.见上文GRANT示例。</div>
+</div>
+
+</div></div>
+
+<!-- ===== 第3章 NoSQL：Redis与MongoDB ===== -->
+<div class="chapter" id="p2c3">
+<div class="ch-head"><div class="ch-num">3</div><h4>第3章 NoSQL：Redis与MongoDB</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">NoSQL概念、分类与对比</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>NoSQL（Not Only SQL）</strong>不是"不用SQL"，而是"不只用关系型"。传统关系型数据库（MySQL/PostgreSQL）适合结构化数据+强一致性需求（如交易系统），但面对海量数据+高并发+灵活Schema的场景时力不从心。</p>
+<p><strong>NoSQL四大分类</strong>：①<strong>键值存储</strong>（Redis/Memcached）：极快，适合缓存/Session/计数器。②<strong>文档存储</strong>（MongoDB）：JSON文档，Schema灵活，适合日志/内容管理/用户画像。③<strong>列族存储</strong>（HBase/Cassandra）：按列存储，适合大数据分析/时序数据。④<strong>图数据库</strong>（Neo4j）：存节点和边，适合社交关系/推荐系统。</p>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">Redis安装、配置文件、客户端工具</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Redis</strong>（Remote Dictionary Server）是内存型键值数据库，所有数据存在内存中（也支持持久化到磁盘）。单机QPS可达10万+，远高于MySQL。核心数据结构：String、Hash、List、Set、Sorted Set。</p>
+<p><strong>为什么Redis快？</strong> ①纯内存操作（磁盘数据库需要寻道和旋转延迟）；②单线程模型（避免多线程上下文切换和锁竞争，Redis 6.0后引入了多线程网络IO）；③高效数据结构（SDS简单动态字符串/SkipList跳表等专门优化的数据结构）。</p>
+<p><strong>redis-cli</strong>是官方命令行客户端。<code>redis-cli -h 主机 -p 端口 -a 密码</code>连接。键名建议用冒号分隔，如<code>user:1001:profile</code>。</p>
+<p><strong>持久化</strong>：①<strong>RDB</strong>（快照）：每隔一段时间把内存数据快照保存到磁盘dump.rdb，恢复快但有数据丢失窗口。②<strong>AOF</strong>（追加日志）：记录每条写命令，数据安全性高但文件大恢复慢。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 安装Redis
+dnf install -y redis
+systemctl start redis
+# 连接与基础操作
+redis-cli
+SET user:1001:name "张三"
+GET user:1001:name
+EXPIRE user:1001:name 3600  # 1小时后过期</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">3</div><div class="kp-title">Redis数据类型：String/Hash/List/Set/SortedSet</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>String</strong>：最基本类型。可存字符串/整数/浮点数/二进制。典型场景：缓存JSON数据、分布式锁（SETNX）、计数器（INCR原子递增）。操作：SET/GET/INCR/DECR/SETEX。</p>
+<p><strong>Hash</strong>：键值对的集合，适合存对象（如用户信息）。优点：可以单独读写某个字段。操作：HSET/HGET/HGETALL/HDEL。</p>
+<p><strong>List</strong>：双向链表，适合消息队列/最新动态列表。LPUSH头部插入+RPOP尾部弹出=队列（FIFO）。操作：LPUSH/RPUSH/LPOP/RPOP/LRANGE。</p>
+<p><strong>Set</strong>：无序不重复集合，适合标签系统/共同好友/去重。操作：SADD/SMEMBERS/SINTER（交集）/SUNION（并集）。</p>
+<p><strong>Sorted Set</strong>：有序集合，每个元素有一个score，按分排序。适合排行榜/优先级队列。操作：ZADD/ZRANGE/ZREVRANGE。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># Hash - 用户信息
+HSET user:1001 name "张三" age 28 city "北京"
+HGET user:1001 name
+# List - 消息队列
+LPUSH queue:tasks "task1" "task2" "task3"
+RPOP queue:tasks  # 先进先出
+# Sorted Set - 排行榜
+ZADD leaderboard 9999 "player1" 8888 "player2"
+ZREVRANGE leaderboard 0 9 WITHSCORES</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">4</div><div class="kp-title">Redis缓存策略、持久化、主从与哨兵集群</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>缓存三大问题</strong>：①<strong>缓存穿透</strong>：查询不存在的数据，直接打到数据库。解决：布隆过滤器或缓存空值。②<strong>缓存击穿</strong>：热点key过期瞬间大量请求打到数据库。解决：互斥锁或逻辑过期。③<strong>缓存雪崩</strong>：大量key同时过期或Redis宕机。解决：过期时间加随机值+集群高可用。</p>
+<p><strong>主从复制</strong>：一主多从，主写从读，读写分离提升性能。</p>
+<p><strong>Sentinel哨兵</strong>：监控Redis主从状态，主故障时自动选举新主。至少需要3个哨兵节点避免脑裂。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 哨兵配置
+sentinel monitor mymaster 192.168.1.10 6379 2
+sentinel down-after-milliseconds mymaster 5000</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">5</div><div class="kp-title">MongoDB安装、CRUD、副本集、聚合管道</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>MongoDB</strong>是文档型数据库，数据以BSON（二进制JSON）格式存储。最大特点：<strong>Schema灵活</strong>——同一集合中的文档可以有不同的字段。</p>
+<p><strong>核心概念</strong>：Database≈数据库、Collection≈表、Document≈行。MongoDB没有传统SQL的JOIN，推荐嵌入式文档。</p>
+<p><strong>副本集（Replica Set）</strong>：一主多从，主节点故障时自动选举新主。最少3节点。</p>
+<p><strong>聚合管道（Aggregation Pipeline）</strong>：一组阶段依次处理数据：$match过滤→$group分组聚合→$sort排序→$project选择字段。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 安装MongoDB
+cat > /etc/yum.repos.d/mongodb.repo << EOF
+[mongodb]
+name=MongoDB
+baseurl=https://repo.mongodb.org/yum/redhat/9/mongodb-org/7.0/x86_64/
+gpgcheck=1
+EOF
+dnf install -y mongodb-org
+systemctl start mongod
+# CRUD
+db.users.insertOne({name:"张三",age:28,tags:["python","linux"]})
+db.users.find({age:{$gt:25}})</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第3章 NoSQL数据库</h5>
+<div class="ex-section"><h6>一、选择题</h6>
+<ol><li>缓存雪崩的典型解决方案是？<br>A.增加数据库 B.过期时间加随机值 C.关闭缓存 D.减少Redis实例</li>
+<li>Redis Sentinel最少需要几个节点？<br>A.1 B.2 C.3 D.4</li></ol></div>
+<div class="ex-section"><h6>二、实操题</h6>
+<ol><li>使用Redis Sorted Set实现游戏排行榜，支持TOP10查询和玩家排名查询。</li>
+<li>搭建MongoDB副本集（3节点），验证故障自动切换。</li></ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.B 2.C<br>实操题：1.ZADD→ZREVRANGE查TOP10→ZRANK查排名。2.rs.initiate配置→停主节点→观察选举。</div>
+</div>
+
+</div></div>
+
+<!-- 项目二 -->
+<div class="project" id="proj2">
+<h3>项目二：Web服务与数据库高可用集群</h3>
+<div class="proj-grid">
+<div><strong>目标</strong>：搭建高可用Web服务与数据库集群，具有自动故障切换能力</div>
+<div><strong>核心技能</strong>：Nginx反向代理+负载均衡+Keepalived / MySQL主从复制 / Redis Sentinel / MongoDB副本集</div>
+<div><strong>达标标准</strong>：任意一台服务器宕机不影响服务可用性，5分钟内自动恢复</div>
+<div><strong>产出物</strong>：高可用集群架构图、集群配置文件、压测报告</div>
+</div>
+</div>
+
+<!-- ==================== 阶段三 Python与AI自动化运维 ==================== -->
+<div class="phase" id="p3">
+<h2>阶段三：Python与AI自动化运维</h2>
+<div class="meta">第1章 Python运维自动化 → 第2章 NumPy与Pandas → 第3章 Matplotlib数据可视化 → 第4章 Scrapy爬虫 → 第5章 AI大模型Python SDK → 项目三</div>
+</div>
+
+<!-- ===== 第1章 Python运维自动化 ===== -->
+<div class="chapter" id="p3c1">
+<div class="ch-head"><div class="ch-num">1</div><h4>第1章 Python运维自动化</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">Python环境搭建、Anaconda虚拟环境、pip包管理</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Python</strong>是运维自动化的首选语言。原因：①语法简洁（运维脚本不需要C/Java那么复杂）；②生态丰富（paramiko远程执行、requests HTTP请求、psutil系统监控）；③跨平台；④AI时代通用语言（所有大模型框架都优先支持Python）。</p>
+<p><strong>conda环境管理</strong>：<code>conda create -n 环境名 python=3.10</code>创建环境，<code>conda activate 环境名</code>激活，<code>conda env list</code>查看所有环境。每个环境是独立的Python解释器+第三方库，互不干扰。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 创建并激活环境
+conda create -n ops python=3.10
+conda activate ops
+# pip管理依赖
+pip install paramiko requests psutil
+pip freeze > requirements.txt</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">基础语法：变量/数据类型/运算符/输入输出/条件循环</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>核心数据类型</strong>：int、float、str（不可变，支持切片s[0:5]）、bool（True/False）。<strong>列表list</strong>：[]，可变有序，append/extend/insert/pop。运维常用列表推导式：<code>[f for f in os.listdir('.') if f.endswith('.log')]</code>。</p>
+<p><strong>字典dict</strong>：{}键值对，O(1)查找。运维中常用于解析JSON配置和API返回值。<strong>条件循环</strong>：if/elif/else判断，for/while循环。Python靠缩进（4空格）定义代码块。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 列表推导式
+log_files = [f for f in os.listdir('/var/log') if f.endswith('.log')]
+# 解析JSON
+import json
+config = json.load(open('config.json'))
+print(config['database']['host'])</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">3</div><div class="kp-title">文件与目录操作、面向对象</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>os模块</strong>：os.path.exists()判断存在、os.mkdir()创建目录、os.listdir()列出文件、os.walk()递归遍历目录树。<strong>with open()</strong>：上下文管理器自动关闭文件。模式：r读/w写（覆盖）/a追加/rb二进制读。</p>
+<p><strong>面向对象</strong>：class定义类、__init__构造方法、self代表实例本身。运维可以利用类封装运维任务，如<code>class Server: def check_health(self): ...</code>。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 递归查找大文件
+def find_large_files(path, min_size_mb=100):
+    for root, dirs, files in os.walk(path):
+        for f in files:
+            fp = os.path.join(root, f)
+            size_mb = os.path.getsize(fp) / 1024 / 1024
+            if size_mb > min_size_mb:
+                print(f"{fp}: {size_mb:.1f}MB")</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">4</div><div class="kp-title">自动化运维库：paramiko/psutil/ftplib/zipfile/subprocess</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>paramiko</strong>：Python SSH客户端。exec_command('uptime')一行远程执行命令。配合SFTP可远程传输文件。批量管理100台服务器的基础工具。</p>
+<p><strong>psutil</strong>：跨平台系统监控库。一行代码获取CPU/内存/磁盘IO/网络流量/进程列表。比手工解析/proc/stat方便百倍。</p>
+<p><strong>subprocess</strong>：调用系统命令并捕获输出。<code>subprocess.run(['ls', '-la'], capture_output=True, text=True)</code>。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>import paramiko, psutil
+# paramiko远程执行
+client = paramiko.SSHClient()
+client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+client.connect('192.168.1.100', username='root', password='xxx')
+stdin, stdout, stderr = client.exec_command('df -h')
+print(stdout.read().decode())
+# psutil监控
+cpu = psutil.cpu_percent(interval=1)
+mem = psutil.virtual_memory().percent
+print(f"CPU:{cpu}% MEM:{mem}%")</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">5</div><div class="kp-title">异常处理与远程脚本执行实战</div><div class="kp-tags"><span class="tag tag-good">良好</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>try/except/else/finally</strong>：运维脚本必须有完善的异常处理——网络可能断开、命令可能失败、文件可能不存在。良好的日志记录结合异常处理，让运维脚本更健壮。</p>
+<p><strong>批量服务器管理</strong>：读取服务器列表→并行SSH连接（多线程threading）→执行运维任务→汇总结果。Python可以让逐个登录的手工操作变成脚本自动完成。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>try:
+    client.connect(ip, username='root', password=pwd, timeout=5)
+    stdin, stdout, stderr = client.exec_command(cmd)
+    result = stdout.read().decode()
+except paramiko.AuthenticationException:
+    print(f"{ip}: 认证失败")
+except socket.timeout:
+    print(f"{ip}: 连接超时")
+finally:
+    client.close()</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第1章 Python运维自动化</h5>
+<div class="ex-section"><h6>一、选择题</h6>
+<ol><li>Python中用于远程SSH连接的库是？<br>A.requests B.paramiko C.psutil D.pandas</li>
+<li>with open()的主要好处是？<br>A.更快 B.自动关闭文件 C.支持正则 D.加密</li></ol></div>
+<div class="ex-section"><h6>二、实操题</h6>
+<ol><li>编写Python脚本批量检测10台服务器的CPU/内存/磁盘，超过80%标红输出。</li>
+<li>编写脚本通过paramiko收集所有服务器日志中的ERROR行。</li></ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.B 2.B<br>实操题参考：见上文代码示例。</div>
+</div>
+
+</div></div>
+
+<!-- ===== 第2章 NumPy与Pandas ===== -->
+<div class="chapter" id="p3c2">
+<div class="ch-head"><div class="ch-num">2</div><h4>第2章 NumPy与Pandas数据分析</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">NumPy数组创建、形状变换、基本运算</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>NumPy</strong>是Python科学计算的基础库。核心是<strong>ndarray</strong>多维数组，它的运算速度比Python原生列表快10-100倍（底层用C实现，内存连续，向量化操作）。运维数据分析（如日志分析中的大量数值计算）使用NumPy可以极大提升效率。</p>
+<p><strong>创建数组</strong>：<code>np.array([1,2,3])</code>从列表创建、<code>np.zeros((3,4))</code>全零数组、<code>np.ones(...)</code>全一数组、<code>np.arange(0,10,2)</code>等差数列、<code>np.linspace(0,1,100)</code>等间距。</p>
+<p><strong>形状操作</strong>：<code>arr.reshape(2,3)</code>改变形状（元素总数不变）、<code>arr.T</code>转置、<code>arr.flatten()</code>展平为一维。</p>
+<p><strong>广播机制</strong>：不同形状数组运算时NumPy自动扩展维度，如(3,)+(3,4)→(3,4)。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>import numpy as np
+# 运维：分析服务器响应时间
+response_times = np.array([23, 45, 12, 67, 34, 89, 15, 42])
+print(f"平均:{response_times.mean():.1f}ms, P95:{np.percentile(response_times,95)}ms")
+print(f"异常值(>50ms): {response_times[response_times > 50]}")</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">Pandas数据结构：Series与DataFrame</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Pandas</strong>是Python数据分析的核心库。Series是一维带标签数组，DataFrame是二维表格（类似Excel）。Pandas是运维数据分析的瑞士军刀——从CSV/Excel/JSON/SQL等各种格式读取数据，清洗、转换、分析、输出一气呵成。</p>
+<p><strong>DataFrame核心操作</strong>：<code>df.head()</code>看前5行、<code>df.info()</code>查看数据概况、<code>df.describe()</code>统计摘要、<code>df['列名']</code>选列、<code>df.loc[行标签]</code>按标签选行、<code>df.iloc[行号]</code>按位置选行。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>import pandas as pd
+# 读取服务器监控数据
+df = pd.read_csv('server_metrics.csv')
+print(df.describe())  # 统计摘要
+high_cpu = df[df['cpu_usage'] > 80]  # 筛选CPU>80%的记录
+print(high_cpu[['hostname', 'cpu_usage', 'timestamp']])</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">3</div><div class="kp-title">数据导入导出、数据清洗、分组聚合</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>数据IO</strong>：<code>pd.read_csv/excel/json/sql</code>读取各种格式；<code>df.to_csv/excel/json</code>导出。</p>
+<p><strong>数据清洗</strong>：<code>df.dropna()</code>删除空值行、<code>df.fillna(0)</code>填充空值、<code>df.drop_duplicates()</code>去重、<code>df['col'] = df['col'].astype(int)</code>类型转换。运维数据常常有脏数据（空值/异常值/重复），清洗是分析前的必要步骤。</p>
+<p><strong>分组聚合</strong>：<code>df.groupby('hostname')['cpu_usage'].mean()</code>按主机分组计算平均CPU。类似SQL的GROUP BY，是运维报表（每台服务器的平均负载/每天的请求量）的核心操作。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 清洗+分组聚合
+df = pd.read_csv('app_log.csv')
+df['timestamp'] = pd.to_datetime(df['timestamp'])
+df = df.dropna(subset=['response_time'])
+# 按小时统计请求量和平均响应时间
+hourly = df.groupby(df['timestamp'].dt.hour).agg({
+    'response_time': ['count', 'mean'],
+    'status_code': lambda x: (x >= 500).sum()
+})
+hourly.columns = ['请求数', '平均响应时间ms', '5xx错误数']</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第2章 NumPy与Pandas</h5>
+<div class="ex-section"><h6>一、选择题</h6>
+<ol><li>Pandas DataFrame相当于？<br>A.一维数组 B.二维表格 C.字典 D.集合</li>
+<li>Pandas分组聚合使用哪个方法？<br>A.pivot B.merge C.groupby D.stack</li></ol></div>
+<div class="ex-section"><h6>二、实操题</h6>
+<ol><li>读取一份服务器日志CSV，清洗空值和异常数据，按服务器分组统计CPU/内存/磁盘的平均值和最大值。</li></ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.B 2.C</div>
+</div>
+
+</div></div>
+
+<!-- ===== 第3章 Matplotlib数据可视化与Plotly ===== -->
+<div class="chapter" id="p3c3">
+<div class="ch-head"><div class="ch-num">3</div><h4>第3章 Matplotlib数据可视化与Plotly交互图表</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">Matplotlib折线图/柱状图/饼图/散点图/热力图</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Matplotlib</strong>是Python最基础的可视化库。运维中可视化非常重要——数据表格没有人看，但一张趋势图能让老板立刻理解"服务器CPU在过去一周持续上升"。折线图（趋势变化）、柱状图（对比不同项目）、饼图（占比分布）、散点图（相关性分析）、热力图（密度分布）。</p>
+<p><strong>基本流程</strong>：<code>plt.figure()</code>创建画布→<code>plt.plot/bar/pie()</code>绘图→<code>plt.title/xlabel/ylabel</code>标签→<code>plt.savefig()/show()</code>输出。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>import matplotlib.pyplot as plt
+# CPU趋势图
+dates = ['7/1','7/2','7/3','7/4','7/5']
+cpu = [45, 52, 48, 72, 65]
+plt.figure(figsize=(10,4))
+plt.plot(dates, cpu, marker='o', color='#2196F3', linewidth=2)
+plt.axhline(y=80, color='red', linestyle='--', label='告警线')
+plt.title('服务器CPU使用率趋势'), plt.ylabel('CPU %')
+plt.legend(), plt.grid(True, alpha=0.3)
+plt.savefig('cpu_trend.png', dpi=150)</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">Plotly在线交互式图表</div><div class="kp-tags"><span class="tag tag-good">良好</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Plotly</strong>生成HTML交互图表——用户可以鼠标悬停看数值、缩放、拖拽、点击图例隐藏/显示数据。适合做出漂亮的运维Dashboard。与Matplotlib的区别：Plotly图表是活的（可交互），Matplotlib图表是死的（静态图片）。</p>
+<p><code>plotly.express</code>（高层API）一行代码出图，<code>plotly.graph_objects</code>（底层API）精细控制。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>import plotly.express as px
+df = pd.DataFrame({'时间': dates, 'CPU': cpu, '内存': [60,58,62,70,68]})
+fig = px.line(df, x='时间', y=['CPU','内存'], title='资源监控Dashboard')
+fig.write_html('dashboard.html')</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第3章 数据可视化</h5>
+<div class="ex-section"><h6>实操题</h6>
+<ol><li>读取服务器监控CSV，用Matplotlib画出CPU和内存的趋势图（双Y轴）。</li>
+<li>用Plotly做一个交互式Dashboard，展示多台服务器的资源使用对比。</li></ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">1.用twinx()创建双Y轴。2.用px.bar分组柱状图。</div>
+</div>
+
+</div></div>
+
+<!-- ===== 第4章 Scrapy爬虫框架 ===== -->
+<div class="chapter" id="p3c4">
+<div class="ch-head"><div class="ch-num">4</div><h4>第4章 Scrapy爬虫数据采集与入库</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">HTTP请求原理与Scrapy系统框架</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>HTTP请求-响应模型</strong>：客户端发送请求（GET/POST + URL + Headers + Body）→服务器处理→返回响应（状态码 + Headers + Body）。运维需要理解HTTP因为：①排查Web服务问题（状态码含义/请求头/响应头）；②自动化API调用（Python脚本调接口）；③监控网站可用性。</p>
+<p><strong>Scrapy架构</strong>：Engine引擎（总调度）→ Scheduler调度器（请求队列）→ Downloader下载器（发HTTP请求）→ Spiders爬虫（解析页面提取数据）→ Item Pipeline管道（清洗/存储数据）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># scrapy startproject myproject 创建项目
+# 定义Item（数据结构）
+class ArticleItem(scrapy.Item):
+    title = scrapy.Field()
+    url = scrapy.Field()
+    content = scrapy.Field()</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">Spider爬虫类与数据提取（CSS/XPath选择器）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>CSS选择器</strong>：<code>response.css('h1::text').get()</code>提取h1的文本。选择器语法：<code>.class</code>类选、<code>#id</code>ID选、<code>div > p</code>直接子元素、<code>div p</code>后代元素、<code>a[href]</code>属性选。</p>
+<p><strong>XPath选择器</strong>：<code>response.xpath('//h1/text()').get()</code>。XPath比CSS更灵活（支持按文本内容选择、轴定位），但语法稍复杂。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>class NewsSpider(scrapy.Spider):
+    name = 'news'
+    start_urls = ['https://example.com/news']
+    def parse(self, response):
+        for article in response.css('div.article'):
+            yield {
+                'title': article.css('h2::text').get(),
+                'url': article.css('a::attr(href)').get(),
+            }
+        # 翻页
+        next_page = response.css('a.next::attr(href)').get()
+        if next_page:
+            yield response.follow(next_page, self.parse)</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第4章 Scrapy爬虫</h5>
+<div class="ex-section"><h6>实操题</h6>
+<ol><li>编写Scrapy爬虫，抓取某技术博客的文章标题、链接、发布时间，存入CSV。</li></ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">scrapy startproject→定义Item→写Spider类parse方法→scrapy crawl -o output.csv。</div>
+</div>
+
+</div></div>
+
+<!-- ===== 第5章 AI大模型Python SDK ===== -->
+<div class="chapter" id="p3c5">
+<div class="ch-head"><div class="ch-num">5</div><h4>第5章 AI大模型Python SDK调用与自动化</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">大模型API调用（OpenAI SDK）与Prompt工程</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>大模型API调用</strong>是AI运维的核心技能。通过Python调用大模型API，可以让AI自动完成：日志分析（"分析这段Nginx日志中的异常"）、告警总结（"过去1小时产生了50条告警，帮我总结归类"）、配置生成（"根据需求帮我校验这份Nginx配置"）、代码审查。</p>
+<p><strong>OpenAI SDK</strong>是最通用的调用方式，兼容大多数大模型API（智谱/百度/阿里等国内厂商）。核心流程：①初始化客户端（API Key + base_url）②构建消息列表（system角色设背景 + user角色提问题）③调用chat.completions.create④解析返回的response.choices[0].message.content。</p>
+<p><strong>Prompt工程</strong>：好的Prompt=角色设定+任务描述+输出格式+示例。运维Prompt模板："你是一位资深Linux运维专家。请分析以下服务器日志，识别ERROR和WARNING，按严重程度排序，用Markdown表格输出。"</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>from openai import OpenAI
+client = OpenAI(api_key="sk-xxx", base_url="https://api.openai.com/v1")
+response = client.chat.completions.create(
+    model="gpt-4",
+    messages=[
+        {"role":"system","content":"你是资深Linux运维专家"},
+        {"role":"user","content":"分析这个nginx日志中的异常"},
+        {"role":"user","content": log_content}
+    ]
+)
+print(response.choices[0].message.content)</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">GPT-4o多模态（图片识别）与运维辅助</div><div class="kp-tags"><span class="tag tag-good">良好</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>多模态大模型</strong>（如GPT-4o）可以同时理解文本和图片。运维场景：①截图识别——用户发来一个错误截图，AI自动识别错误信息并给出解决方案；②架构图理解——上传一张网络架构图，AI解释拓扑结构；③监控图表解读——上传CPU趋势图，AI总结变化趋势和异常点。</p>
+<p>调用方式和纯文本一样，但messages中content可以是一个数组包含text和image_url两种类型。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[{
+        "role": "user",
+        "content": [
+            {"type":"text","text":"这张截图中的错误是什么意思？"},
+            {"type":"image_url","image_url":{"url":"data:image/png;base64,..."}}
+        ]
+    }]
+)</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">3</div><div class="kp-title">TTS语音合成、STT语音转文字、Assistant API</div><div class="kp-tags"><span class="tag tag-good">良好</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>TTS（Text to Speech）</strong>：将告警文字转为语音播报（深夜告警不用看手机，直接语音播报）。<strong>STT（Speech to Text）</strong>：语音转文字，如口述运维指令自动转成命令。</p>
+<p><strong>Assistant API</strong>：让大模型能调用你定义的函数（Function Calling），实现"AI+工具"结合。例如定义<code>restart_service(service_name)</code>函数，AI判断需要重启服务时自动调用你的函数。这是AI自动化运维的核心模式。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># Function Calling - 定义工具
+tools = [{"type":"function","function":{
+    "name":"restart_service",
+    "description":"重启指定服务",
+    "parameters":{"type":"object","properties":{
+        "service_name":{"type":"string","description":"服务名称"}
+    }}
+}}]
+# AI会自动判断是否需要调用restart_service</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第5章 AI大模型Python SDK</h5>
+<div class="ex-section"><h6>一、选择题</h6>
+<ol><li>OpenAI SDK的chat.completions.create方法中，system角色的作用是什么？<br>A.发送消息 B.设定AI行为背景 C.存储历史 D.调用函数</li></ol></div>
+<div class="ex-section"><h6>二、实操题</h6>
+<ol><li>编写Python脚本调用大模型API，输入一段Nginx错误日志，让AI分析异常原因并给出修复建议。</li>
+<li>实现一个告警播报系统：收到告警→调大模型总结→TTS转语音→播放。</li></ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.B</div>
+</div>
+
+</div></div>
+
+<!-- 项目三 -->
+<div class="project" id="proj3">
+<h3>项目三：Python自动化运维 + AI运维辅助平台</h3>
+<div class="proj-grid">
+<div><strong>目标</strong>：用Python+AI打造企业级自动化运维平台</div>
+<div><strong>核心技能</strong>：paramiko批量管理/Pandas数据分析/Matplotlib可视化/大模型API调用/Function Calling</div>
+<div><strong>达标标准</strong>：实现批量服务器监控+数据可视化+AI日志分析+语音告警播报</div>
+<div><strong>产出物</strong>：运维监控Dashboard、AI日志分析脚本、自动化运维工具集</div>
+</div>
+</div>
+
+<!-- ==================== 阶段四 容器与Kubernetes ==================== -->
+<div class="phase" id="p4">
+<h2>阶段四：容器与Kubernetes云原生运维</h2>
+<div class="meta">第1章 Docker容器 → 第2章 Dockerfile与Compose → 第3章 Kubernetes基础 → 第4章 K8s网络与存储 → 第5章 K8s控制器 → 第6章 K8s安全与运维 → 项目四</div>
+</div>
+
+<!-- ===== 第1章 Docker容器 ===== -->
+<div class="chapter" id="p4c1">
+<div class="ch-head"><div class="ch-num">1</div><h4>第1章 Docker容器技术</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">容器技术概念、Docker架构、镜像与容器</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>容器</strong>是轻量级的虚拟化技术。传统虚拟机（VM）需要运行完整的Guest OS（几GB），容器共享宿主机内核（几MB），启动只需毫秒级。容器解决的核心问题："在我机器上能跑，在你机器上跑不了"——容器把应用+依赖+运行环境打包成一个不可变的镜像，在任何支持Docker的机器上都能一致运行。</p>
+<p><strong>Docker架构</strong>：①<strong>Docker Daemon</strong>（dockerd，后台守护进程，管理容器/镜像/网络）②<strong>Docker Client</strong>（docker命令，通过API与Daemon通信）③<strong>Registry</strong>（镜像仓库，如Docker Hub/阿里云ACR）。</p>
+<p><strong>镜像(Image) vs 容器(Container)</strong>：镜像=类（模板，只读），容器=实例（运行中的镜像，可写层）。一个镜像可以启动多个容器。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 安装Docker
+dnf install -y docker-ce docker-ce-cli containerd.io
+systemctl start docker && systemctl enable docker
+# 验证
+docker version
+docker run hello-world</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">镜像操作、容器生命周期管理</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>镜像操作</strong>：<code>docker pull nginx:1.25</code>拉取镜像、<code>docker images</code>列出本地镜像、<code>docker rmi 镜像ID</code>删除镜像、<code>docker tag 原镜像 新标签</code>打标签（推送到私有仓库前必须打tag）。</p>
+<p><strong>容器生命周期</strong>：<code>docker run</code>创建并启动（<code>-d</code>后台、<code>-p 8080:80</code>端口映射、<code>-v</code>挂载卷、<code>--name</code>命名、<code>--restart=always</code>自动重启）、<code>docker ps</code>查看运行中的容器（<code>-a</code>含已停止）、<code>docker stop/start/restart</code>启停、<code>docker rm</code>删除容器、<code>docker logs -f</code>查看日志、<code>docker exec -it 容器 bash</code>进入容器排错。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 启动Nginx容器
+docker run -d --name mynginx -p 8080:80 -v /data/nginx:/usr/share/nginx/html nginx:1.25
+# 进入容器排错
+docker exec -it mynginx bash
+# 查看容器资源使用
+docker stats mynginx
+# 清理停止的容器
+docker container prune</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">3</div><div class="kp-title">容器数据卷、网络模式、资源限制</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>数据卷(Volume)</strong>：容器内的数据默认随容器删除而消失。Volume是宿主机上的目录，挂载到容器内，实现数据持久化。三种方式：①<code>-v /host/path:/container/path</code>绑定挂载（直接映射宿主机目录）②<code>-v volume_name:/container/path</code>命名卷（Docker管理）③tmpfs（内存临时存储）。</p>
+<p><strong>网络模式</strong>：①<strong>bridge</strong>（默认，容器间通过虚拟网桥通信，需-p映射端口到宿主机）②<strong>host</strong>（容器直接使用宿主机网络，性能最好但端口冲突风险）③<strong>none</strong>（无网络）④<strong>container</strong>（共享另一个容器的网络命名空间）。</p>
+<p><strong>资源限制</strong>：<code>--memory=512m</code>限制内存、<code>--cpus=1.5</code>限制CPU核数、<code>--restart=on-failure:3</code>失败重启3次。防止单个容器吃光宿主机资源。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 数据卷持久化
+docker run -d --name mysql -v mysql/lib/mysql -e MYSQL_ROOT_PASSWORD=xxx mysql:8.0
+# 资源限制
+docker run -d --name web --memory=512m --cpus=1.0 --restart=always nginx
+# 自定义网络
+docker network create mynet
+docker run -d --name app1 --network mynet myapp</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第1章 Docker容器技术</h5>
+<div class="ex-section"><h6>一、选择题</h6>
+<ol><li>容器和虚拟机的本质区别是？<br>A.容器更快 B.容器共享宿主机内核 C.容器更贵 D.容器不能持久化</li>
+<li>Docker中用于数据持久化的机制是？<br>A.Volume B.Network C.Image D.Layer</li></ol></div>
+<div class="ex-section"><h6>二、实操题</h6>
+<ol><li>用Docker启动一个MySQL 8.0容器，数据持久化到命名卷，限制内存512MB。</li>
+<li>创建自定义Docker网络，启动两个容器使它们能互相通信。</li></ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.B 2.A</div>
+</div>
+
+</div></div>
+
+<!-- ===== 第2章 Dockerfile与Compose ===== -->
+<div class="chapter" id="p4c2">
+<div class="ch-head"><div class="ch-num">2</div><h4>第2章 Dockerfile镜像构建与Compose编排</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">Dockerfile指令：FROM/COPY/ADD/RUN/CMD/ENTRYPOINT</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Dockerfile</strong>是构建镜像的"配方"。每条指令生成一个只读层（Layer），层可以缓存复用（相同指令不重新执行），这是Docker镜像高效的核心。</p>
+<p><strong>核心指令</strong>：<code>FROM</code>基础镜像（必须是第一条）、<code>COPY/ADD</code>复制文件到镜像（ADD支持URL下载和tar自动解压，但推荐用COPY更清晰）、<code>RUN</code>在构建时执行命令（安装软件）、<code>WORKDIR</code>设置工作目录、<code>ENV</code>设置环境变量、<code>EXPOSE</code>声明端口、<code>CMD</code>容器启动时默认命令（可被docker run参数覆盖）、<code>ENTRYPOINT</code>容器入口（不可被覆盖，适合固定启动命令）。</p>
+<p><strong>CMD vs ENTRYPOINT</strong>：ENTRYPOINT定义不可变的启动命令，CMD作为默认参数传给ENTRYPOINT。如<code>ENTRYPOINT ["nginx"]</code> + <code>CMD ["-g","daemon off;"]</code>，运行<code>docker run nginx -t</code>时-t会替换CMD。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 多阶段构建Python应用
+FROM python:3.11-slim AS builder
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+FROM python:3.11-slim
+WORKDIR /app
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY . .
+EXPOSE 8000
+CMD ["python", "app.py"]</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">镜像构建优化、多阶段构建、私有仓库</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>构建优化原则</strong>：①<strong>层缓存</strong>：把不常变化的指令放前面（如COPY requirements.txt→RUN pip install），常变化的放后面（如COPY源码）。②<strong>多阶段构建</strong>：编译阶段用大镜像（含编译器），运行阶段用小镜像（只复制编译产物），最终镜像从几百MB降到几十MB。③<strong>.dockerignore</strong>：排除不需要的文件（.git/node_modules），减小构建上下文。</p>
+<p><strong>私有仓库</strong>：企业内网部署Harbor/Docker Registry存储私有镜像。<code>docker tag myapp:1.0 registry.internal:5000/myapp:1.0</code>→<code>docker push</code>。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 构建并推送到私有仓库
+docker build -t myapp:1.0 .
+docker tag myapp:1.0 registry.internal:5000/myapp:1.0
+docker push registry.internal:5000/myapp:1.0
+# .dockerignore
+echo "node_modules
+.git
+*.log" > .dockerignore</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">3</div><div class="kp-title">Docker Compose多容器编排</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Docker Compose</strong>用YAML文件定义多容器应用（如Web+DB+Redis），一条<code>docker compose up</code>启动所有服务。解决了"手动docker run一堆参数"的痛点。</p>
+<p><strong>核心字段</strong>：<code>services</code>定义服务（每个服务=一个容器）、<code>image/build</code>指定镜像或构建、<code>ports</code>端口映射、<code>volumes</code>数据卷、<code>environment</code>环境变量、<code>depends_on</code>依赖顺序、<code>networks</code>网络、<code>restart</code>重启策略。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># docker-compose.yml
+version: '3.8'
+services:
+  web:
+    build: ./web
+    ports: ["8080:80"]
+    depends_on: [db, redis]
+    restart: always
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+    volumes: ["db/lib/mysql"]
+  redis:
+    image: redis:7-alpine
+volumes:
+  db_data:</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第2章 Dockerfile与Compose</h5>
+<div class="ex-section"><h6>一、选择题</h6>
+<ol><li>Dockerfile中FROM指令的作用是？<br>A.复制文件 B.指定基础镜像 C.运行命令 D.暴露端口</li>
+<li>多阶段构建的主要目的是？<br>A.更快 B.减小最终镜像体积 C.支持多平台 D.自动测试</li></ol></div>
+<div class="ex-section"><h6>二、实操题</h6>
+<ol><li>编写Dockerfile构建Python Flask应用，使用多阶段构建减小镜像体积。</li>
+<li>编写docker-compose.yml编排Nginx+Flask+MySQL+Redis四个服务。</li></ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.B 2.B</div>
+</div>
+
+</div></div>
+
+<!-- ===== 第3章 Kubernetes基础 ===== -->
+<div class="chapter" id="p4c3">
+<div class="ch-head"><div class="ch-num">3</div><h4>第3章 Kubernetes基础</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">K8s架构（Master/Node组件）与核心概念</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Kubernetes（K8s）</strong>是容器编排平台，管理成千上万个容器的部署、扩展、网络、存储。Docker解决了单机容器运行，K8s解决多机容器集群管理。K8s的核心价值：①<strong>自愈</strong>（容器挂了自动重启、节点挂了自动迁移Pod）②<strong>弹性伸缩</strong>（流量高峰自动扩容，低谷缩容）③<strong>服务发现与负载均衡</strong>（不用手动配Nginx）④<strong>滚动更新</strong>（不中断服务升级）。</p>
+<p><strong>Master组件</strong>：①<strong>kube-apiserver</strong>（一切操作的入口，REST API网关）②<strong>etcd</strong>（分布式KV存储，存集群所有状态）③<strong>kube-scheduler</strong>（调度器，决定Pod跑在哪个Node上）④<strong>kube-controller-manager</strong>（控制器管理器，维护期望状态）。</p>
+<p><strong>Node组件</strong>：①<strong>kubelet</strong>（节点代理，管理Pod生命周期）②<strong>kube-proxy</strong>（网络代理，Service负载均衡规则落地）③<strong>Container Runtime</strong>（容器运行时，如containerd）。</p>
+<p><strong>Pod</strong>是K8s最小调度单元，一个Pod可以包含1+个紧密耦合的容器（共享网络和存储命名空间）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 安装minikube（本地开发）
+minikube start --driver=docker
+# 查看集群状态
+kubectl cluster-info
+kubectl get nodes</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">kubectl命令行、Pod生命周期</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>kubectl</strong>是K8s的命令行工具。一切操作通过kube-apiserver REST API，kubectl封装了这些API。核心模式：<code>kubectl &lt;动词&gt; &lt;资源类型&gt; [参数]</code>。如<code>kubectl get pods</code>查看Pod列表。</p>
+<p><strong>Pod生命周期</strong>：Pending（调度中）→ Running（运行中）→ Succeeded（成功退出）/ Failed（失败退出）。Pod不是直接创建的，而是通过更高级别资源（Deployment/StatefulSet/DaemonSet）间接管理。</p>
+<p><strong>kubectl核心命令</strong>：<code>get</code>查看资源、<code>describe</code>查看详情（排错用）、<code>logs</code>查看Pod日志、<code>exec -it pod -- bash</code>进入容器内部、<code>apply/create</code>创建资源、<code>delete</code>删除资源、<code>scale</code>扩缩容、<code>rollout</code>管理更新。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 常用kubectl命令
+kubectl get pods -o wide         # 查看Pod+IP+节点
+kubectl describe pod nginx-pod   # 排错必备
+kubectl logs -f pod-name         # 实时日志
+kubectl exec -it pod-name -- bash # 进入容器
+kubectl create deployment nginx --image=nginx:latest
+kubectl scale deployment nginx --replicas=5</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">3</div><div class="kp-title">YAML资源清单、Namespace、标签与选择器</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>YAML资源清单</strong>是K8s的"配置文件"。每个K8s资源都有固定四段：<code>apiVersion</code>（API版本）+<code>kind</code>（资源类型）+<code>metadata</code>（元数据：name/namespace/labels）+<code>spec</code>（期望状态）。所有K8s操作最终都体现为YAML文件。</p>
+<p><strong>Namespace</strong>：逻辑隔离，不同环境（dev/staging/prod）或不同团队用不同Namespace。不是物理隔离（Pod间仍可能通过IP通信）。</p>
+<p><strong>Labels & Selectors</strong>：K8s的核心绑定机制。Service通过<code>selector: {app: nginx}</code>找到属于它的Pod，Deployment通过相同的label知道要管理哪些Pod。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># Pod YAML示例
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  labels:
+    app: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.25
+    ports: [{containerPort: 80}]
+# kubectl apply -f pod.yaml</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第3章 Kubernetes基础</h5>
+<div class="ex-section"><h6>一、选择题</h6>
+<ol><li>K8s中最小的调度单元是？<br>A.Container B.Pod C.Node D.Deployment</li>
+<li>kubectl describe pod的作用是？<br>A.创建Pod B.查看Pod详情和事件 C.删除Pod D.扩缩Pod</li></ol></div>
+<div class="ex-section"><h6>二、实操题</h6>
+<ol><li>用minikube搭一个K8s集群，写YAML创建一个Nginx Pod并通过kubectl验证运行状态。</li></ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.B 2.B</div>
+</div>
+
+</div></div>
+
+<!-- ===== 第4章 K8s网络与存储 ===== -->
+<div class="chapter" id="p4c4">
+<div class="ch-head"><div class="ch-num">4</div><h4>第4章 Kubernetes网络与存储</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">Service四层负载均衡（ClusterIP/NodePort/LoadBalancer）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Service</strong>是K8s的"内置负载均衡器"。Pod IP是动态的（重启就变），Service提供一个固定的虚拟IP（ClusterIP）和DNS名，自动将流量转发到匹配的Pod。解决了"Pod IP变化后其他服务如何找到它"的问题。</p>
+<p><strong>三种Service类型</strong>：①<strong>ClusterIP</strong>（默认）：集群内部IP，只能在集群内访问。②<strong>NodePort</strong>：在每个Node上开一个端口（30000-32767），外部可通过NodeIP:NodePort访问。③<strong>LoadBalancer</strong>：云服务商提供外部LB（如阿里云SLB），从LB转发到NodePort。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>apiVersion: v1
+kind: Service
+metadata: {name: nginx-svc}
+spec:
+  type: NodePort
+  selector: {app: nginx}
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30080
+# 访问：NodeIP:30080</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">Ingress七层路由与Ingress Controller</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Ingress</strong>是K8s的七层（HTTP/HTTPS）路由。Service只能做简单的四层转发，Ingress可以根据域名、URL路径、Header等做复杂的七层转发（类似Nginx）。比如<code>api.example.com/v1</code>→Service A，<code>api.example.com/v2</code>→Service B。</p>
+<p><strong>Ingress Controller</strong>是Ingress规则的执行者（如Nginx Ingress Controller、Traefik），本身也运行在K8s中。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: {name: my-ingress}
+spec:
+  rules:
+  - host: www.example.com
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend: {service: {name: api-svc, port: {number: 80}}}</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">3</div><div class="kp-title">PV/PVC/StorageClass持久化存储</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p>K8s存储体系的三层抽象：<strong>PV</strong>（PersistentVolume，管理员创建的存储池，如NFS/云盘）→<strong>PVC</strong>（PersistentVolumeClaim，用户申请存储，类似"我要5G读写一次的存储"）→<strong>StorageClass</strong>（动态创建PV，用户只需PVC无需手动创建PV）。</p>
+<p>容器重启后数据丢失，Pod挂载PVC实现数据持久化。StatefulSet常用PVC为每个Pod创建独立存储。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># PVC示例
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: mysql-pvc}
+spec:
+  accessModes: [ReadWriteOnce]
+  resources: {requests: {storage: 10Gi}}
+# Pod引用
+volumes:
+- name: mysql-data
+  persistentVolumeClaim: {claimName: mysql-pvc}</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第4章 K8s网络与存储</h5>
+<div class="ex-section"><h6>实操题</h6>
+<ol><li>为Nginx Deployment创建NodePort Service，并验证外部访问。</li>
+<li>创建PVC并挂载到MySQL Pod中，验证数据持久化。</li></ol></div>
+</div>
+
+</div></div>
+
+<!-- ===== 第5章 K8s控制器 ===== -->
+<div class="chapter" id="p4c5">
+<div class="ch-head"><div class="ch-num">5</div><h4>第5章 Kubernetes核心控制器</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">Deployment部署、滚动更新、回滚、扩缩容</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Deployment</strong>是最常用的控制器，管理无状态应用（如Web服务）。它的核心能力：①<strong>ReplicaSet管理</strong>：保证指定数量的Pod副本始终运行（死一个自动补一个）；②<strong>滚动更新</strong>：逐步替换旧版本Pod为新版本（先启动新的→再停旧的），零停机升级；③<strong>回滚</strong>：更新出问题时一键回滚到上一版本；④<strong>扩缩容</strong>：一行命令增加/减少副本数。</p>
+<p><strong>滚动更新策略</strong>：<code>maxSurge: 1</code>（更新时最多多1个Pod）、<code>maxUnavailable: 1</code>（最多有1个Pod不可用）。生产环境谨慎设置避免服务中断。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 创建Deployment
+kubectl create deployment web --image=nginx:1.24 --replicas=3
+# 滚动更新
+kubectl set image deployment/web nginx=nginx:1.25
+kubectl rollout status deployment/web  # 查看更新进度
+# 回滚
+kubectl rollout undo deployment/web
+# 扩缩容
+kubectl scale deployment web --replicas=5</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">StatefulSet有状态应用管理（ZooKeeper/MQ）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>StatefulSet</strong>用于管理有状态应用（如数据库/消息队列/分布式存储）。与Deployment的区别：①Pod名字固定（如mysql-0, mysql-1），重启后名字不变；②每个Pod独立存储（通过volumeClaimTemplates）；③有序部署和缩容（先启动mysql-0再mysql-1，缩容反过来）。</p>
+<p>为什么数据库不能用Deployment？因为数据库需要稳定的网络标识+持久化存储+有序更新，Deployment的Pod是匿名的（随机名字+共享存储）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>apiVersion: apps/v1
+kind: StatefulSet
+metadata: {name: zk}
+spec:
+  serviceName: zk
+  replicas: 3
+  selector: {matchLabels: {app: zk}}
+  template:
+    metadata: {labels: {app: zk}}
+    spec:
+      containers:
+      - name: zookeeper
+        image: zookeeper:3.8
+  volumeClaimTemplates:
+  - metadata: {name: data}
+    spec:
+      accessModes: [ReadWriteOnce]
+      resources: {requests: {storage: 10Gi}}</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">3</div><div class="kp-title">DaemonSet、Job/CronJob、ConfigMap/Secret</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>DaemonSet</strong>：每个Node运行一个Pod副本（如日志收集器Filebeat、监控Agent Prometheus Node Exporter）。新增Node时自动部署。</p>
+<p><strong>Job/CronJob</strong>：一次性任务（Job）和定时任务（CronJob）。如定期备份数据库、定期清理日志。</p>
+<p><strong>ConfigMap/Secret</strong>：将配置和密码从镜像中解耦出来。ConfigMap存非敏感配置（nginx.conf、app.properties），Secret存敏感信息（数据库密码、API Key）。<code>envFrom</code>将ConfigMap注入为环境变量，<code>volumes</code>挂载为文件。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># DaemonSet
+apiVersion: apps/v1
+kind: DaemonSet
+metadata: {name: filebeat}
+# CronJob（每天凌晨3点备份）
+apiVersion: batch/v1
+kind: CronJob
+metadata: {name: db-backup}
+spec:
+  schedule: "0 3 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: backup
+            image: mysql:8.0
+            command: ["mysqldump", "-h", "db-svc", "mydb"]
+          restartPolicy: OnFailure</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第5章 K8s控制器</h5>
+<div class="ex-section"><h6>一、选择题</h6>
+<ol><li>Deployment滚动更新时maxSurge=1的含义是？<br>A.最多多1个Pod B.最多少1个Pod C.最少1个Pod D.串行更新</li>
+<li>数据库类应用应使用哪个控制器？<br>A.Deployment B.StatefulSet C.DaemonSet D.Job</li></ol></div>
+<div class="ex-section"><h6>二、实操题</h6>
+<ol><li>创建Deployment跑Nginx，执行滚动更新到新版本，然后回滚。</li>
+<li>创建CronJob实现每天凌晨备份MySQL数据库。</li></ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.A 2.B</div>
+</div>
+
+</div></div>
+
+<!-- ===== 第6章 K8s安全与运维 ===== -->
+<div class="chapter" id="p4c6">
+<div class="ch-head"><div class="ch-num">6</div><h4>第6章 Kubernetes安全、监控与DevOps</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">RBAC权限控制、ServiceAccount、安全上下文</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>RBAC</strong>（基于角色的访问控制）是K8s的权限体系：<code>Subject（谁）→ Role/ClusterRole（能干什么）→ RoleBinding/ClusterRoleBinding（绑定）</code>。Role只在Namespace内生效，ClusterRole跨Namespace。</p>
+<p><strong>ServiceAccount</strong>是Pod的"身份证"，Pod通过SA与API Server通信。<strong>Pod安全上下文</strong>：控制容器运行时的权限（如是否特权容器、文件系统只读、以非root用户运行）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 创建只读Role
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata: {namespace: default, name: pod-reader}
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list"]
+# 绑定到用户
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: {name: read-pods, namespace: default}
+subjects: [{kind: User, name: "zhangsan", apiGroup: rbac.authorization.k8s.io}]
+roleRef: {kind: Role, name: pod-reader, apiGroup: rbac.authorization.k8s.io}</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">Prometheus + Grafana 监控体系</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Prometheus</strong>是云原生监控的事实标准，也是K8s监控的首选方案。核心架构：Prometheus Server定期拉取（Pull）各目标的metrics数据→存储在本地时序数据库→PromQL查询语言分析→Grafana可视化。</p>
+<p><strong>核心组件</strong>：①<strong>Prometheus Server</strong>（采集+存储+查询）②<strong>Node Exporter</strong>（采集节点级指标：CPU/内存/磁盘/网络）③<strong>kube-state-metrics</strong>（采集K8s对象状态：Pod/Deployment/Node）④<strong>AlertManager</strong>（告警管理：去重、分组、路由到钉钉/微信/邮件）⑤<strong>Grafana</strong>（Dashboard可视化）。</p>
+<p><strong>PromQL核心查询</strong>：<code>rate(node_cpu_seconds_total[5m])</code>（5分钟平均CPU使用率）、<code>container_memory_usage_bytes</code>（容器内存使用）、<code>up==0</code>（哪些目标挂了）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 安装Prometheus Stack (Helm)
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm install kube-prometheus prometheus-community/kube-prometheus-stack
+# 访问Grafana
+kubectl port-forward svc/kube-prometheus-grafana 3000:80
+# 常用PromQL
+rate(node_cpu_seconds_total{mode="idle"}[5m])  # CPU空闲率
+container_memory_usage_bytes{pod=~"nginx-.*"}    # Pod内存</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">3</div><div class="kp-title">Helm包管理器、Jenkins CI/CD、GitOps</div><div class="kp-tags"><span class="tag tag-good">良好</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Helm</strong>是K8s的包管理器（类似yum/apt）。K8s应用通常由多个资源（Deployment+Service+ConfigMap+Ingress...）组成，Helm把它们打包成Chart，一行命令安装。<code>helm install myapp ./chart</code>。Helm的模板引擎支持变量替换，同一个Chart可以部署到不同环境（dev用不同values.yaml）。</p>
+<p><strong>Jenkins CI/CD</strong>：代码提交→自动构建Docker镜像→推送到仓库→更新K8s部署（通过kubectl或Helm）。实现"提交代码→自动上线"的完整自动化。</p>
+<p><strong>GitOps（ArgoCD）</strong>：把K8s的YAML配置也存到Git仓库，ArgoCD自动同步Git仓库的状态到集群。任何修改都要先改Git再自动同步，实现"Git是唯一真相来源"。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># Helm安装
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+helm install myapp bitnami/nginx
+helm list
+# Jenkins Pipeline关键步骤
+stage('Deploy to K8s') {
+    steps {
+        sh 'kubectl set image deployment/web web=registry.internal/web:${BUILD_NUMBER}'
+        sh 'kubectl rollout status deployment/web'
+    }
+}</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第6章 K8s安全与运维</h5>
+<div class="ex-section"><h6>一、选择题</h6>
+<ol><li>Prometheus的数据采集方式是？<br>A.Push推送 B.Pull拉取 C.轮询 D.事件驱动</li>
+<li>GitOps的核心原则是？<br>A.用Git做CI B.Git是唯一真相来源 C.手动部署 D.不使用K8s</li></ol></div>
+<div class="ex-section"><h6>二、实操题</h6>
+<ol><li>部署Prometheus+Grafana监控K8s集群，创建一个CPU使用率Dashboard。</li>
+<li>编写Jenkins Pipeline实现Docker构建→推送→K8s部署的CI/CD流程。</li></ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.B 2.B</div>
+</div>
+
+</div></div>
+
+<!-- 项目四 -->
+<div class="project" id="proj4">
+<h3>项目四：容器化应用部署与K8s集群运维</h3>
+<div class="proj-grid">
+<div><strong>目标</strong>：将传统应用容器化并部署到K8s集群，建立完整监控体系</div>
+<div><strong>核心技能</strong>：Dockerfile编写/Docker Compose编排/K8s Deployment+Service+Ingress/Prometheus监控/Helm部署</div>
+<div><strong>达标标准</strong>：实现应用容器化→多容器编排→K8s集群部署→滚动更新→自动扩缩容→监控告警</div>
+<div><strong>产出物</strong>：Dockerfile+Docker Compose、K8s YAML资源清单、Helm Chart、Grafana Dashboard JSON</div>
+</div>
+</div>
+
+<!-- ==================== 阶段五 CI/CD与DevOps ==================== -->
+<div class="phase" id="p5">
+<h2>阶段五：CI/CD持续集成与DevOps实践</h2>
+<div class="meta">第1章 Jenkins持续集成 → 第2章 GitLab CI与GitHub Actions → 第3章 制品管理与安全扫描 → 第4章 DevOps文化与工具链 → 项目五</div>
+</div>
+
+<!-- ===== 第1章 Jenkins持续集成 ===== -->
+<div class="chapter" id="p5c1">
+<div class="ch-head"><div class="ch-num">1</div><h4>第1章 Jenkins持续集成</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">CI/CD概念与Jenkins安装配置（Master/Agent）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>CI/CD</strong>是现代软件交付的核心方法论。<strong>CI（持续集成）</strong>：开发人员频繁提交代码到共享仓库，自动触发构建+测试，快速发现集成问题。"早集成、常集成"取代了传统开发中"最后才合并、一合就炸"的痛苦。<strong>CD（持续交付/部署）</strong>：在CI基础上，自动把通过测试的代码部署到测试/生产环境。</p>
+<p><strong>Jenkins</strong>是最流行的开源CI/CD工具，Java编写。架构：Master（Web界面+调度任务）→ Agent（执行构建的节点，可以是多台机器，按标签分配任务）。Jenkins的庞大插件生态（1500+插件）让它几乎能对接所有工具。</p>
+<p><strong>Pipeline as Code</strong>：Jenkinsfile（Groovy语法）定义整个CI/CD流程，存放在代码仓库中，版本可控。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># Docker安装Jenkins
+docker run -d --name jenkins -p 8080:8080 -p 50000:50000   -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts
+# 获取初始密码
+docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">Pipeline流水线脚本（Declarative Pipeline）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Declarative Pipeline</strong>是Jenkins推荐的流水线写法（相比Scripted Pipeline更简洁）。结构：<code>pipeline{ agent{...} stages{ stage('Build'){ steps{...} } stage('Test'){...} stage('Deploy'){...} } }</code>。</p>
+<p>每个stage代表一个阶段，所有stage都成功流水线才成功。常见流水线阶段：Checkout（拉代码）→ Build（编译/构建镜像）→ Test（单元测试/集成测试）→ Security Scan（安全扫描）→ Deploy Staging（部署测试环境）→ Deploy Production（部署生产，需人工审批）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>pipeline {
+    agent any
+    environment {
+        DOCKER_REGISTRY = 'registry.internal:5000'
+    }
+    stages {
+        stage('Checkout') {
+            steps { git 'https://gitlab.com/myapp.git' }
+        }
+        stage('Build Image') {
+            steps { sh 'docker build -t $DOCKER_REGISTRY/myapp:$BUILD_NUMBER .' }
+        }
+        stage('Push') {
+            steps { sh 'docker push $DOCKER_REGISTRY/myapp:$BUILD_NUMBER' }
+        }
+        stage('Deploy to K8s') {
+            steps { sh 'kubectl set image deployment/myapp myapp=$DOCKER_REGISTRY/myapp:$BUILD_NUMBER' }
+        }
+    }
+    post {
+        failure { emailext to:'ops@company.com', subject:"构建失败" }
+    }
+}</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第1章 Jenkins持续集成</h5>
+<div class="ex-section"><h6>一、选择题</h6>
+<ol><li>CI（持续集成）的核心目标是？<br>A.部署到生产 B.频繁合并代码+自动测试 C.写文档 D.做备份</li></ol></div>
+<div class="ex-section"><h6>二、实操题</h6>
+<ol><li>用Docker部署Jenkins，编写Pipeline脚本实现：拉代码→构建Docker镜像→推送到私有仓库→部署到K8s。</li></ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.B</div>
+</div>
+
+</div></div>
+
+<!-- ===== 第2章 GitLab CI与GitHub Actions ===== -->
+<div class="chapter" id="p5c2">
+<div class="ch-head"><div class="ch-num">2</div><h4>第2章 GitLab CI/ CD与GitHub Actions</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">GitLab CI流水线语法（.gitlab-ci.yml）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>GitLab CI</strong>是GitLab内置的CI/CD功能（无需额外部署Jenkins）。配置文件<code>.gitlab-ci.yml</code>放在仓库根目录，代码推送自动触发流水线。相比Jenkins的优势：一体化（代码托管+CI/CD同一平台）、配置简单、GitLab Runner自动管理。</p>
+<p><strong>核心概念</strong>：<code>stages</code>定义阶段顺序、<code>job</code>定义具体任务（每个job在一个Runner上执行）、<code>script</code>执行命令、<code>artifacts</code>产物传递（如构建的jar传给部署阶段）、<code>environment</code>环境管理。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># .gitlab-ci.yml
+stages: [build, test, deploy]
+variables:
+  DOCKER_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+build:
+  stage: build
+  script:
+    - docker build -t $DOCKER_IMAGE .
+    - docker push $DOCKER_IMAGE
+test:
+  stage: test
+  script: [docker run --rm $DOCKER_IMAGE pytest]
+deploy:
+  stage: deploy
+  script: [kubectl set image deployment/app app=$DOCKER_IMAGE]
+  only: [main]</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">GitHub Actions工作流语法</div><div class="kp-tags"><span class="tag tag-good">良好</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>GitHub Actions</strong>是GitHub的CI/CD，配置放在<code>.github/workflows/xxx.yml</code>。核心概念：<code>workflow</code>（工作流）→<code>job</code>（任务，可并行）→<code>step</code>（步骤，可执行action或shell命令）。<code>on: push/pull_request/schedule</code>控制触发条件。</p>
+<p>GitHub Marketplace有大量现成Action（如actions/checkout拉代码、docker/build-push-action构建推送镜像）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>name: Deploy to K8s
+on:
+  push: {branches: [main]}
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build and Push
+      uses: docker/build-push-action@v5
+      with: {push: true, tags: registry/myapp:latest}
+    - name: Deploy
+      run: kubectl set image deployment/myapp myapp=registry/myapp:latest</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第2章 GitLab CI/GitHub Actions</h5>
+<div class="ex-section"><h6>实操题</h6>
+<ol><li>编写.gitlab-ci.yml实现代码推送→自动构建Docker镜像→部署到K8s测试环境。</li></ol></div>
+</div>
+
+</div></div>
+
+<!-- ===== 第3章 制品管理与安全扫描 ===== -->
+<div class="chapter" id="p5c3">
+<div class="ch-head"><div class="ch-num">3</div><h4>第3章 制品管理与安全扫描</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">Nexus制品仓库（Maven/npm/Docker）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Nexus</strong>是企业级制品仓库（Artifact Repository）。作用：①<strong>统一存储</strong>：所有构建产物（jar包/npm包/Docker镜像/Python包）存在一个地方，不用到处找；②<strong>代理缓存</strong>：缓存外部仓库的依赖（如Maven Central），内网下载飞快；③<strong>安全审计</strong>：知道每个制品是谁构建、什么时候构建的。</p>
+<p>Nexus支持多种格式：Maven/Gradle（Java）、npm（前端）、Docker（镜像仓库）、PyPI（Python包）、Helm Chart。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># Docker安装Nexus
+docker run -d --name nexus -p 8081:8081 sonatype/nexus3
+# 创建Docker hosted仓库后：
+docker tag myapp:1.0 nexus.internal:8082/myapp:1.0
+docker push nexus.internal:8082/myapp:1.0</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">SonarQube代码质量扫描、Trivy镜像漏洞扫描</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>SonarQube</strong>：静态代码分析平台。扫描Bug、漏洞、代码异味、重复率、测试覆盖率，给代码质量打分（A-E）并设置质量门禁（Quality Gate，不通过不允许合并）。</p>
+<p><strong>Trivy</strong>：轻量级容器镜像漏洞扫描工具。扫描Docker镜像中的OS包和应用依赖的已知漏洞（CVE）。一行命令：<code>trivy image myapp:latest</code>。CI流水线中加入Trivy扫描，有高危漏洞则阻断部署。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># Trivy镜像扫描
+trivy image --severity HIGH,CRITICAL myapp:1.0
+# SonarQube扫描（Jenkins Pipeline）
+stage('SonarQube') {
+    steps {
+        sh 'sonar-scanner -Dsonar.projectKey=myapp -Dsonar.host.url=http://sonar:9000'
+    }
+}</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第3章 制品管理与安全扫描</h5>
+<div class="ex-section"><h6>实操题</h6>
+<ol><li>部署Nexus并配置为Docker私有仓库，在CI流水线中推送镜像到Nexus。</li></ol></div>
+</div>
+
+</div></div>
+
+<!-- 项目五 -->
+<div class="project" id="proj5">
+<h3>项目五：企业级CI/CD流水线搭建</h3>
+<div class="proj-grid">
+<div><strong>目标</strong>：搭建企业级CI/CD流水线，实现代码提交到生产部署的全自动化</div>
+<div><strong>核心技能</strong>：Jenkins Pipeline/GitLab CI/Nexus/SonarQube/Trivy/K8s部署</div>
+<div><strong>达标标准</strong>：代码push→自动构建→代码扫描→镜像构建→漏洞扫描→部署到K8s→通知，全流程自动化</div>
+<div><strong>产出物</strong>：Jenkinsfile、GitLab CI配置、SonarQube质量门禁配置、流水线运行报告</div>
+</div>
+</div>
+
+<!-- ==================== 阶段六 监控与日志体系 ==================== -->
+<div class="phase" id="p6">
+<h2>阶段六：企业级监控与日志体系</h2>
+<div class="meta">第1章 Zabbix企业级监控 → 第2章 ELK日志系统 → 第3章 可观测性体系 → 项目六</div>
+</div>
+
+<!-- ===== 第1章 Zabbix ===== -->
+<div class="chapter" id="p6c1">
+<div class="ch-head"><div class="ch-num">1</div><h4>第1章 Zabbix企业级监控</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">Zabbix架构（Server/Agent/Proxy）、安装部署</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Zabbix</strong>是企业级开源监控解决方案，广泛应用于传统数据中心（物理机和VM）。与Prometheus的对比：Zabbix偏向传统IT基础设施（网络设备/存储/Windows），Prometheus偏向云原生（K8s/微服务）。中大型企业通常是两者混用。</p>
+<p><strong>架构组件</strong>：①<strong>Zabbix Server</strong>（核心：采集数据+告警判断+告警发送）②<strong>Zabbix Agent</strong>（部署在被监控机器上，采集CPU/内存/磁盘/进程等）③<strong>Zabbix Proxy</strong>（分布式代理，用于跨网络/大规模环境的分层采集）④<strong>Zabbix Web</strong>（PHP前端，Dashboard+配置管理）。</p>
+<p><strong>数据库</strong>：MySQL或PostgreSQL存储监控历史数据。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 安装Zabbix 7.0 Server
+rpm -Uvh https://repo.zabbix.com/zabbix/7.0/rhel/9/x86_64/zabbix-release-7.0-1.el9.noarch.rpm
+dnf install -y zabbix-server-mysql zabbix-web-mysql zabbix-agent
+# 初始化数据库
+mysql -e "create database zabbix character set utf8mb4 collate utf8mb4_bin"
+mysql -e "create user zabbix@localhost identified by 'password'"
+zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql zabbix</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">主机与监控项（Item）、触发器（Trigger）、告警媒介</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>主机（Host）</strong>：被监控对象（服务器/交换机/虚拟机）。每个主机关联模板（Template），模板包含一组Item+Trigger+Graph。</p>
+<p><strong>Item（监控项）</strong>：采集的具体指标（如CPU利用率/可用内存/磁盘空间/服务状态）。分为：Agent采集（Zabbix Agent自动采集）、SNMP采集（网络设备）、IPMI采集（服务器硬件）、自定义脚本采集。</p>
+<p><strong>Trigger（触发器）</strong>：基于Item数据定义告警条件。如<code>{host:system.cpu.util[,idle].last()}&lt;20</code>表示CPU空闲率低于20%触发告警。支持多条件组合和恢复表达式。</p>
+<p><strong>告警媒介</strong>：Email/短信/企业微信/钉钉/Webhook等。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 在被监控机器上安装Agent
+dnf install -y zabbix-agent
+vim /etc/zabbix/zabbix_agentd.conf
+# Server=ZabbixServerIP
+# ServerActive=ZabbixServerIP
+# Hostname=web-server-01
+systemctl start zabbix-agent</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第1章 Zabbix</h5>
+<div class="ex-section"><h6>实操题</h6>
+<ol><li>部署Zabbix Server，添加3台被监控主机，配置CPU>90%触发钉钉告警。</li></ol></div>
+</div>
+
+</div></div>
+
+<!-- ===== 第2章 ELK日志系统 ===== -->
+<div class="chapter" id="p6c2">
+<div class="ch-head"><div class="ch-num">2</div><h4>第2章 ELK日志采集与分析系统</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">Elasticsearch集群部署、索引与分片、查询DSL</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Elasticsearch（ES）</strong>是分布式全文搜索引擎，ELK的核心存储和查询引擎。基于Apache Lucene，提供RESTful JSON接口。运维中ES存储海量日志（每天TB级别），支持近实时的全文搜索和聚合分析。</p>
+<p><strong>核心概念</strong>：①<strong>索引(Index)</strong>≈数据库，一个ES集群可有多个索引。②<strong>分片(Shard)</strong>：索引的水平拆分。一个索引分为多个主分片（可分布在多个节点上并行处理）和副本分片（冗余，提高读性能+容错）。③<strong>Mapping</strong>：字段类型定义（类似表的Schema）。④<strong>搜索DSL</strong>：JSON格式的查询语言。<code>{"query":{"match":{"message":"ERROR"}}}</code>全文搜索，<code>{"aggs":{"by_host":{"terms":{"field":"host"}}}}</code>按主机分组统计。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># Docker Compose部署ES集群
+version: '3'
+services:
+  es01:
+    image: elasticsearch:8.12
+    environment:
+    - discovery.type=single-node
+    - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+    ports: ["9200:9200"]
+    volumes: ["es_data:/usr/share/elasticsearch/data"]
+# 查询DSL
+curl -X POST localhost:9200/logs/_search -H 'Content-Type:application/json' -d'
+{"query":{"bool":{"must":[{"match":{"level":"ERROR"}},{"range":{"@timestamp":{"gte":"now-1h"}}}]}}}'</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">Logstash日志采集、过滤（Grok）、输出</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Logstash</strong>是ELK的数据处理管道，负责采集→解析→转换→输出日志。三段式配置：<code>input</code>（指定来源：文件/Beats/Kafka/Redis）→<code>filter</code>（解析和转换：Grok解析非结构化日志、date转换时间、mutate修改字段）→<code>output</code>（输出目标：ES/文件/Kafka）。</p>
+<p><strong>Grok</strong>是Logstash的核心解析插件，用正则表达式模式从非结构化日志中提取字段。如<code>%{IP:client_ip} %{WORD:method} %{URIPATHPARAM:request}</code>可以将Apache日志行解析为结构化字段。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># logstash.conf
+input {
+  beats { port => 5044 }
+}
+filter {
+  grok {
+    match => { "message" => "%{COMBINEDAPACHELOG}" }
+  }
+  date { match => ["timestamp", "dd/MMM/yyyy:HH:mm:ss Z"] }
+}
+output {
+  elasticsearch { hosts => ["es:9200"] index => "web-logs-%{+YYYY.MM.dd}" }
+}</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">3</div><div class="kp-title">Kibana可视化、Filebeat轻量采集</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Kibana</strong>是ELK的可视化界面。核心功能：①<strong>Discover</strong>：搜索和浏览日志；②<strong>Dashboard</strong>：可视化面板（柱状图/饼图/折线图/地图/热力图）；③<strong>Canvas</strong>：制作汇报用的大屏；④<strong>Dev Tools</strong>：直接写ES查询调试。</p>
+<p><strong>Filebeat</strong>：轻量级日志采集器（替代重量级的Logstash做采集端）。部署在每个日志源机器上，尾部读取日志文件发送到Logstash或直接到ES。对比Logstash：Filebeat极轻量（几十MB内存），适合大规模部署。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># Filebeat配置
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths: [/var/log/nginx/access.log]
+  fields: {app: nginx, env: production}
+output.logstash:
+  hosts: ["logstash:5044"]
+# Kibana常用查询（KQL）
+# message: "ERROR" AND host: "web-*"
+# @timestamp > now-1h</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第2章 ELK</h5>
+<div class="ex-section"><h6>实操题</h6>
+<ol><li>用Docker Compose部署ELK（ES+Logstash+Kibana+Filebeat），采集Nginx日志并在Kibana中创建访问量Dashboard。</li></ol></div>
+</div>
+
+</div></div>
+
+<!-- ===== 第3章 可观测性体系 ===== -->
+<div class="chapter" id="p6c3">
+<div class="ch-head"><div class="ch-num">3</div><h4>第3章 可观测性体系（OpenTelemetry/Jaeger/Grafana）</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">可观测性三支柱：Metrics/Logs/Traces</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>可观测性（Observability）</strong>是比传统监控更高级的概念。三个支柱：</p>
+<p>①<strong>Metrics（指标）</strong>：数值型数据，回答"系统有什么问题？"——CPU 90%、请求延迟 500ms。Prometheus/Zabbix是代表。</p>
+<p>②<strong>Logs（日志）</strong>：文本型数据，回答"为什么出问题？"——"NullPointerException at line 42"。ELK是代表。</p>
+<p>③<strong>Traces（链路追踪）</strong>：请求在微服务间的完整路径，回答"问题出在哪个环节？"——请求经过API Gateway→Auth Service→Order Service→DB，Order Service耗时3秒。Jaeger/Zipkin是代表。</p>
+<p>三支柱关联：一条Trace ID可以串起所有相关Log和Metrics，实现"发现异常→定位到哪个服务→查看关联日志"的完整排错链。</p>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">OpenTelemetry分布式追踪、Jaeger部署与使用</div><div class="kp-tags"><span class="tag tag-good">良好</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>OpenTelemetry（OTel）</strong>是CNCF的可观测性标准，定义统一的API/SDK/协议来收集Metrics+Logs+Traces。解决了"每个工具都有自己的采集方式"的碎片化问题。</p>
+<p><strong>Jaeger</strong>是分布式追踪后端（类似ES之于日志），用于存储和可视化Trace数据。核心概念：<strong>Span</strong>：一个操作单元（一次HTTP调用/一次数据库查询）、<strong>Trace</strong>：多个Span组成一个完整请求链路。Jaeger UI可以展示调用拓扑和水瀑布图。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># Deployment中注入OpenTelemetry自动探针
+apiVersion: apps/v1
+kind: Deployment
+spec:
+  template:
+    metadata:
+      annotations:
+        instrumentation.opentelemetry.io/inject-java: "true"
+# 部署Jaeger
+kubectl create namespace observability
+kubectl apply -f https://github.com/jaegertracing/jaeger-operator/releases/latest/download/jaeger-operator.yaml</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第3章 可观测性</h5>
+<div class="ex-section"><h6>思考题</h6>
+<ol><li>Metrics、Logs、Traces三者各自回答什么问题？一个典型的微服务排错流程如何串联三者？</li></ol></div>
+</div>
+
+</div></div>
+
+<!-- 项目六 -->
+<div class="project" id="proj6">
+<h3>项目六：企业级监控日志平台搭建</h3>
+<div class="proj-grid">
+<div><strong>目标</strong>：搭建企业级Zabbix+ELK+Prometheus三大监控日志平台</div>
+<div><strong>核心技能</strong>：Zabbix Server+Agent/ELK Stack/Prometheus+Grafana/Jaeger</div>
+<div><strong>达标标准</strong>：实现基础设施监控+应用日志分析+容器监控+分布式链路追踪全覆盖</div>
+<div><strong>产出物</strong>：Zabbix监控模板、ELK Pipeline配置、Grafana Dashboard、运维监控手册</div>
+</div>
+</div>
+
+<!-- ==================== 阶段七 自动化运维与IaC ==================== -->
+<div class="phase" id="p7">
+<h2>阶段七：自动化运维与基础设施即代码（IaC）</h2>
+<div class="meta">第1章 Ansible自动化运维 → 第2章 Terraform基础设施即代码 → 第3章 配置管理与GitOps → 项目七</div>
+</div>
+
+<!-- ===== 第1章 Ansible ===== -->
+<div class="chapter" id="p7c1">
+<div class="ch-head"><div class="ch-num">1</div><h4>第1章 Ansible自动化运维</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">Ansible架构、Inventory主机清单、Ad-Hoc命令</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Ansible</strong>是无代理（Agentless）的自动化运维工具。对比其他工具：SaltStack/Puppet需要Agent，Ansible通过SSH直接管理目标机器，无需安装客户端，上手极快。</p>
+<p><strong>核心组件</strong>：①<strong>Inventory</strong>：主机清单（定义要管理哪些机器，按组分类）。②<strong>Module</strong>：功能模块（如yum安装软件、copy复制文件、service管理服务、user管理用户）。③<strong>Playbook</strong>：YAML格式的自动化剧本（多任务编排）。④<strong>Ad-Hoc</strong>：一次性命令（如<code>ansible all -m ping</code>测试连通性）。</p>
+<p><strong>幂等性（Idempotency）</strong>：Ansible的核心特性——重复执行同一任务，结果一致（不会重复安装已安装的软件）。这是自动化运维安全性的保证。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># Inventory文件
+[web]
+192.168.1.10
+192.168.1.11
+[db]
+192.168.1.20
+[all:vars]
+ansible_user=root
+# Ad-Hoc命令
+ansible all -m ping
+ansible web -m yum -a "name=nginx state=present"
+ansible web -m service -a "name=nginx state=started enabled=yes"</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">Playbook剧本、Roles角色、变量与模板</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Playbook</strong>是Ansible的核心，YAML格式定义一系列任务（task）。一个Playbook可以包含多个Play（每个Play针对一组主机）。</p>
+<p><strong>Roles</strong>：Playbook的模块化组织方式。一个Role包含：tasks（任务）、handlers（触发器，如配置变更后重启服务）、templates（Jinja2模板）、vars（变量）、defaults（默认变量）、files（静态文件）。Roles让复杂的自动化任务变得可复用、可维护。</p>
+<p><strong>Jinja2模板</strong>：动态生成配置文件。如Nginx配置模板中<code>worker_processes {{ ansible_processor_vcpus }};</code>根据目标机器CPU核数自动设置。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># playbook.yml
+- hosts: web
+  become: yes
+  vars:
+    nginx_port: 80
+  tasks:
+  - name: Install Nginx
+    yum: {name: nginx, state: present}
+  - name: Copy config
+    template: {src: nginx.conf.j2, dest: /etc/nginx/nginx.conf}
+    notify: Restart Nginx
+  - name: Start Nginx
+    service: {name: nginx, state: started, enabled: yes}
+  handlers:
+  - name: Restart Nginx
+    service: {name: nginx, state: restarted}</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第1章 Ansible</h5>
+<div class="ex-section"><h6>一、选择题</h6>
+<ol><li>Ansible相比Puppet/SaltStack的最大特点是？<br>A.功能更强 B.无Agent（基于SSH） C.更快 D.免费</li>
+<li>Ansible的"幂等性"是指？<br>A.执行快 B.重复执行结果一致 C.并行执行 D.自动重试</li></ol></div>
+<div class="ex-section"><h6>二、实操题</h6>
+<ol><li>编写Ansible Playbook批量部署Nginx到3台Web服务器，使用Jinja2模板动态生成配置。</li></ol></div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.B 2.B</div>
+</div>
+
+</div></div>
+
+<!-- ===== 第2章 Terraform ===== -->
+<div class="chapter" id="p7c2">
+<div class="ch-head"><div class="ch-num">2</div><h4>第2章 Terraform基础设施即代码</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">IaC概念、Terraform架构、Provider、State</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>IaC（Infrastructure as Code）</strong>：用代码（而非手动点击控制台）定义和管理基础设施（服务器/网络/数据库/负载均衡）。好处：①<strong>版本可控</strong>（基础设施变更也能git diff）②<strong>可复现</strong>（同一份代码在测试/生产环境创建相同架构）③<strong>自动化</strong>（CI/CD自动创建环境）。</p>
+<p><strong>Terraform</strong>是最流行的IaC工具（HashiCorp出品）。核心概念：①<strong>Provider</strong>：云厂商插件（AWS/Aliyun/Tencent Cloud/VMware），定义如何与云API交互。②<strong>Resource</strong>：要创建的资源（如aws_instance、alicloud_vpc）。③<strong>State</strong>：Terraform记录当前基础设施实际状态的文件（terraform.tfstate），用于对比期望状态和实际状态。④<strong>Plan/Apply</strong>：plan预览变更，apply执行变更。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># main.tf - 阿里云创建ECS
+terraform {
+  required_providers {
+    alicloud = {source = "aliyun/alicloud", version = "1.200.0"}
+  }
+}
+provider "alicloud" {
+  region = "cn-hangzhou"
+}
+resource "alicloud_instance" "web" {
+  instance_name = "web-server"
+  image_id      = "ubuntu_22_04_x64"
+  instance_type = "ecs.g6.large"
+  vswitch_id    = "vsw-xxxxx"
+}
+# terraform init && terraform plan && terraform apply</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">Terraform工作流：init/plan/apply/destroy</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>标准工作流</strong>：①<code>terraform init</code>：初始化（下载Provider插件、配置Backend）。②<code>terraform plan</code>：预览变更（显示将创建/修改/删除哪些资源，不实际执行）。③<code>terraform apply</code>：执行变更（创建/更新资源）。④<code>terraform destroy</code>：销毁所有资源（清理测试环境）。</p>
+<p><strong>变量与模块化</strong>：<code>variables.tf</code>定义输入变量（如region/instance_type），<code>terraform.tfvars</code>提供变量值，<code>module</code>复用基础设施模块（如VPC模块、K8s集群模块）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># variables.tf
+variable "region" {default = "cn-hangzhou"}
+variable "instance_count" {default = 3}
+# 使用count创建多台实例
+resource "alicloud_instance" "web" {
+  count         = var.instance_count
+  instance_name = "web-${count.index}"
+  # ...
+}
+# 工作流
+terraform init
+terraform plan -out=tfplan
+terraform apply tfplan</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第2章 Terraform</h5>
+<div class="ex-section"><h6>实操题</h6>
+<ol><li>编写Terraform配置在云上创建VPC+2台ECS+1个负载均衡，并用plan预览变更。</li></ol></div>
+</div>
+
+</div></div>
+
+<!-- 项目七 -->
+<div class="project" id="proj7">
+<h3>项目七：自动化运维与IaC基础设施</h3>
+<div class="proj-grid">
+<div><strong>目标</strong>：用Ansible+Terraform实现基础设施自动化部署</div>
+<div><strong>核心技能</strong>：Ansible Playbook/Roles/Terraform Provider/State管理</div>
+<div><strong>达标标准</strong>：Terraform一键创建云资源+Ansible自动配置，全流程无需手动操作</div>
+<div><strong>产出物</strong>：Terraform配置、Ansible Playbook+Roles、自动化部署文档</div>
+</div>
+</div>
+
+<!-- ==================== 阶段八 性能优化与故障排查 ==================== -->
+<div class="phase" id="p8">
+<h2>阶段八：性能优化与故障排查</h2>
+<div class="meta">第1章 Linux性能分析工具 → 第2章 应用性能优化 → 第3章 故障排查方法论 → 项目八</div>
+</div>
+
+<!-- ===== 第1章 Linux性能分析 ===== -->
+<div class="chapter" id="p8c1">
+<div class="ch-head"><div class="ch-num">1</div><h4>第1章 Linux性能分析与调优</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">CPU/内存/磁盘/网络性能分析工具</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>性能分析工具箱</strong>：</p>
+<p><strong>CPU</strong>：<code>top/htop</code>（实时进程CPU排序）、<code>mpstat -P ALL 1</code>（每核CPU使用率）、<code>pidstat -u 1</code>（进程级CPU）、<code>perf</code>（CPU性能剖析，找热点函数）。</p>
+<p><strong>内存</strong>：<code>free -h</code>（内存概览）、<code>vmstat 1</code>（虚拟内存统计）、<code>pidstat -r 1</code>（进程内存）、<code>smem</code>（按进程统计PSS内存）。</p>
+<p><strong>磁盘IO</strong>：<code>iostat -x 1</code>（磁盘IO利用率和等待时间）、<code>iotop</code>（进程级IO）、<code>df -h</code>/<code>du -sh</code>（空间使用）。</p>
+<p><strong>网络</strong>：<code>iftop</code>（实时带宽）、<code>ss -tunlp</code>（端口监听）、<code>netstat -i</code>（网络接口统计）、<code>tcpdump</code>（抓包）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 综合性能分析
+top -b -n 1 | head -20   # 查看CPU占用最高的进程
+iostat -x 1 5            # 磁盘IO瓶颈分析
+vmstat 1 5               # 系统整体性能快照
+ss -tunlp | grep :80     # 检查80端口监听状态</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">系统调优（sysctl/kernel参数）</div><div class="kp-tags"><span class="tag tag-good">良好</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>sysctl</strong>是Linux内核参数运行时配置工具。常见调优项：①<strong>文件描述符限制</strong>：高并发服务需要提高<code>fs.file-max</code>和进程级ulimit。②<strong>TCP参数</strong>：<code>net.ipv4.tcp_tw_reuse=1</code>（TIME_WAIT复用）、<code>net.core.somaxconn</code>（最大连接队列）。③<strong>虚拟内存</strong>：<code>vm.swappiness</code>（控制swap使用倾向，数据库服务器建议设低）。</p>
+<p><strong>调优原则</strong>：先测量（找到瓶颈）→再调优（针对性修改）→后验证（确认改善）。不要盲目调参。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 临时修改
+sysctl -w net.ipv4.tcp_tw_reuse=1
+# 永久修改
+echo "net.ipv4.tcp_tw_reuse = 1" >> /etc/sysctl.conf
+sysctl -p
+# 查看所有参数
+sysctl -a | grep tcp</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第1章 Linux性能分析</h5>
+<div class="ex-section"><h6>实操题</h6>
+<ol><li>使用top/iostat/vmstat分析一台负载高的服务器，定位是CPU/内存/磁盘/网络哪个瓶颈。</li></ol></div>
+</div>
+
+</div></div>
+
+<!-- ===== 第2章 应用性能优化 ===== -->
+<div class="chapter" id="p8c2">
+<div class="ch-head"><div class="ch-num">2</div><h4>第2章 应用性能优化</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">Web服务优化（Nginx/数据库/缓存）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Nginx优化</strong>：①<code>worker_processes auto</code>（按CPU核数设置worker）②<code>worker_connections 10240</code>（每worker最大连接）③<code>keepalive_timeout</code>（长连接复用）④<code>gzip on</code>（压缩传输）⑤<code>proxy_cache</code>（反向代理缓存）⑥<code>sendfile on</code>（零拷贝传输）。</p>
+<p><strong>数据库优化</strong>：①<strong>索引</strong>（最关键的优化，避免全表扫描）②<strong>慢查询日志</strong>（slow_query_log定位慢SQL）③<strong>连接池</strong>（避免频繁建立连接）④<strong>读写分离</strong>（主写从读）⑤<strong>分库分表</strong>（数据量过大时）。</p>
+<p><strong>缓存优化</strong>：①<strong>多级缓存</strong>（浏览器缓存→CDN→Nginx→Redis→DB）②<strong>缓存预热</strong>（系统启动前加载热点数据）③<strong>缓存粒度</strong>（缓存对象而非整个页面）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># Nginx性能配置
+worker_processes auto;
+events { worker_connections 10240; }
+http {
+  gzip on;
+  gzip_types text/css application/json;
+  proxy_cache_path /data/nginx/cache levels=1:2 keys_zone=mycache:10m;
+  upstream backend { keepalive 32; server 10.0.0.1:8080; }
+}
+# MySQL慢查询
+SET GLOBAL slow_query_log = 'ON';
+SET GLOBAL long_query_time = 1;  # 超过1秒记录</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">JVM调优、连接池、异步化</div><div class="kp-tags"><span class="tag tag-good">良好</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>JVM调优</strong>：①<strong>堆内存</strong>：<code>-Xms</code>初始堆、<code>-Xmx</code>最大堆（生产环境两者设相同避免动态扩容抖动）。②<strong>GC算法</strong>：G1 GC（JDK9+默认，适合大堆低延迟）。③<strong>GC日志</strong>：<code>-Xlog:gc*</code>分析GC停顿。</p>
+<p><strong>连接池</strong>：数据库连接池（HikariCP）、HTTP连接池（避免每次请求新建连接）。连接池大小需要调优——太小并发上不去，太大消耗资源。</p>
+<p><strong>异步化</strong>：将非核心流程（发邮件/写日志/通知）异步化（消息队列），主流程快速返回，提升响应速度。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># JVM启动参数
+java -Xms4g -Xmx4g -XX:+UseG1GC   -Xlog:gc*:file=/var/log/gc.log:time   -jar myapp.jar
+# HikariCP连接池配置
+spring.datasource.hikari.maximum-pool-size=20
+spring.datasource.hikari.minimum-idle=5</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第2章 应用性能优化</h5>
+<div class="ex-section"><h6>思考题</h6>
+<ol><li>一个Web接口响应慢，请列出你的排查思路（从客户端到数据库逐层分析）。</li></ol></div>
+</div>
+
+</div></div>
+
+<!-- ===== 第3章 故障排查方法论 ===== -->
+<div class="chapter" id="p8c3">
+<div class="ch-head"><div class="ch-num">3</div><h4>第3章 故障排查方法论与实战</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">故障排查方法论（USE/RED/GREP方法）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>USE方法</strong>（资源分析）：对每种资源（CPU/内存/磁盘/网络），检查三个维度：<strong>Utilization</strong>（利用率）、<strong>Saturation</strong>（饱和度，队列长度）、<strong>Errors</strong>（错误）。适合系统资源瓶颈排查。</p>
+<p><strong>RED方法</strong>（微服务分析）：对每种请求（服务），检查：<strong>Rate</strong>（请求率）、<strong>Errors</strong>（错误率）、<strong>Duration</strong>（延迟）。适合微服务性能分析。</p>
+<p><strong>故障排查黄金法则</strong>：①先复现（能复现的问题才能解决）②二分法（逐步缩小范围）③变更关联（最近改了什么？）④数据说话（用监控数据而非猜测）。</p>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">典型故障案例：OOM/死锁/网络分区/雪崩</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>OOM（Out of Memory）</strong>：内存耗尽，进程被OOM Killer杀掉。排查：<code>dmesg | grep -i oom</code>看被杀进程、<code>free -h</code>看内存使用、分析内存泄漏（Java用jmap/jstat，Python用memory_profiler）。</p>
+<p><strong>死锁</strong>：多个进程互相等待对方释放资源。排查：<code>jstack</code>看Java线程栈、<code>lsof</code>看文件锁、<code>strace</code>跟踪系统调用。</p>
+<p><strong>网络分区</strong>：网络中断导致集群节点间无法通信。排查：<code>ping</code>/<code>traceroute</code>测连通性、<code>tcpdump</code>抓包、检查防火墙规则。</p>
+<p><strong>雪崩</strong>：一个服务故障导致依赖它的服务连锁故障。排查：看调用链（Jaeger）、限流/熔断/降级是否生效、依赖服务健康状态。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># OOM排查
+dmesg | grep -i "out of memory"
+# 死锁排查（Java）
+jstack <pid> | grep -A 20 "BLOCKED"
+# 网络分区排查
+ping -c 5 target-host
+traceroute target-host
+tcpdump -i eth0 host target-ip -nn</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第3章 故障排查</h5>
+<div class="ex-section"><h6>实操题</h6>
+<ol><li>模拟一个服务OOM场景，使用dmesg/jstat等工具定位问题并给出解决方案。</li></ol></div>
+</div>
+
+</div></div>
+
+<!-- 项目八 -->
+<div class="project" id="proj8">
+<h3>项目八：性能优化与故障排查实战</h3>
+<div class="proj-grid">
+<div><strong>目标</strong>：对生产级应用进行性能优化和故障排查</div>
+<div><strong>核心技能</strong>：Linux性能工具/Nginx+MySQL调优/JVM调优/USE+RED方法</div>
+<div><strong>达标标准</strong>：能将系统QPS提升3倍+，能独立排查OOM/死锁/网络分区等典型故障</div>
+<div><strong>产出物</strong>：性能优化报告、故障排查手册、调优前后对比数据</div>
+</div>
+</div>
+
+<!-- ==================== 阶段九 高级运维专题 ==================== -->
+<div class="phase" id="p9">
+<h2>阶段九：高级运维专题</h2>
+<div class="meta">第1章 云原生存储与网络 → 第2章 微服务架构 → 第3章 安全加固 → 项目九</div>
+</div>
+
+<!-- ===== 第1章 云原生存储与网络 ===== -->
+<div class="chapter" id="p9c1">
+<div class="ch-head"><div class="ch-num">1</div><h4>第1章 云原生存储与网络</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">Ceph分布式存储（RADOS/RBD/CephFS/RGW）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Ceph</strong>是开源分布式存储系统，统一的架构同时支持块存储、文件存储和对象存储。核心架构：①<strong>RADOS</strong>：底层对象存储集群（OSD存储节点+Monitor集群状态）。②<strong>RBD</strong>：块存储（虚拟机磁盘/K8s PV）。③<strong>CephFS</strong>：POSIX兼容文件系统。④<strong>RGW</strong>：对象存储（S3/Swift兼容API）。</p>
+<p>Ceph的核心优势：<strong>CRUSH算法</strong>——客户端可以自己算出数据存在哪个OSD，无需中心元数据服务器（不同于HDFS的NameNode单点问题）。副本和纠删码两种数据保护模式。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 部署Ceph集群
+cephadm bootstrap --mon-ip 192.168.1.100
+ceph orch apply osd --all-available-devices
+# 创建RBD块存储
+ceph osd pool create k8s-pool 128
+rbd create k8s-pool/pvc-xxx --size 10G
+# 挂载为K8s PV
+# 通过RBD CSI Driver自动管理</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">Calico/Flannel/Cilium网络插件原理</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p>K8s本身不提供网络实现，需要网络插件（CNI）来实现Pod间通信。</p>
+<p><strong>Flannel</strong>：最简单，VXLAN或host-gw模式，适合小规模集群。原理：给每个Node分配子网，跨Node流量通过VXLAN隧道封装。</p>
+<p><strong>Calico</strong>：性能和策略最强。基于BGP协议路由（不封装，性能好）或IPIP/VXLAN。支持NetworkPolicy（Pod级别防火墙规则）。</p>
+<p><strong>Cilium</strong>：新一代，基于eBPF内核技术，性能极高且支持L7层网络策略（按HTTP方法/URL过滤）。适合微服务+服务网格场景。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 安装Calico
+kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.27/manifests/tigera-operator.yaml
+# NetworkPolicy示例（允许nginx Pod只能被web访问）
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: nginx-policy}
+spec:
+  podSelector: {matchLabels: {app: nginx}}
+  ingress:
+  - from: [{podSelector: {matchLabels: {app: web}}}]
+    ports: [{port: 80}]</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第1章 云原生存储与网络</h5>
+<div class="ex-section"><h6>思考题</h6>
+<ol><li>比较Ceph、NFS和云盘作为K8s存储的优缺点。Flannel和Calico各自适合什么场景？</li></ol></div>
+</div>
+
+</div></div>
+
+<!-- ===== 第2章 微服务架构 ===== -->
+<div class="chapter" id="p9c2">
+<div class="ch-head"><div class="ch-num">2</div><h4>第2章 微服务架构与治理</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">微服务架构设计原则（服务拆分/API网关/注册中心）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>微服务</strong>是把单体应用拆分成多个独立的小服务，每个服务独立开发、部署、扩展。优势：独立扩展（只扩展瓶颈服务）、技术异构（每个服务可用不同技术栈）、故障隔离（一个服务挂了不影响整体）。</p>
+<p><strong>核心组件</strong>：①<strong>API网关</strong>（入口路由/限流/认证/日志，如Kong/Nginx/Spring Cloud Gateway）②<strong>注册中心</strong>（服务发现，如Consul/Eureka/Nacos）③<strong>配置中心</strong>（集中管理配置，如Nacos/Apollo）④<strong>服务间通信</strong>（HTTP REST或gRPC）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># Nacos注册中心Docker部署
+docker run -d --name nacos -p 8848:8848   -e MODE=standalone nacos/nacos-server
+# Spring Cloud配置
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">服务网格Istio（流量管理/安全/可观测性）</div><div class="kp-tags"><span class="tag tag-good">良好</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Service Mesh（服务网格）</strong>：将服务间通信的治理能力（负载均衡/重试/超时/限流/熔断/加密/追踪）下沉到独立的Sidecar代理（Envoy），业务代码无需感知。</p>
+<p><strong>Istio</strong>是目前最成熟的服务网格。核心能力：①<strong>流量管理</strong>（金丝雀发布/AB测试/超时重试/故障注入）②<strong>安全</strong>（服务间mTLS自动加密、细粒度访问控制）③<strong>可观测性</strong>（自动收集Metrics+Logs+Traces）。</p>
+<p>Istio不等于微服务：它是增强微服务网络层的工具，不改变业务代码。Sidecar模式对运维有额外的工作负载（每个Pod多一个代理容器，资源消耗加倍）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 安装Istio
+istioctl install --set profile=demo -y
+kubectl label namespace default istio-injection=enabled
+# 金丝雀发布VirtualService配置
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+spec:
+  hosts: [myapp]
+  http:
+  - match: [{headers: {version: {exact: "v2"}}}]
+    route: [{destination: {host: myapp, subset: v2}}]
+  - route: [{destination: {host: myapp, subset: v1}, weight: 90},
+            {destination: {host: myapp, subset: v2}, weight: 10}]</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第2章 微服务架构</h5>
+<div class="ex-section"><h6>思考题</h6>
+<ol><li>单体应用拆分为微服务后，带来了哪些新的运维挑战？如何应对分布式系统的复杂性？</li></ol></div>
+</div>
+
+</div></div>
+
+<!-- ===== 第3章 安全加固 ===== -->
+<div class="chapter" id="p9c3">
+<div class="ch-head"><div class="ch-num">3</div><h4>第3章 安全加固与合规</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">Linux安全基线（CIS）、防火墙策略、审计</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>CIS基准（Center for Internet Security）</strong>：业界公认的安全配置标准。常见要求：禁用root SSH登录、设置密码复杂度策略、禁用不必要服务、文件权限最小化、开启审计日志。</p>
+<p><strong>防火墙策略</strong>：iptables（传统）/firewalld（现代RHEL系列）/ufw（Ubuntu）。最小权限原则：只开放必要端口、限制来源IP、默认拒绝。</p>
+<p><strong>审计（auditd）</strong>：记录关键文件访问/权限变更/用户登录等事件。<code>auditctl -w /etc/passwd -p wa</code>监控passwd文件的写和属性变更。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 安全加固
+useradd -m ops && passwd ops  # 禁用root直接登录
+sed -i 's/^PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
+# firewalld策略
+firewall-cmd --permanent --add-service=http
+firewall-cmd --permanent --add-rich-rule='rule family=ipv4 source addr=10.0.0.0/8 accept'
+firewall-cmd --reload</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">容器安全（镜像扫描/运行时安全/策略管理）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>容器安全四道防线</strong>：①<strong>镜像安全</strong>：Trivy/Snyk扫描漏洞，使用可信基础镜像（不要用latest标签），定期重建镜像获取安全补丁。②<strong>运行时安全</strong>：非root运行容器、只读文件系统、限制能力（capabilities）、Falco运行时异常检测。③<strong>供应链安全</strong>：镜像签名验证（Cosign）、SBOM清单。④<strong>K8s安全</strong>：Pod Security Standards（Restricted模式）、NetworkPolicy、RBAC最小权限。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 安全运行容器
+docker run --read-only --user 1000:1000   --cap-drop=ALL --cap-add=NET_BIND_SERVICE   --security-opt=no-new-privileges myapp:1.0
+# K8s Pod安全上下文
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  readOnlyRootFilesystem: true</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第3章 安全加固</h5>
+<div class="ex-section"><h6>实操题</h6>
+<ol><li>按照CIS基准对一台Linux进行安全加固。对Docker容器进行安全最佳实践配置。</li></ol></div>
+</div>
+
+</div></div>
+
+<!-- 项目九 -->
+<div class="project" id="proj9">
+<h3>项目九：高级运维平台建设</h3>
+<div class="proj-grid">
+<div><strong>目标</strong>：建设云原生存储+微服务架构+安全加固的综合运维平台</div>
+<div><strong>核心技能</strong>：Ceph/Calico/Istio/安全基线检查/容器安全</div>
+<div><strong>达标标准</strong>：实现Ceph存储集群、Istio服务网格、安全基线自动化检查</div>
+<div><strong>产出物</strong>：Ceph集群配置、Istio配置、安全扫描报告</div>
+</div>
+</div>
+
+<!-- ==================== 阶段十 AI运维综合实战 ==================== -->
+<div class="phase" id="p10">
+<h2>阶段十：AI运维综合实战</h2>
+<div class="meta">第1章 AI Agent架构设计 → 第2章 AI运维平台实战 → 第3章 前沿技术与职业发展 → 项目十</div>
+</div>
+
+<!-- ===== 第1章 AI Agent架构 ===== -->
+<div class="chapter" id="p10c1">
+<div class="ch-head"><div class="ch-num">1</div><h4>第1章 AI Agent智能运维架构设计</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">AI Agent架构（LLM+Tools+RAG+Memory）</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>AI Agent</strong>是LLM大模型 + 工具调用 + 记忆系统的综合体。传统LLM只能对话，AI Agent可以行动：查询监控、重启服务、创建工单、发告警。</p>
+<p><strong>四大组件</strong>：①<strong>LLM</strong>（大脑）：理解自然语言、推理决策。②<strong>Tools</strong>（手脚）：查询监控API、执行kubectl命令、操作数据库等。③<strong>RAG</strong>（知识库）：检索运维文档/历史故障案例，增强AI准确性。④<strong>Memory</strong>（记忆）：记住历史对话和操作上下文。</p>
+<p><strong>ReAct模式</strong>（Reasoning+Acting）：AI先思考(Thought)→再行动(Action)→观察结果(Observation)→继续思考。循环执行直到任务完成。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># AI Agent运维场景
+# 用户：帮我查一下web服务的CPU使用率
+# AI Agent:
+#   Thought: 需要查询Prometheus
+#   Action: prometheus_query("rate(node_cpu_seconds_total[5m])")
+#   Observation: CPU 85%
+#   Thought: CPU偏高，检查是否有异常Pod
+#   Action: kubectl_get_pods(namespace="web")
+#   Result: web-service-v2-xxx Pod频繁重启
+# AI: web服务的CPU使用率85%，发现web-service-v2版本Pod频繁重启，建议回滚到v1</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">Function Calling实现AI自动运维</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>Function Calling</strong>让AI模型能决定调用哪些函数。在运维中，可以定义一组运维工具函数：<code>get_server_status(hostname)</code>、<code>restart_service(service_name)</code>、<code>query_logs(service, time_range)</code>、<code>send_alert(message, level)</code>。</p>
+<p>AI收到"server-01的nginx出问题了"→自动调用<code>get_server_status("server-01")</code>→发现nginx服务停止→调用<code>restart_service("nginx")</code>→确认重启成功→调用<code>query_logs("nginx","last 10min")</code>分析根因。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code>tools = [{
+    "type": "function",
+    "function": {
+        "name": "get_cpu_usage",
+        "description": "获取服务器CPU使用率",
+        "parameters": {"type":"object","properties":{
+            "hostname":{"type":"string","description":"主机名或IP"}
+        }}
+    }
+}]
+# AI推理后返回function_call，程序执行函数并将结果返回AI</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第1章 AI Agent架构</h5>
+<div class="ex-section"><h6>实操题</h6>
+<ol><li>设计一个AI运维Agent，通过Function Calling实现"自动检测服务器健康状态→异常则发钉钉告警"。</li></ol></div>
+</div>
+
+</div></div>
+
+<!-- ===== 第2章 AI运维平台实战 ===== -->
+<div class="chapter" id="p10c2">
+<div class="ch-head"><div class="ch-num">2</div><h4>第2章 AI运维平台实战</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">AI日志分析与异常检测</div><div class="kp-tags"><span class="tag tag-must">达标</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>AI日志分析</strong>的三个层次：①<strong>关键词匹配</strong>（传统，查ERROR/WARNING）。②<strong>NLP智能分析</strong>（AI理解日志语义，自动分类异常类型、提取关键信息）。③<strong>异常模式检测</strong>（ML模型学习正常日志模式，检测偏离模式的异常）。</p>
+<p>实践：将ELK中的日志通过API喂给大模型，让AI总结"过去1小时哪些异常需要关注"，替代人工翻日志。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># AI日志分析Prompt模板
+prompt = f"""你是运维专家。分析以下服务器日志，输出：
+1. 异常等级（严重/警告/信息）
+2. 根因分析
+3. 建议操作
+日志内容：{log_content}"""</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">RAG知识库：运维文档向量化与检索</div><div class="kp-tags"><span class="tag tag-good">良好</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>RAG（检索增强生成）</strong>：在AI回答前，先从知识库中检索相关文档，将文档内容作为上下文提供给AI。解决大模型"幻觉"（编造答案）和"知识截止"（训练后的事件不知道）问题。</p>
+<p><strong>运维RAG应用</strong>：将所有运维文档（Wiki、故障记录、操作手册）向量化存入向量数据库。AI收到问题→向量检索找到最相关的文档→结合文档内容回答。如"怎么部署MySQL主从？"→检索到操作手册→按手册步骤回答。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># RAG流程
+# 1. 文档向量化存储
+# 2. 用户提问 → 向量化 → 检索TopK相似文档
+# 3. 构建Prompt：检索到的文档 + 用户问题
+# 4. 调用大模型生成答案</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第2章 AI运维平台实战</h5>
+<div class="ex-section"><h6>实操题</h6>
+<ol><li>实现一个AI日志分析工具：输入一段Nginx日志，AI自动分类异常并给出建议。</li></ol></div>
+</div>
+
+</div></div>
+
+<!-- ===== 第3章 前沿技术与职业发展 ===== -->
+<div class="chapter" id="p10c3">
+<div class="ch-head"><div class="ch-num">3</div><h4>第3章 前沿技术与职业发展</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">1</div><div class="kp-title">FinOps云成本优化</div><div class="kp-tags"><span class="tag tag-good">良好</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>FinOps</strong>是财务+运维的交叉领域，核心目标：让云的每一分钱花得值。常见优化：①<strong>资源右移</strong>（监控实际使用率，调整实例规格）；②<strong>预留实例/包年包月</strong>（折扣50-70%）；③<strong>弹性伸缩</strong>（低峰缩容省钱）；④<strong>Spot实例</strong>（竞价实例，价格低至1折）；⑤<strong>存储分层</strong>（热数据SSD+冷数据对象存储）。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># K8s资源限制优化
+# 根据实际使用情况调整requests/limits
+kubectl top pods -n production
+# 设置HPA弹性伸缩
+kubectl autoscale deployment myapp --min=2 --max=10 --cpu-percent=70</code></pre>
+</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-num">2</div><div class="kp-title">AI运维职业发展路径与学习建议</div><div class="kp-tags"><span class="tag tag-good">良好</span></div></div>
+<div class="kp-section">
+<h5>详细讲解</h5>
+<p><strong>AI运维工程师成长路径</strong>：</p>
+<p><strong>初级（0-2年）</strong>：扎实的Linux+网络基础，容器和K8s操作，至少一门脚本语言（Shell+Python），基础监控使用。核心任务：维护现有系统、响应告警、写自动化脚本。</p>
+<p><strong>中级（2-5年）</strong>：K8s深度调优、CI/CD流水线搭建、ELK/Prometheus监控体系、Ansible/Terraform自动化。核心任务：设计运维架构、性能优化、故障排查。</p>
+<p><strong>高级（5年+）</strong>：大规模集群管理（1000+节点）、Service Mesh、多活架构、安全合规、AI运维平台建设。核心任务：技术选型、架构设计、带团队、成本优化。</p>
+</div>
+<div class="kp-section">
+<h5>如何用</h5>
+<pre><code># 推荐认证路径
+# Linux: RHCSA → RHCE
+# K8s: CKA → CKAD → CKS
+# 云: AWS Solutions Architect / 阿里云ACE
+# 安全: CISSP / CISP</code></pre>
+</div>
+</div>
+
+<div class="exercise-box">
+<h5>课后练习 — 第3章 前沿技术与职业发展</h5>
+<div class="ex-section"><h6>思考题</h6>
+<ol><li>你认为AI时代运维工程师的核心竞争力是什么？如何保持持续学习？</li></ol></div>
+</div>
+
+</div></div>
+
+<!-- 项目十 -->
+<div class="project" id="proj10">
+<h3>项目十：AI智能运维平台（毕业项目）</h3>
+<div class="proj-grid">
+<div><strong>目标</strong>：综合运用所学，构建AI驱动的智能运维平台</div>
+<div><strong>核心技能</strong>：AI Agent架构/Function Calling/RAG知识库/AI日志分析/Prometheus+ELK/K8s全栈</div>
+<div><strong>达标标准</strong>：实现AI自动巡检→异常检测→根因分析→自动处理→知识沉淀的完整链路</div>
+<div><strong>产出物</strong>：AI Agent代码、RAG知识库、运维Dashboard、毕业设计文档</div>
+</div>
+</div>
+
+<!-- ===== 附录 ===== -->
+<div class="chapter" id="appendix">
+<div class="ch-head"><div class="ch-num">A</div><h4>附录：学习程度标准说明</h4></div>
+<div class="ch-body">
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-title">达标标准</div></div>
+<div class="kp-section">
+<ul>
+<li><strong>达标（Must）</strong>：必须掌握，能够独立完成对应操作，理解核心概念，能向别人讲解清楚。每个知识点90%以上达到此标准才可进入下一章。</li>
+<li><strong>良好（Good）</strong>：进阶掌握，能够在实际生产环境中灵活运用，能分析原理并优化。建议每个章节至少70%的知识点达到此标准。</li>
+</ul></div>
+</div>
+
+<div class="kp-card">
+<div class="kp-header"><div class="kp-title">各阶段学习时长与统计</div></div>
+<div class="kp-section">
+<table style="width:100%;border-collapse:collapse;text-align:left">
+<thead><tr style="background:var(--primary);color:white"><th>阶段</th><th>内容</th><th>章数</th><th>建议天数</th></tr></thead>
+<tbody>
+<tr><td>入门</td><td>Linux基础+云平台+大模型部署</td><td>3</td><td>6天</td></tr>
+<tr><td>阶段一</td><td>Linux高级+系统服务+网络+Shell</td><td>4</td><td>8天</td></tr>
+<tr><td>阶段二</td><td>网站服务+数据库+NoSQL+缓存</td><td>3</td><td>8天</td></tr>
+<tr><td>阶段三</td><td>Python+NumPy/Pandas+可视化+爬虫+AI SDK</td><td>5</td><td>10天</td></tr>
+<tr><td>阶段四</td><td>Docker+Kubernetes云原生</td><td>6</td><td>12天</td></tr>
+<tr><td>阶段五</td><td>CI/CD+Jenkins+GitLab CI+安全扫描</td><td>3</td><td>6天</td></tr>
+<tr><td>阶段六</td><td>Zabbix+ELK+可观测性</td><td>3</td><td>6天</td></tr>
+<tr><td>阶段七</td><td>Ansible+Terraform IaC</td><td>2</td><td>5天</td></tr>
+<tr><td>阶段八</td><td>性能优化+故障排查</td><td>3</td><td>5天</td></tr>
+<tr><td>阶段九</td><td>云原生存储+微服务+安全</td><td>3</td><td>5天</td></tr>
+<tr><td>阶段十</td><td>AI Agent+AI运维平台+职业规划</td><td>3</td><td>5天</td></tr>
+<tr style="font-weight:bold;background:#e3f2fd"><td>合计</td><td>10大阶段 + 33章 + 10个项目</td><td>33</td><td>76天</td></tr>
+</tbody></table>
+</div>
+</div>
+
+<div style="background:#fff3e0;border-left:4px solid var(--accent);padding:20px;border-radius:8px;margin-top:20px">
+<h5 style="color:var(--accent);margin-top:0">学习建议</h5>
+<ol>
+<li><strong>动手优先</strong>：每一章的知识点都必须亲自动手实操，不要只看不做。运维是实践学科。</li>
+<li><strong>项目驱动</strong>：每个阶段的结束项目是检验学习效果的最好方式。项目完不成不要进下一阶段。</li>
+<li><strong>问题记录</strong>：建立自己的知识库（Blog/Wiki），记录踩过的坑和解决方案，这是AI运维时代最宝贵的资产。</li>
+<li><strong>社区参与</strong>：GitHub提issue、Stack Overflow回答问题、加入技术社群交流。</li>
+<li><strong>AI工具融入</strong>：学习过程中主动使用AI辅助（AI解释代码、AI找Bug、AI总结文档），培养AI时代的思维习惯。</li>
+</ol>
+</div>
+
+</div></div>
+
+</div><!-- main-content -->
+</div><!-- container -->
+
+<script>
+// 侧边栏滚动高亮
+document.addEventListener('DOMContentLoaded', function() {
+    const sections = document.querySelectorAll('.phase[id], .chapter[id], .project[id]');
+    const navLinks = document.querySelectorAll('.nav a');
+    
+    window.addEventListener('scroll', function() {
+        let current = '';
+        sections.forEach(section => {
+            const top = section.offsetTop - 100;
+            if (window.scrollY >= top) {
+                current = section.getAttribute('id');
+            }
+        });
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + current) {
+                link.classList.add('active');
+            }
+        });
+    });
+    
+    // 答案切换
+    document.querySelectorAll('.answer-toggle').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const answer = this.nextElementSibling;
+            answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+        });
+    });
+});
+</script>
+
+</body></html>

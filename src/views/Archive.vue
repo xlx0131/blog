@@ -40,8 +40,12 @@ const totalTags = computed(() => {
 
 const totalCategories = computed(() => allCategories.value.length)
 
-function viewArticle(id: number) {
-  router.push(`/article/${id}`)
+function viewArticle(article: any) {
+  if (article.url && article.url.startsWith('/')) {
+    window.location.href = article.url
+  } else {
+    router.push(`/article/${article.id}`)
+  }
 }
 
 function formatNumber(num: number): string {
@@ -147,7 +151,7 @@ function formatNumber(num: number): string {
           v-for="item in filteredArticles"
           :key="item.id"
           class="book"
-          @click="viewArticle(item.id)"
+          @click="viewArticle(item)"
         >
           <p>{{ item.summary }}</p>
           <div class="cover">

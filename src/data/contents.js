@@ -164,6 +164,17 @@ export const articles = [
     summary: '记录在阿里云购买域名「许立鑫.site」，并将 DNS 解析迁移到 Cloudflare，配置 Pages 自定义域名与 SSL 的全过程。',
     tags: ['域名', 'Cloudflare', '阿里云', '部署'],
   },
+  {
+    id: 2,
+    title: 'AI运维完全学习手册：从0基础到AI大模型运维专家',
+    date: '2026-07-09',
+    category: '运维',
+    readingTime: '120 min',
+    words: '50,000',
+    summary: '10大阶段 · 33章 · 230+知识点 · 10大项目实战，涵盖Linux、网络、数据库、中间件、云原生、DevOps、AI大模型运维全链路知识体系。',
+    tags: ['运维', 'Linux', 'K8s', 'AI大模型', 'DevOps'],
+    url: '/ai-ops-handbook',
+  },
 ]
 
 // 文章详情
@@ -223,3 +234,19 @@ export const articleDetails = {
     `,
   },
 }
+
+// 随笔列表
+export const essays = [
+  {
+    id: 1,
+    date: '2026-07-13',
+    title: '脑机接口刷抖音',
+    content: '能不能发明一种芯片，插在脑子里，闭着眼睛能在眼皮上刷抖音。',
+  },
+]
+
+// 小说列表
+export const novels = []
+
+// 日记列表
+export const diaries = []

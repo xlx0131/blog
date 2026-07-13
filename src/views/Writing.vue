@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { BookOpen, FileText, Calendar } from '@lucide/vue'
+import { essays, novels, diaries } from '../data/contents.js'
 
 const router = useRouter()
 const isAuthenticated = ref(false)
@@ -11,12 +12,21 @@ const authPassword = ref('')
 const authError = ref('')
 
 const categories = [
-  { id: 'novels', title: '小说集', desc: '虚构的世界与故事', icon: BookOpen, count: 0, color: '#2e5dd6' },
-  { id: 'essays', title: '随笔集', desc: '随想与感悟', icon: FileText, count: 0, color: '#d4a017' },
-  { id: 'diaries', title: '日记集', desc: '日常记录', icon: Calendar, count: 0, color: '#a33a3a' },
+  { id: 'novels', title: '小说集', desc: '虚构的世界与故事', icon: BookOpen, count: novels.length, color: '#2e5dd6' },
+  { id: 'essays', title: '随笔集', desc: '随想与感悟', icon: FileText, count: essays.length, color: '#d4a017' },
+  { id: 'diaries', title: '日记集', desc: '日常记录', icon: Calendar, count: diaries.length, color: '#a33a3a' },
 ]
 
 const activeCategory = ref('novels')
+
+const currentList = computed(() => {
+  switch (activeCategory.value) {
+    case 'essays': return essays
+    case 'novels': return novels
+    case 'diaries': return diaries
+    default: return []
+  }
+})
 
 onMounted(() => {
   if (sessionStorage.getItem('writingAuth') === 'true') {
@@ -124,7 +134,7 @@ function closeAuth() {
           </span>
         </div>
         <div class="panel-content p-6">
-          <div class="empty-state text-center py-16">
+          <div v-if="currentList.length === 0" class="empty-state text-center py-16">
             <div class="empty-icon mb-6">
               <component :is="categories.find(c => c.id === activeCategory)?.icon" class="w-16 h-16" />
             </div>
@@ -134,6 +144,21 @@ function closeAuth() {
             <p class="font-mono text-sm text-[#3a332a]">
               这里还空空如也，敬请期待...
             </p>
+          </div>
+          <div v-else class="writing-list">
+            <div
+              v-for="item in currentList"
+              :key="item.id"
+              class="writing-card"
+            >
+              <div class="writing-card-header">
+                <span class="writing-date font-mono text-xs text-[#3a332a]">{{ item.date }}</span>
+                <h3 class="writing-title font-['Pixelify_Sans'] text-lg text-[#161310]">{{ item.title }}</h3>
+              </div>
+              <div class="writing-content font-mono text-sm text-[#161310] leading-relaxed">
+                {{ item.content }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -219,6 +244,50 @@ function closeAuth() {
 
 .empty-icon {
   color: #d9d2c4;
+}
+
+.writing-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.writing-card {
+  background: #f5f0e8;
+  border: 2px solid #161310;
+  box-shadow: 4px 4px 0 0 #161310;
+  padding: 20px;
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.writing-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 0 #161310;
+}
+
+.writing-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 2px dashed #d9d2c4;
+}
+
+.writing-date {
+  background: #161310;
+  color: #fffaef !important;
+  padding: 2px 8px;
+}
+
+.writing-title {
+  margin: 0;
+  font-size: 18px;
+}
+
+.writing-content {
+  line-height: 1.8;
+  white-space: pre-wrap;
 }
 
 @media (max-width: 768px) {

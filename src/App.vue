@@ -194,7 +194,8 @@ onBeforeUnmount(() => cleanup?.())
                 <SheetClose as-child>
                   <Button
                     :variant="route.path === item.path ? 'default' : 'ghost'"
-                    class="w-full justify-start gap-3"
+                    class="w-full justify-start gap-3 text-[#161310] hover:bg-[#161310]/10 hover:text-[#161310]"
+                    :class="route.path === item.path ? 'bg-[#161310] text-[#fffaef] hover:bg-[#161310] hover:text-[#fffaef]' : ''"
                   >
                     <component :is="item.icon" class="h-4 w-4" />
                     {{ item.label }}
