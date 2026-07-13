@@ -684,7 +684,7 @@ kill -1 $(cat /var/run/nginx.pid)  # 优雅重载nginx</code></pre>
 <li>启动nginx并设置开机自启。</li>
 <li>编写crontab：每天凌晨2点执行/opt/scripts/backup.sh，日志写入/var/log/backup.log。</li>
 </ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content">
 <h6>选择题：</h6>1.C 2.B 3.B<br>
 <h6>实操题：</h6>1.<code>mkdir -p /opt/myapp/{bin,conf,logs,data}</code><br>2.<code>systemctl start nginx && systemctl enable nginx</code><br>3.<code>0 2 * * * /opt/scripts/backup.sh >> /var/log/backup.log 2>&1</code>
@@ -782,7 +782,7 @@ ssh -i ~/.ssh/mykey.pem root@123.123.123.123
 <li>在阿里云控制台购买一台按量付费ECS（最低规格），选择CentOS Stream 9镜像，配置安全组仅开放22/80/443端口。</li>
 <li>为这台ECS配置CPU使用率>80%的报警规则，通知方式选择短信。</li>
 </ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content"><h6>选择题：</h6>1.B 2.B<br><h6>实操题：</h6>1.按购买流程操作：地域选离自己近的→按量付费→最低规格→CentOS Stream 9→安全组添22/80/443→密钥对→确认<br>2.云监控→报警规则→创建规则→ECS→CPU使用率→>=80%持续3周期→短信通知</div>
 </div>
 
@@ -929,7 +929,7 @@ tar -xzf apache-tomcat-9.tar.gz -C /opt/
 <li>在ECS上安装conda并创建名为"chatglm"的Python 3.10环境。</li>
 <li>部署JDK11+MySQL8+Tomcat9+Nginx，完成博客系统上线。</li>
 </ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content"><h6>选择题：</h6>1.B 2.B<br><h6>实操题：</h6>1.<code>bash Anaconda3-*.sh → conda create -n chatglm python=3.10 → conda activate chatglm</code><br>2.按JDK→MySQL→Tomcat→Nginx顺序部署，最后配置Nginx反向代理到Tomcat 8080</div>
 </div>
 
@@ -1055,7 +1055,7 @@ screen -r mysession    # 重新连接</code></pre>
 <li>为/data/shared目录设置粘滞位，使得多用户可以共享文件但互不删除。</li>
 <li>使用ACL给testuser用户授予/data/project目录的读写权限。</li>
 </ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content"><h6>选择题：</h6>1.B 2.B<br><h6>实操题：</h6>1.<code>useradd -m devops && passwd devops && usermod -aG wheel devops</code><br>2.<code>chmod +t /data/shared</code><br>3.<code>setfacl -m u:testuser:rw /data/project</code></div>
 </div>
 
@@ -1200,7 +1200,7 @@ xfs_growfs /data/mysql</code></pre>
 <li>搭建NFS服务，将serverA的/data/shared目录共享给serverB挂载。</li>
 <li>在新磁盘上创建LVM：PV→VG→LV→格式化XFS→挂载到/data/mysql。</li>
 </ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content"><h6>选择题：</h6>1.B 2.B<br><h6>实操题参考：</h6>见上文对应代码块。</div>
 </div>
 
@@ -1308,7 +1308,7 @@ telnet 192.168.1.100 3306</code></pre>
 <li>使用Wireshark抓取一次完整的HTTP请求-响应过程，识别TCP三次握手和HTTP请求头。</li>
 <li>在eNSP中搭建一个VLAN隔离+单臂路由+NAT上网的拓扑。</li>
 </ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content"><h6>选择题：</h6>1.B 2.B<br><h6>实操题：</h6>1.打开Wireshark→选网卡→过滤http→浏览器访问网站→停止抓包→Follow TCP Stream查看完整会话<br>2.eNSP拖入交换机/路由器/PC→配置VLAN→配置子接口→配置NAT→测试PC ping通外网</div>
 </div>
 
@@ -1487,7 +1487,7 @@ log "服务器初始化完成！"</code></pre>
 <li>使用awk统计nginx access.log中每个状态码的出现次数和百分比。</li>
 <li>编写服务器初始化脚本，实现新服务器到手后的一键标准化配置。</li>
 </ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content"><h6>选择题：</h6>1.C 2.B<br><h6>实操题参考：</h6>见上文代码块。</div>
 </div>
 
@@ -1632,7 +1632,7 @@ vrrp_instance VI_1 {
 <li>搭建Nginx反向代理，将所有/api/请求转发到后端Tomcat集群（3台8080端口）。</li>
 <li>申请免费SSL证书并为网站启用HTTPS，配置HTTP自动跳转HTTPS。</li>
 </ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content"><h6>选择题：</h6>1.B 2.C<br><h6>实操题参考：</h6>见上文配置示例。</div>
 </div>
 
@@ -1769,7 +1769,7 @@ FLUSH PRIVILEGES;</code></pre>
 <li>设计一个博客系统数据库：用户表、文章表、评论表，写出CREATE TABLE语句并标注关系。</li>
 <li>创建一个只读用户，仅允许从内网（192.168.1.%）查询mydb数据库。</li>
 </ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content"><h6>选择题：</h6>1.B 2.C<br><h6>实操题：</h6>1.users(id,name) - 1:N - posts(id,user_id,title,content) - 1:N - comments(id,post_id,user_id,content)。2.见上文GRANT示例。</div>
 </div>
 
@@ -1885,7 +1885,7 @@ db.users.find({age:{$gt:25}})</code></pre>
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>使用Redis Sorted Set实现游戏排行榜，支持TOP10查询和玩家排名查询。</li>
 <li>搭建MongoDB副本集（3节点），验证故障自动切换。</li></ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content">选择题：1.B 2.C<br>实操题：1.ZADD→ZREVRANGE查TOP10→ZRANK查排名。2.rs.initiate配置→停主节点→观察选举。</div>
 </div>
 
@@ -2023,7 +2023,7 @@ finally:
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>编写Python脚本批量检测10台服务器的CPU/内存/磁盘，超过80%标红输出。</li>
 <li>编写脚本通过paramiko收集所有服务器日志中的ERROR行。</li></ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content">选择题：1.B 2.B<br>实操题参考：见上文代码示例。</div>
 </div>
 
@@ -2101,7 +2101,7 @@ hourly.columns = ['请求数', '平均响应时间ms', '5xx错误数']</code></p
 <li>Pandas分组聚合使用哪个方法？<br>A.pivot B.merge C.groupby D.stack</li></ol></div>
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>读取一份服务器日志CSV，清洗空值和异常数据，按服务器分组统计CPU/内存/磁盘的平均值和最大值。</li></ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content">选择题：1.B 2.C</div>
 </div>
 
@@ -2155,7 +2155,7 @@ fig.write_html('dashboard.html')</code></pre>
 <div class="ex-section"><h6>实操题</h6>
 <ol><li>读取服务器监控CSV，用Matplotlib画出CPU和内存的趋势图（双Y轴）。</li>
 <li>用Plotly做一个交互式Dashboard，展示多台服务器的资源使用对比。</li></ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content">1.用twinx()创建双Y轴。2.用px.bar分组柱状图。</div>
 </div>
 
@@ -2213,7 +2213,7 @@ class ArticleItem(scrapy.Item):
 <h5>课后练习 — 第4章 Scrapy爬虫</h5>
 <div class="ex-section"><h6>实操题</h6>
 <ol><li>编写Scrapy爬虫，抓取某技术博客的文章标题、链接、发布时间，存入CSV。</li></ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content">scrapy startproject→定义Item→写Spider类parse方法→scrapy crawl -o output.csv。</div>
 </div>
 
@@ -2298,7 +2298,7 @@ tools = [{"type":"function","function":{
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>编写Python脚本调用大模型API，输入一段Nginx错误日志，让AI分析异常原因并给出修复建议。</li>
 <li>实现一个告警播报系统：收到告警→调大模型总结→TTS转语音→播放。</li></ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content">选择题：1.B</div>
 </div>
 
@@ -2393,7 +2393,7 @@ docker run -d --name app1 --network mynet myapp</code></pre>
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>用Docker启动一个MySQL 8.0容器，数据持久化到命名卷，限制内存512MB。</li>
 <li>创建自定义Docker网络，启动两个容器使它们能互相通信。</li></ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content">选择题：1.B 2.A</div>
 </div>
 
@@ -2485,7 +2485,7 @@ volumes:
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>编写Dockerfile构建Python Flask应用，使用多阶段构建减小镜像体积。</li>
 <li>编写docker-compose.yml编排Nginx+Flask+MySQL+Redis四个服务。</li></ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content">选择题：1.B 2.B</div>
 </div>
 
@@ -2568,7 +2568,7 @@ spec:
 <li>kubectl describe pod的作用是？<br>A.创建Pod B.查看Pod详情和事件 C.删除Pod D.扩缩Pod</li></ol></div>
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>用minikube搭一个K8s集群，写YAML创建一个Nginx Pod并通过kubectl验证运行状态。</li></ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content">选择题：1.B 2.B</div>
 </div>
 
@@ -2753,7 +2753,7 @@ spec:
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>创建Deployment跑Nginx，执行滚动更新到新版本，然后回滚。</li>
 <li>创建CronJob实现每天凌晨备份MySQL数据库。</li></ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content">选择题：1.A 2.B</div>
 </div>
 
@@ -2843,7 +2843,7 @@ stage('Deploy to K8s') {
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>部署Prometheus+Grafana监控K8s集群，创建一个CPU使用率Dashboard。</li>
 <li>编写Jenkins Pipeline实现Docker构建→推送→K8s部署的CI/CD流程。</li></ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content">选择题：1.B 2.B</div>
 </div>
 
@@ -2929,7 +2929,7 @@ docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword</code></p
 <ol><li>CI（持续集成）的核心目标是？<br>A.部署到生产 B.频繁合并代码+自动测试 C.写文档 D.做备份</li></ol></div>
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>用Docker部署Jenkins，编写Pipeline脚本实现：拉代码→构建Docker镜像→推送到私有仓库→部署到K8s。</li></ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content">选择题：1.B</div>
 </div>
 
@@ -3339,7 +3339,7 @@ ansible web -m service -a "name=nginx state=started enabled=yes"</code></pre>
 <li>Ansible的"幂等性"是指？<br>A.执行快 B.重复执行结果一致 C.并行执行 D.自动重试</li></ol></div>
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>编写Ansible Playbook批量部署Nginx到3台Web服务器，使用Jinja2模板动态生成配置。</li></ol></div>
-<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<button class="answer-toggle">显示/隐藏参考答案</button>
 <div class="answer-content">选择题：1.B 2.B</div>
 </div>
 
