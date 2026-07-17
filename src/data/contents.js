@@ -78,6 +78,26 @@ export const projects = [
     ],
     downloadUrl: 'https://github.com/xlx0131/nailonglist/releases/download/v1.0.0/nailonglist-v1.0.0-win32-x64.zip',
   },
+  {
+    id: 5,
+    title: 'Marvis Skills',
+    subtitle: 'AI 自动化技能集合，赋能智能助手',
+    description:
+      '基于 Marvis 平台的 AI 技能集合仓库，将 AI Agent 能力封装为可复用的技能包。目前包含「抖音评论自动回复」技能，通过 Browser Agent 操作网页版抖音，实现登录检测、评论读取、智能回复生成与批量发送的完整自动化流程。',
+    url: 'https://github.com/xlx0131/skills-',
+    tags: ['AI', '自动化', '技能'],
+    tech: ['Marvis', 'Browser Agent', 'AI'],
+    cover: 'skills',
+    year: '2026',
+    highlights: [
+      'Marvis 平台技能包，将 AI 能力封装为可复用技能',
+      '抖音评论自动回复 — Browser Agent 驱动网页自动化',
+      '智能登录检测与人机交互扫码登录流程',
+      '批量读取评论区，逐条智能生成个性化回复',
+      '回复语气自然、不重复，避免 AI 模板化',
+      '完整的容错处理与安全提示机制',
+    ],
+  },
 ]
 
 // 作品详情
@@ -221,6 +241,65 @@ export const projectDetails = {
       </ul>
       <h3>运行与构建</h3>
       <p>基于 npm + Electron 生态：<code>npm start</code> 启动开发模式，<code>npm run build</code> 使用 electron-packager 打包为 Windows 可执行程序。同时也发布了可直接运行的 exe 发行版（奶龙list.exe）。</p>
+    `,
+  },
+  5: {
+    title: 'Marvis Skills',
+    subtitle: 'AI 自动化技能集合，赋能智能助手',
+    description:
+      '基于 Marvis 平台的 AI 技能集合仓库，将 AI Agent 能力封装为可复用的技能包。目前包含「抖音评论自动回复」技能，通过 Browser Agent 操作网页版抖音，实现登录检测、评论读取、智能回复生成与批量发送的完整自动化流程。',
+    url: 'https://github.com/xlx0131/skills-',
+    tags: ['AI', '自动化', '技能'],
+    tech: ['Marvis', 'Browser Agent', 'AI'],
+    year: '2026',
+    highlights: [
+      'Marvis 平台技能包，将 AI 能力封装为可复用技能',
+      '抖音评论自动回复 — Browser Agent 驱动网页自动化',
+      '智能登录检测与人机交互扫码登录流程',
+      '批量读取评论区，逐条智能生成个性化回复',
+      '回复语气自然、不重复，避免 AI 模板化',
+      '完整的容错处理与安全提示机制',
+    ],
+    details: `
+      <p>Marvis Skills 是一个基于 <a href="https://marvis.tencent.com" target="_blank" rel="noopener noreferrer">Marvis</a> 平台的 AI 自动化技能集合仓库。Marvis 是一个 AI 智能助手平台，而 Skills 是其技能扩展体系——将 AI Agent 的能力封装为可复用的技能包，让智能助手能完成更多实际工作任务。</p>
+      <h3>技能体系</h3>
+      <p>每个技能以标准化的 <code>SKILL.md</code> 文件定义，按照 Marvis 平台的 YAML frontmatter + Markdown 格式组织。技能文件包含 <code>name</code>（技能名称）和 <code>description</code>（触发条件描述），正文则详细描述执行流程。</p>
+      <h3>已收录技能</h3>
+      <ul>
+        <li><strong>抖音评论自动回复</strong> — <code>douyin-comment-replier</code></li>
+      </ul>
+      <h3>抖音评论自动回复详解</h3>
+      <p>该技能通过 Browser Agent（浏览器自动化代理）操作网页版抖音，完成以下完整流程：</p>
+      <ol>
+        <li><strong>需求分析</strong> — 从用户输入中提取抖音链接（支持短链接和完整链接）、回复范围（全部/最新N条/特定类型）、自定义回复风格要求</li>
+        <li><strong>浏览器自动化</strong> — 使用 <code>dispatch_task</code> 将任务派发给 Browser Agent，打开抖音网页版</li>
+        <li><strong>登录检测</strong> — 自动检测登录状态，未登录时提示用户手动扫码/输入账号</li>
+        <li><strong>评论加载</strong> — 滚动加载全部评论，直到没有新评论出现</li>
+        <li><strong>智能回复生成</strong> — 逐条阅读评论内容，AI 生成个性化回复：
+          <ul>
+            <li>理解评论意图，贴合内容生成自然回复</li>
+            <li>语气自然、像真人对话，不使用 AI 模板化语言</li>
+            <li>每条回复各不相同，避免千篇一律</li>
+            <li>支持用户自定义回复风格</li>
+          </ul>
+        </li>
+        <li><strong>批量发送</strong> — 逐一点击回复按钮，输入生成的回复内容并发送</li>
+        <li><strong>结果呈现</strong> — 输出评论-回复对照表，标注每条的发送状态</li>
+      </ol>
+      <h3>容错机制</h3>
+      <ul>
+        <li>链接无效时提示用户确认</li>
+        <li>登录失败时引导用户手动完成</li>
+        <li>评论加载不全时告知已回复数量</li>
+        <li>发送失败时标注原因（频率限制、内容审核等）</li>
+      </ul>
+      <h3>项目结构</h3>
+      <pre><code>marvis-skills/
+├── README.md           # 项目说明
+├── douyin-comment-replier/
+│   └── SKILL.md        # 抖音评论自动回复技能
+</code></pre>
+      <p>这是一个持续扩展的项目，未来将收录更多 AI 自动化技能，覆盖更多实际应用场景。</p>
     `,
   },
 }
