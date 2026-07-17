@@ -76,6 +76,7 @@ export const projects = [
       '日历视图 + 打卡追踪，连续天数统计培养习惯',
       'Chart.js 可视化统计图表，数据导出与自定义存储路径',
     ],
+    downloadUrl: 'https://github.com/xlx0131/nailonglist/releases/download/v1.0.0/nailonglist-v1.0.0-win32-x64.zip',
   },
 ]
 
@@ -175,10 +176,11 @@ export const projectDetails = {
     subtitle: '桌面待办与效率工具，融合 RPG 成长与时间胶囊',
     description:
       '基于 Electron 的桌面多功能效率工具。涵盖待办管理、朋友圈动态、时间胶囊、RPG 角色成长系统等模块，让日常事务管理变得有趣而有温度。',
-    url: '',
+    url: 'https://github.com/xlx0131/nailonglist',
     tags: ['效率工具', '桌面应用', '游戏化'],
     tech: ['Electron', 'JavaScript', 'Chart.js', 'HTML/CSS'],
     year: '2025 - 2026',
+    downloadUrl: 'https://github.com/xlx0131/nailonglist/releases/download/v1.0.0/nailonglist-v1.0.0-win32-x64.zip',
     highlights: [
       '完整的待办生命周期管理，支持分类/优先级/标签/重复/截止日期',
       '朋友圈模块 — 图文动态发布，图片/视频上传，评论与点赞',

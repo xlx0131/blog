@@ -105,6 +105,12 @@ function openUrl(url: string) {
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
               开始体验
             </button>
+            <a v-if="project.downloadUrl" :href="project.downloadUrl" target="_blank" rel="noopener noreferrer">
+              <button class="font-mono text-sm tracking-wider uppercase px-5 py-2.5 border-2 border-[#161310] bg-[#e2522e] text-[#fffaef] shadow-[4px_4px_0_0_#161310] transition-all duration-200 hover:-translate-y-0.5 hover:translate-x-0.5 flex items-center gap-2">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                下载体验
+              </button>
+            </a>
           </div>
         </div>
       </div>
