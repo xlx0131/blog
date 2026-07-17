@@ -57,6 +57,26 @@ export const projects = [
       'Cloudflare 边缘部署，全球加速',
     ],
   },
+  {
+    id: 4,
+    title: '奶龙list',
+    subtitle: '桌面待办与效率工具，融合 RPG 成长与时间胶囊',
+    description:
+      '基于 Electron 的桌面多功能效率工具。涵盖待办管理、朋友圈动态、时间胶囊、RPG 角色成长系统等模块。支持分类标签、优先级排序、重复任务、到期提醒、统计图表与主题切换，让日常事务管理变得有趣而有温度。',
+    url: '',
+    tags: ['效率工具', '桌面应用', '游戏化'],
+    tech: ['Electron', 'JavaScript', 'Chart.js', 'HTML/CSS'],
+    cover: 'todo',
+    year: '2025 - 2026',
+    highlights: [
+      '完整的待办生命周期管理，支持分类/优先级/标签/重复/截止日期',
+      '朋友圈模块 — 图文动态发布，图片/视频上传，评论与点赞',
+      '时间胶囊 — XOR 加密写入未来内容，到期自动解密展示',
+      'RPG 角色成长系统 — 完成任务获得经验值升级，称号体系激励',
+      '日历视图 + 打卡追踪，连续天数统计培养习惯',
+      'Chart.js 可视化统计图表，数据导出与自定义存储路径',
+    ],
+  },
 ]
 
 // 作品详情
@@ -148,6 +168,57 @@ export const projectDetails = {
         <li>提升问题分析与逻辑推理能力</li>
         <li>积累游戏化学习产品的设计与开发经验</li>
       </ul>
+    `,
+  },
+  4: {
+    title: '奶龙list',
+    subtitle: '桌面待办与效率工具，融合 RPG 成长与时间胶囊',
+    description:
+      '基于 Electron 的桌面多功能效率工具。涵盖待办管理、朋友圈动态、时间胶囊、RPG 角色成长系统等模块，让日常事务管理变得有趣而有温度。',
+    url: '',
+    tags: ['效率工具', '桌面应用', '游戏化'],
+    tech: ['Electron', 'JavaScript', 'Chart.js', 'HTML/CSS'],
+    year: '2025 - 2026',
+    highlights: [
+      '完整的待办生命周期管理，支持分类/优先级/标签/重复/截止日期',
+      '朋友圈模块 — 图文动态发布，图片/视频上传，评论与点赞',
+      '时间胶囊 — XOR 加密写入未来内容，到期自动解密展示',
+      'RPG 角色成长系统 — 完成任务获得经验值升级，称号体系激励',
+      '日历视图 + 打卡追踪，连续天数统计培养习惯',
+      'Chart.js 可视化统计图表，数据导出与自定义存储路径',
+    ],
+    details: `
+      <p>奶龙list 是一款基于 Electron 构建的桌面多功能效率工具，以可爱的"奶龙"IP 为设计灵感，将日常待办管理与游戏化元素巧妙融合。它不只是一个待办清单，更是一个有温度的效率伴侣。</p>
+      <h3>核心功能模块</h3>
+      <ul>
+        <li><strong>待办事项管理</strong> — 全生命周期管理，支持四级分类（工作/生活/学习/自定义）、三档优先级（高/中/低）、标签系统、自定义截止日期、重复模式（每日/工作日/每周/每月），到期自动弹出系统通知</li>
+        <li><strong>朋友圈模块</strong> — 仿微信朋友圈的动态发布功能，支持文字、图片、视频的混合发布，以及评论互动与点赞功能</li>
+        <li><strong>时间胶囊</strong> — 写给未来的信。将内容以 XOR 加密写入本地，设定未来的解锁时间。到期前内容完全加密不可见，到期后自动解密展示。支持图片附件，是独一无二的数字时间胶囊</li>
+        <li><strong>日历视图</strong> — 日历模式浏览待办分布，配合重复任务的每日打卡追踪，自动统计连续打卡天数，培养好习惯</li>
+        <li><strong>RPG 角色成长系统</strong> — 完成任务获得经验值，经验累积升级。称号体系从"初心者"到"冒险家"、"勇士"、"英雄"、"传说"直至"奶龙大师"。紧急任务和到期任务提供额外经验加成，用游戏化反馈提升效率</li>
+      </ul>
+      <h3>技术亮点</h3>
+      <ul>
+        <li><strong>Electron 桌面框架</strong> — 使用 Electron 28 构建跨平台桌面应用，Node.js 原生文件 IO，支持自定义数据存储路径</li>
+        <li><strong>纯原生 JavaScript</strong> — 不依赖前端框架，全部使用原生 JavaScript + HTML/CSS 实现，轻量高效</li>
+        <li><strong>客户端加密</strong> — 时间胶囊采用 XOR 加密算法保护内容隐私，密钥固定校验，保证到期前不可读</li>
+        <li><strong>Chart.js 可视化</strong> — 集成 Chart.js 统计图表，任务完成趋势、分类分布、优先级分布一目了然</li>
+        <li><strong>暗色主题</strong> — 支持亮色/暗色/跟随系统三种主题模式，CSS 变量管理全局配色方案</li>
+        <li><strong>数据持久化</strong> — JSON 文件本地存储，支持导出/导入和自定义目录，数据完全自主可控</li>
+      </ul>
+      <h3>项目结构</h3>
+      <ul>
+        <li><strong>main.js</strong> — Electron 主进程，IPC 通信桥梁，文件读写，系统通知</li>
+        <li><strong>renderer.js</strong> — 渲染进程，页面加载和模块初始化</li>
+        <li><strong>js/todo.js</strong> — 待办模块完整逻辑，含 CRUD、筛选过滤、统计、搜索、数据导入导出</li>
+        <li><strong>js/moments.js</strong> — 朋友圈模块，动态发布与交互</li>
+        <li><strong>js/capsule.js</strong> — 时间胶囊模块，加密/解密逻辑</li>
+        <li><strong>js/calendar.js</strong> — 日历视图与打卡追踪</li>
+        <li><strong>js/common.js</strong> — 通用工具函数，Toast 通知，ID 生成，日期格式化</li>
+        <li><strong>数据/</strong> — 本地 JSON 数据存储目录</li>
+      </ul>
+      <h3>运行与构建</h3>
+      <p>基于 npm + Electron 生态：<code>npm start</code> 启动开发模式，<code>npm run build</code> 使用 electron-packager 打包为 Windows 可执行程序。同时也发布了可直接运行的 exe 发行版（奶龙list.exe）。</p>
     `,
   },
 }
