@@ -83,19 +83,42 @@ export const projects = [
     title: 'Marvis Skills',
     subtitle: 'AI 自动化技能集合，赋能智能助手',
     description:
-      '基于 Marvis 平台的 AI 技能集合仓库，将 AI Agent 能力封装为可复用的技能包。目前包含「抖音评论自动回复」技能，通过 Browser Agent 操作网页版抖音，实现登录检测、评论读取、智能回复生成与批量发送的完整自动化流程。',
+      '基于 Marvis 平台的 AI 技能集合仓库，将 AI Agent 能力封装为可复用的技能包。目前包含「抖音评论自动回复」「文件智能归类」「微博评论自动回复」三大技能，覆盖社交媒体自动化与文件管理场景。',
     url: 'https://github.com/xlx0131/skills-',
     tags: ['AI', '自动化', '技能'],
-    tech: ['Marvis', 'Browser Agent', 'AI'],
+    tech: ['Marvis', 'Browser Agent', 'AI', '文件管理'],
     cover: 'skills',
     year: '2026',
     highlights: [
       'Marvis 平台技能包，将 AI 能力封装为可复用技能',
       '抖音评论自动回复 — Browser Agent 驱动网页自动化',
+      '文件智能归类 — 11种分类维度+三级主题分类',
+      '微博评论自动回复 — 定时发布+周期性检测回复',
       '智能登录检测与人机交互扫码登录流程',
       '批量读取评论区，逐条智能生成个性化回复',
       '回复语气自然、不重复，避免 AI 模板化',
       '完整的容错处理与安全提示机制',
+    ],
+  },
+  {
+    id: 6,
+    title: 'JXAU教务一体化',
+    subtitle: '江西农大教务系统自动化工具集',
+    description:
+      '基于 Python 的江西农业大学教务系统自动化工具集，涵盖自动抢课、成绩查询与课表查询三大场景。配合 ddddocr 离线 OCR 实现验证码自动识别，无需人工干预。同时提供 GUI 一体化桌面应用，三标签页切换 + 共享登录会话。',
+    url: 'https://github.com/xlx0131/-JXAU-',
+    tags: ['Python', '自动化', '教务系统'],
+    tech: ['Python', 'requests', 'ddddocr', 'PyQt', 'GUI'],
+    cover: 'course',
+    year: '2026',
+    highlights: [
+      '抢课脚本 — 定时轮询检测课程余量，有余量立即提交',
+      '成绩查询 — 全学期成绩拉取，按学期分组展示，CSV导出',
+      '课表查询 — 网格化课表展示，上午/下午/晚上分区',
+      '验证码自动识别 — ddddocr离线OCR，识别失败降级手动输入',
+      'GUI一体化应用 — 三标签页切换，共享登录会话，免安装即用',
+      '登录重试机制 — 验证码错误/网络波动时自动重试',
+      '会话自动维护 — Session过期自动检测并重新登录',
     ],
   },
 ]
@@ -247,14 +270,16 @@ export const projectDetails = {
     title: 'Marvis Skills',
     subtitle: 'AI 自动化技能集合，赋能智能助手',
     description:
-      '基于 Marvis 平台的 AI 技能集合仓库，将 AI Agent 能力封装为可复用的技能包。目前包含「抖音评论自动回复」技能，通过 Browser Agent 操作网页版抖音，实现登录检测、评论读取、智能回复生成与批量发送的完整自动化流程。',
+      '基于 Marvis 平台的 AI 技能集合仓库，将 AI Agent 能力封装为可复用的技能包。目前包含「抖音评论自动回复」「文件智能归类」「微博评论自动回复」三大技能，覆盖社交媒体自动化与文件管理场景。',
     url: 'https://github.com/xlx0131/skills-',
     tags: ['AI', '自动化', '技能'],
-    tech: ['Marvis', 'Browser Agent', 'AI'],
+    tech: ['Marvis', 'Browser Agent', 'AI', '文件管理'],
     year: '2026',
     highlights: [
       'Marvis 平台技能包，将 AI 能力封装为可复用技能',
       '抖音评论自动回复 — Browser Agent 驱动网页自动化',
+      '文件智能归类 — 11种分类维度+三级主题分类',
+      '微博评论自动回复 — 定时发布+周期性检测回复',
       '智能登录检测与人机交互扫码登录流程',
       '批量读取评论区，逐条智能生成个性化回复',
       '回复语气自然、不重复，避免 AI 模板化',
@@ -267,6 +292,8 @@ export const projectDetails = {
       <h3>已收录技能</h3>
       <ul>
         <li><strong>抖音评论自动回复</strong> — <code>douyin-comment-replier</code></li>
+        <li><strong>文件智能归类</strong> — <code>file-organizer</code></li>
+        <li><strong>微博评论自动回复</strong> — <code>weibo-comment-replier</code></li>
       </ul>
       <h3>抖音评论自动回复详解</h3>
       <p>该技能通过 Browser Agent（浏览器自动化代理）操作网页版抖音，完成以下完整流程：</p>
@@ -286,20 +313,122 @@ export const projectDetails = {
         <li><strong>批量发送</strong> — 逐一点击回复按钮，输入生成的回复内容并发送</li>
         <li><strong>结果呈现</strong> — 输出评论-回复对照表，标注每条的发送状态</li>
       </ol>
+      <h3>文件智能归类详解</h3>
+      <p>对指定目录下的混杂文件进行智能扫描、自动分类并归档整理，支持三级分类体系：</p>
+      <ol>
+        <li><strong>扫描分析</strong> — 扫描目标目录，获取文件类型、大小等元数据</li>
+        <li><strong>一级分类</strong> — 按 11 种分类维度（文件类型、用途、软件项目、开发工具、游戏资源等）自动分析</li>
+        <li><strong>二级细分</strong> — 大类下支持二级细分（文档→Word/Excel/PPT/PDF，图片→照片/截图/矢量等）</li>
+        <li><strong>三级主题分类</strong> — 文档类二级目录下支持三级主题分类，根据文件名和文档内容标题自动识别课程/项目主题（如Hadoop相关、Java编程、数据库技术等），将同一主题文档归入三级子文件夹</li>
+        <li><strong>执行整理</strong> — 创建「序号-中文名称」式分类文件夹并移动文件</li>
+        <li><strong>结果展示</strong> — 展示整理前后对比结果</li>
+      </ol>
+      <h3>微博评论自动回复详解</h3>
+      <p>在微博发布 AI 帖子，并创建定时任务周期性检测评论区，自动智能回复每条新评论：</p>
+      <ol>
+        <li><strong>登录发布</strong> — 通过 Edge 浏览器打开微博，完成登录后发布指定内容的帖子</li>
+        <li><strong>定时任务创建</strong> — 自动创建定时任务，按设定周期检测评论区</li>
+        <li><strong>评论检测</strong> — 周期性检测评论区新增评论</li>
+        <li><strong>智能回复生成</strong> — 对新评论智能生成个性化回复，支持自定义回复风格</li>
+        <li><strong>自动发送</strong> — 自动发送回复并记录发送状态</li>
+        <li><strong>频率控制</strong> — 支持自定义检测频率（如每隔30分钟检测一次）</li>
+      </ol>
       <h3>容错机制</h3>
       <ul>
         <li>链接无效时提示用户确认</li>
         <li>登录失败时引导用户手动完成</li>
         <li>评论加载不全时告知已回复数量</li>
         <li>发送失败时标注原因（频率限制、内容审核等）</li>
+        <li>文件移动失败时记录并跳过，继续处理其他文件</li>
       </ul>
       <h3>项目结构</h3>
       <pre><code>marvis-skills/
-├── README.md           # 项目说明
+├── README.md                    # 项目说明
 ├── douyin-comment-replier/
-│   └── SKILL.md        # 抖音评论自动回复技能
+│   └── SKILL.md                # 抖音评论自动回复技能
+├── file-organizer/
+│   ├── SKILL.md                # 文件智能归类技能
+│   └── references/
+│       └── classification-guide.md  # 分类规则指南
+└── weibo-comment-replier/
+    └── SKILL.md                # 微博评论自动回复技能
 </code></pre>
       <p>这是一个持续扩展的项目，未来将收录更多 AI 自动化技能，覆盖更多实际应用场景。</p>
+    `,
+  },
+  6: {
+    title: 'JXAU教务一体化',
+    subtitle: '江西农大教务系统自动化工具集',
+    description:
+      '基于 Python 的江西农业大学教务系统自动化工具集，涵盖自动抢课、成绩查询与课表查询三大场景。配合 ddddocr 离线 OCR 实现验证码自动识别，无需人工干预。同时提供 GUI 一体化桌面应用，三标签页切换 + 共享登录会话。',
+    url: 'https://github.com/xlx0131/-JXAU-',
+    tags: ['Python', '自动化', '教务系统'],
+    tech: ['Python', 'requests', 'ddddocr', 'PyQt', 'GUI'],
+    year: '2026',
+    highlights: [
+      '抢课脚本 — 定时轮询检测课程余量，有余量立即提交',
+      '成绩查询 — 全学期成绩拉取，按学期分组展示，CSV导出',
+      '课表查询 — 网格化课表展示，上午/下午/晚上分区',
+      '验证码自动识别 — ddddocr离线OCR，识别失败降级手动输入',
+      'GUI一体化应用 — 三标签页切换，共享登录会话，免安装即用',
+      '登录重试机制 — 验证码错误/网络波动时自动重试',
+      '会话自动维护 — Session过期自动检测并重新登录',
+    ],
+    details: `
+      <p>JXAU教务一体化是一套基于 Python 的江西农业大学教务系统自动化工具集，利用 <code>requests</code> 库模拟自研 ASP.NET MVC 教务系统 HTTP 请求，配合 <code>ddddocr</code> 离线 OCR 实现验证码自动识别，无需人工干预。项目包含三个独立脚本和一个 GUI 一体化桌面应用。</p>
+      <h3>工具一：抢课脚本</h3>
+      <p><code>jxau_course_grabber.py</code> — 自动化抢课脚本，支持定时轮询、验证码自动识别、交互式课程选择。</p>
+      <ul>
+        <li><strong>课程浏览与筛选</strong> — 登录后自动拉取全校公选课列表，以规整表格展示（序号/JxbBh/课程名/教师/学分/余量）</li>
+        <li><strong>交互式选课</strong> — 支持按序号、JxbBh 编号、课程名称关键词选择目标课程</li>
+        <li><strong>定时抢课</strong> — 单线程轮询 + 随机延时（0.5~1.5s），自动检测课程余量，有余量立即提交</li>
+        <li><strong>结构化日志</strong> — 同时输出控制台和文件，方便排查问题</li>
+      </ul>
+      <h3>工具二：成绩查询脚本</h3>
+      <p><code>jxau_grade_query.py</code> — 快速查询全部学期成绩并导出，支持按学期分组展示与 CSV 导出。</p>
+      <ul>
+        <li><strong>全学期成绩拉取</strong> — 一键拉取教务系统中全部已有成绩数据</li>
+        <li><strong>按学期分组展示</strong> — 每学期独立表格，自动汇总学期学分、及格/不及格统计</li>
+        <li><strong>详细统计汇总</strong> — 总课程数、总学分、平均绩点（仅统计有效绩点课程）</li>
+        <li><strong>CSV 导出</strong> — 支持将全部成绩导出为 UTF-8 BOM 编码的 CSV 文件，可用 Excel 直接打开</li>
+      </ul>
+      <h3>工具三：课表查询脚本</h3>
+      <p><code>jxau_schedule_query.py</code> — 查询本人课表，支持按学期切换、网格化课表展示。</p>
+      <ul>
+        <li><strong>网格化课表展示</strong> — 按星期 X 节次组织，上午（1-2节）、下午（5-6节）、晚上（9-11节）清晰分区</li>
+        <li><strong>课程详情</strong> — 每门课程展示课程名称、授课周次、任课教师、教室、教室类型</li>
+        <li><strong>学期切换</strong> — 支持交互式切换学期，查看过往或未来学期课表</li>
+      </ul>
+      <h3>工具四：GUI 一体化桌面应用</h3>
+      <p><code>JXAU教务一体化.exe</code> — 将上述三个脚本整合为统一的 Windows 桌面应用程序，免安装 Python 环境，双击即用。</p>
+      <ul>
+        <li><strong>三标签页界面</strong> — 抢课选课、成绩查询、课表查询三个模块集成在一个窗口</li>
+        <li><strong>共享登录会话</strong> — 登录一次后三个模块共用 Session，无需重复输入账号密码</li>
+        <li><strong>可视化课表</strong> — Canvas 网格化渲染，上午/下午/晚上分区，支持垂直滚动</li>
+        <li><strong>成绩 Treeview</strong> — 表格化成绩明细，学期切换 + 汇总统计</li>
+        <li><strong>实时运行日志</strong> — 底部日志面板，所有操作可见、可追踪</li>
+        <li><strong>便携免安装</strong> — 单文件 exe，拷贝即用，无需 Python 环境</li>
+      </ul>
+      <h3>核心技术实现</h3>
+      <ul>
+        <li><strong>HTTP 请求模拟</strong> — 使用 <code>requests.Session</code> 维护登录状态，模拟教务系统的 POST/GET 请求</li>
+        <li><strong>验证码自动识别</strong> — <code>ddddocr</code> 离线 OCR 引擎，无需联网即可识别验证码</li>
+        <li><strong>登录重试机制</strong> — 自动处理验证码错误、网络波动等异常情况，支持配置最大重试次数与间隔</li>
+        <li><strong>会话自动维护</strong> — 检测 Session 过期并自动重新登录，支持长时间运行</li>
+        <li><strong>GUI 界面</strong> — PyQt 开发，Canvas 绘制课表，Treeview 展示成绩，多标签页切换</li>
+      </ul>
+      <h3>项目结构</h3>
+      <pre><code>-JXAU-/
+├── jxau_course_grabber.py      # 抢课脚本
+├── jxau_grade_query.py         # 成绩查询脚本
+├── jxau_schedule_query.py      # 课表查询脚本
+├── JXAU教务一体化.exe           # GUI桌面应用
+├── requirements.txt            # 依赖列表
+└── README.md                   # 项目说明
+</code></pre>
+      <h3>使用方式</h3>
+      <p>Python 脚本模式：安装依赖后运行对应脚本，按提示输入学号密码即可。支持环境变量配置实现非交互模式。</p>
+      <p>GUI 桌面模式：直接下载并运行 <code>JXAU教务一体化.exe</code>，无需安装 Python 环境。</p>
     `,
   },
 }

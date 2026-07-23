@@ -6,396 +6,95 @@
 <title>AI运维完全学习手册 — 从0基础到AI大模型运维专家</title>
 <style>
 :root {
-  --bg:#f5f0e8;
-  --card:#fffaef;
-  --border:#161310;
-  --text:#161310;
-  --sub:#6b6b6b;
-  --accent:#2e5dd6;
-  --accent-bg:#e8efff;
-  --gold:#d97706;
-  --green:#059669;
-  --red:#dc2626;
-  --code-bg:#1e1e2e;
-  --code-fg:#cdd6f4;
-  --shadow:4px 4px 0 0 #161310;
-  --shadow-hover:6px 6px 0 0 #161310;
+  --c1:#1a1a2e; --c2:#16213e; --c3:#0f3460; --c4:#533483;
+  --accent:#e94560; --gold:#f0a500; --green:#00b894;
+  --bg:#f5f6fa; --card:#fff; --text:#2d3436; --sub:#636e72;
+  --code-bg:#2d3436; --code-fg:#dfe6e9; --border:#dfe6e9;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:20px}
-body{
-  font-family:'Courier New','SF Mono',Fira Code,Consolas,'Microsoft YaHei',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  line-height:1.8;
-  font-size:14px;
-}
-.topbar{
-  position:sticky;
-  top:0;
-  z-index:1000;
-  width:100%;
-  padding:14px 24px;
-  background:var(--card);
-  border-bottom:2px solid var(--border);
-  box-shadow:0 4px 0 0 rgba(22,19,16,0.1);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:10px;
-}
-.topbar .logo{
-  font-size:18px;
-  font-weight:700;
-  letter-spacing:1px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.topbar .logo .back-btn{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding:6px 14px;
-  border:2px solid var(--border);
-  background:var(--card);
-  color:var(--text);
-  text-decoration:none;
-  font-size:12px;
-  font-family:inherit;
-  box-shadow:2px 2px 0 0 #161310;
-  transition:all .12s;
-  cursor:pointer;
-  margin-right:10px;
-}
-.topbar .logo .back-btn:hover{
-  background:#fee2e2;
-  transform:translate(-1px,-1px);
-  box-shadow:3px 3px 0 0 #161310;
-}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{font-family:"PingFang SC","Microsoft YaHei","Helvetica Neue",sans-serif;background:var(--bg);color:var(--text);line-height:1.9;font-size:15px}
+
+/* === TOP BAR === */
+.topbar{position:fixed;top:0;z-index:1000;width:100%;height:56px;background:linear-gradient(135deg,var(--c1),var(--c3));color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 24px;box-shadow:0 2px 16px rgba(0,0,0,.2)}
+.topbar .logo{font-size:18px;font-weight:700;letter-spacing:1px}
 .topbar .logo span{color:var(--accent)}
-.topbar .meta{
-  font-size:12px;
-  color:var(--sub);
-  font-weight:600;
-}
-.layout{display:flex}
-.sidebar{
-  width:280px;
-  min-width:280px;
-  position:sticky;
-  top:60px;
-  height:calc(100vh - 60px);
-  overflow-y:auto;
-  background:var(--card);
-  border-right:2px solid var(--border);
-  padding:12px 0;
-}
-.sidebar::-webkit-scrollbar{width:6px}
-.sidebar::-webkit-scrollbar-thumb{background:var(--border)}
-.sidebar .ph-title{
-  padding:12px 20px 6px;
-  font-size:11px;
-  font-weight:700;
-  color:var(--accent);
-  letter-spacing:2px;
-  text-transform:uppercase;
-  margin-top:8px;
-}
-.sidebar a{
-  display:block;
-  padding:6px 24px;
-  font-size:12.5px;
-  color:var(--sub);
-  text-decoration:none;
-  border-left:3px solid transparent;
-  transition:all .12s;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  font-weight:600;
-}
-.sidebar a:hover,.sidebar a.active{
-  color:var(--text);
-  background:var(--accent-bg);
-  border-left-color:var(--accent);
-}
-.main{
-  flex:1;
-  padding:24px 36px 60px;
-  min-width:0;
-  max-width:1100px;
-  margin:0 auto;
-}
-.page-title{
-  text-align:center;
-  padding:30px 0 20px;
-  margin-bottom:10px;
-}
-.page-title h2{
-  font-size:28px;
-  font-weight:700;
-  color:var(--text);
-  letter-spacing:2px;
-  margin-bottom:8px;
-}
-.page-title p{
-  color:var(--sub);
-  font-size:13px;
-  font-weight:600;
-}
-.phase{
-  margin:36px 0 20px;
-  padding:20px 28px;
-  background:var(--text);
-  color:var(--card);
-  border:2px solid var(--border);
-  box-shadow:var(--shadow);
-}
-.phase h2{
-  font-size:20px;
-  margin-bottom:6px;
-  letter-spacing:1px;
-}
-.phase .meta{
-  font-size:12px;
-  opacity:0.85;
-  line-height:1.6;
-  font-weight:600;
-}
-.chapter{
-  background:var(--card);
-  border:2px solid var(--border);
-  margin-bottom:24px;
-  box-shadow:var(--shadow);
-  overflow:hidden;
-  transition:all .15s;
-}
-.chapter:hover{
-  box-shadow:var(--shadow-hover);
-  transform:translate(-1px,-1px);
-}
-.chapter .ch-head{
-  padding:14px 22px;
-  background:var(--accent-bg);
-  border-bottom:2px solid var(--border);
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-.chapter .ch-num{
-  width:32px;
-  height:32px;
-  background:var(--accent);
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:14px;
-  font-weight:700;
-  flex-shrink:0;
-  border:2px solid var(--border);
-}
-.chapter .ch-head h4{
-  font-size:16px;
-  font-weight:700;
-  letter-spacing:.5px;
-}
+.topbar .meta{font-size:12px;opacity:.75}
+
+/* === LAYOUT === */
+.layout{display:flex;margin-top:56px}
+.sidebar{width:300px;min-width:300px;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;background:var(--card);border-right:1px solid var(--border);padding:8px 0}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:#b2bec3;border-radius:2px}
+.sidebar .ph-title{padding:10px 20px 4px;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+.sidebar a{display:block;padding:5px 24px;font-size:12.5px;color:var(--sub);text-decoration:none;border-left:3px solid transparent;transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sidebar a:hover,.sidebar a.active{color:var(--c3);background:#eef2ff;border-left-color:var(--accent);font-weight:600}
+.main{flex:1;padding:20px 36px 60px;min-width:0;max-width:1100px}
+
+/* === PHASE HEADER === */
+.phase{margin:32px 0 20px;padding:20px 28px;background:linear-gradient(135deg,var(--c1),var(--c3));color:#fff;border-radius:12px}
+.phase h2{font-size:22px;margin-bottom:4px}
+.phase .meta{font-size:13px;opacity:.8;line-height:1.6}
+
+/* === CHAPTER === */
+.chapter{background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:28px;box-shadow:0 1px 6px rgba(0,0,0,.04);overflow:hidden}
+.chapter .ch-head{padding:14px 22px;background:#f8f9fa;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.chapter .ch-num{width:34px;height:34px;border-radius:50%;background:var(--c3);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+.chapter .ch-head h4{font-size:16px;font-weight:600}
 .chapter .ch-body{padding:0}
-.kp-card{
-  padding:18px 22px;
-  border-bottom:1px dashed var(--border);
-}
+
+/* === KP CARD === */
+.kp-card{padding:20px 22px;border-bottom:1px solid #f0f0f0}
 .kp-card:last-child{border-bottom:none}
-.kp-card .kp-header{
-  display:flex;
-  align-items:flex-start;
-  gap:12px;
-  margin-bottom:12px;
-}
-.kp-card .kp-num{
-  width:26px;
-  height:26px;
-  background:var(--text);
-  color:var(--card);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:12px;
-  font-weight:700;
-  flex-shrink:0;
-  margin-top:2px;
-  border:2px solid var(--border);
-}
-.kp-card .kp-title{
-  font-size:15px;
-  font-weight:700;
-  color:var(--text);
-  flex:1;
-  line-height:1.5;
-}
-.kp-card .kp-tags{
-  display:flex;
-  gap:6px;
-  flex-shrink:0;
-}
-.kp-card .tag{
-  display:inline-block;
-  padding:3px 10px;
-  font-size:10px;
-  font-weight:700;
-  letter-spacing:.5px;
-  border:2px solid var(--border);
-}
-.tag-must{background:#fee2e2;color:#991b1b}
-.tag-good{background:#dcfce7;color:#166534}
-.tag-tip{background:#dbeafe;color:#1e40af}
+.kp-card .kp-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+.kp-card .kp-num{width:28px;height:28px;border-radius:50%;background:var(--c4);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:2px}
+.kp-card .kp-title{font-size:15px;font-weight:700;color:var(--c1);flex:1}
+.kp-card .kp-tags{display:flex;gap:6px;flex-shrink:0}
+.kp-card .tag{display:inline-block;padding:2px 10px;border-radius:10px;font-size:10px;font-weight:700;letter-spacing:.5px}
+.tag-must{background:#fce4ec;color:#c62828}
+.tag-good{background:#e8f5e9;color:#2e7d32}
+.tag-tip{background:#e3f2fd;color:#1565c0}
+
+/* === CONTENT SECTIONS === */
 .kp-section{margin-bottom:14px}
-.kp-section h5{
-  font-size:12px;
-  color:var(--accent);
-  margin-bottom:8px;
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:1px;
-  border-bottom:2px dashed var(--border);
-  padding-bottom:4px;
-}
-.kp-section p,.kp-section li{
-  font-size:14px;
-  color:var(--text);
-  line-height:1.9;
-}
+.kp-section h5{font-size:13px;color:var(--accent);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px dashed var(--border);padding-bottom:4px}
+.kp-section p,.kp-section li{font-size:14px;color:var(--text);line-height:1.9}
 .kp-section ul,.kp-section ol{padding-left:22px}
 .kp-section li{margin-bottom:4px}
-.kp-section pre{
-  background:var(--code-bg);
-  color:var(--code-fg);
-  padding:14px 18px;
-  font-size:12.5px;
-  overflow-x:auto;
-  font-family:'Fira Code','Consolas','Courier New',monospace;
-  line-height:1.6;
-  margin:10px 0;
-  border:2px solid var(--border);
-  box-shadow:2px 2px 0 0 rgba(0,0,0,0.3);
-}
-.kp-section code{
-  background:#fef3c7;
-  color:#92400e;
-  padding:2px 6px;
-  font-size:13px;
-  font-family:'Fira Code','Consolas','Courier New',monospace;
-  font-weight:600;
-  border:1px solid #fcd34d;
-}
-.kp-section pre code{
-  background:transparent;
-  color:var(--code-fg);
-  padding:0;
-  border:none;
-}
-.exercise-box{
-  background:#fffbeb;
-  border:2px solid var(--border);
-  padding:18px 22px;
-  margin:20px 22px;
-  box-shadow:var(--shadow);
-}
-.exercise-box h5{
-  color:var(--gold);
-  font-size:15px;
-  margin-bottom:10px;
-  display:flex;
-  align-items:center;
-  gap:6px;
-  font-weight:700;
-}
+.kp-section pre{background:var(--code-bg);color:var(--code-fg);padding:12px 16px;border-radius:6px;font-size:12.5px;overflow-x:auto;font-family:"Fira Code","Consolas","Courier New",monospace;line-height:1.6;margin:8px 0}
+.kp-section code{background:#f0f0f0;color:#e94560;padding:1px 5px;border-radius:3px;font-size:13px;font-family:"Fira Code","Consolas",monospace}
+.kp-section pre code{background:transparent;color:var(--code-fg);padding:0}
+
+/* === EXERCISE === */
+.exercise-box{background:#fffdf5;border:2px solid var(--gold);border-radius:8px;padding:18px 22px;margin:20px 22px}
+.exercise-box h5{color:#d68910;font-size:15px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .exercise-box .ex-section{margin:12px 0}
-.exercise-box .ex-section h6{
-  font-size:13px;
-  color:var(--gold);
-  margin-bottom:6px;
-  font-weight:700;
-}
-.exercise-box .answer-toggle{
-  background:var(--green);
-  color:#fff;
-  border:2px solid var(--border);
-  padding:6px 16px;
-  font-size:11px;
-  cursor:pointer;
-  margin-top:8px;
-  font-weight:700;
-  font-family:inherit;
-  letter-spacing:.5px;
-  box-shadow:2px 2px 0 0 #161310;
-  transition:all .12s;
-}
-.exercise-box .answer-toggle:hover{
-  transform:translate(-1px,-1px);
-  box-shadow:3px 3px 0 0 #161310;
-}
-.exercise-box .answer-content{
-  display:none;
-  margin-top:10px;
-  padding:12px 16px;
-  background:#dcfce7;
-  font-size:13px;
-  border:2px solid var(--border);
-  border-left:4px solid var(--green);
-}
-.project{
-  border:2px solid var(--border);
-  padding:22px 28px;
-  margin:24px 0;
-  background:var(--accent-bg);
-  box-shadow:var(--shadow);
-}
-.project h3{
-  font-size:18px;
-  color:var(--accent);
-  margin-bottom:14px;
-  font-weight:700;
-  letter-spacing:.5px;
-}
-.project .proj-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  font-size:13px;
-}
-.project .proj-grid div{
-  background:var(--card);
-  padding:10px 14px;
-  border:2px solid var(--border);
-  font-weight:600;
-}
+.exercise-box .ex-section h6{font-size:13px;color:#e67e22;margin-bottom:6px}
+.exercise-box .answer-toggle{background:var(--green);color:#fff;border:none;padding:6px 16px;border-radius:14px;font-size:11px;cursor:pointer;margin-top:8px;font-weight:600}
+.exercise-box .answer-content{display:none;margin-top:8px;padding:10px 14px;background:#e8f8f5;border-radius:6px;font-size:13px;border-left:3px solid var(--green)}
+
+/* === PROJECT CARD === */
+.project{border:2px solid var(--accent);border-radius:12px;padding:22px 28px;margin:24px 0;background:linear-gradient(135deg,#fff5f5,#fef9ff)}
+.project h3{font-size:18px;color:var(--accent);margin-bottom:12px}
+.project .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px}
+.project .proj-grid div{background:#fff;padding:10px 14px;border-radius:6px;border:1px solid var(--border)}
+
+/* === PRINT === */
 @media print{
   .topbar,.sidebar{display:none}
   .layout{display:block;margin-top:0}
   .main{padding:0;max-width:100%}
-  .chapter{break-inside:avoid;box-shadow:none}
+  .chapter{break-inside:avoid}
 }
 @media(max-width:960px){
   .sidebar{display:none}
   .main{padding:16px}
-  .topbar .meta{display:none}
-  .phase{padding:14px 18px}
-  .phase h2{font-size:16px}
 }
 </style>
 </head>
 <body>
 <div class="topbar">
-  <div class="logo">
-    <a href="/archive" class="back-btn">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-      返回归档
-    </a>
-    <span>AI运维</span> 完全学习手册
-  </div>
+  <div class="logo"><span>AI运维</span> 完全学习手册</div>
   <div class="meta">基于黑马课程大纲 V5.0 | 10大阶段 · 33章 · 230+知识点 · 10大项目实战 | 从0基础到AI大模型运维专家</div>
 </div>
 <div class="layout">
@@ -455,10 +154,8 @@ body{
   <a href="#proj10">项目十 政务办公</a>
 </nav>
 <div class="main">
-<div class="page-title">
-<h2>AI运维完全学习手册</h2>
-<p>基于黑马程序员 AI运维课程大纲 V5.0 深度扩展 | 从零基础到AI大模型运维专家</p>
-</div>
+<h2 style="text-align:center;padding:30px 0 10px;font-size:26px;color:var(--c1)">AI运维完全学习手册</h2>
+<p style="text-align:center;color:var(--sub);margin-bottom:30px;font-size:14px">基于黑马程序员 AI运维课程大纲 V5.0 深度扩展 | 从零基础到AI大模型运维专家</p>
 
 <!-- ==================== 入门试学课 (6天) ==================== -->
 <div class="phase" id="p0">
@@ -684,26 +381,10 @@ kill -1 $(cat /var/run/nginx.pid)  # 优雅重载nginx</code></pre>
 <li>启动nginx并设置开机自启。</li>
 <li>编写crontab：每天凌晨2点执行/opt/scripts/backup.sh，日志写入/var/log/backup.log。</li>
 </ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
 <div class="answer-content">
-<h6>选择题：</h6>
-<p><strong>1.C &nbsp; pwd</strong><br>
-<code>pwd</code>（print working directory）打印当前工作目录的绝对路径。<br>
-A选项 <code>ls</code> 是列出目录内容；B选项 <code>cd</code> 是切换目录；D选项 <code>mkdir</code> 是创建目录。</p>
-<p><strong>2.B &nbsp; Esc</strong><br>
-vim有三种模式：命令模式、插入模式、底行模式。按 <code>i/a/o</code> 进入插入模式，按 <code>Esc</code> 回到命令模式。<br>
-A选项Enter是换行；C选项Tab是缩进/补全；D选项Ctrl+C在vim中不是标准退出键。</p>
-<p><strong>3.B &nbsp; tail -f</strong><br>
-<code>tail -f</code>（follow）实时跟踪文件末尾新增内容，是运维看日志最常用的命令。<br>
-A选项 <code>cat</code> 没有 <code>-f</code> 参数；C选项 <code>less -f</code> 强制打开但不跟踪；D选项 <code>head</code> 是看文件开头，也没有 <code>-f</code>。</p>
-<h6>实操题：</h6>
-<p><strong>1. <code>mkdir -p /opt/myapp/{bin,conf,logs,data}</code></strong><br>
-<code>-p</code> 递归创建父目录（如果myapp不存在会一起创建）；<code>{bin,conf,logs,data}</code> 是bash的大括号展开，一次性创建多个同级目录。等价于写4次mkdir。</p>
-<p><strong>2. <code>systemctl start nginx && systemctl enable nginx</code></strong><br>
-<code>systemctl start</code> 立即启动服务；<code>systemctl enable</code> 设置开机自启（把服务链接到multi-user.target.wants）；<code>&&</code> 表示前面成功了才执行后面的。</p>
-<p><strong>3. <code>0 2 * * * /opt/scripts/backup.sh >> /var/log/backup.log 2>&1</code></strong><br>
-crontab五段格式：分 时 日 月 周 → <code>0 2 * * *</code> 表示每天凌晨2点整。<br>
-<code>>></code> 追加写入日志（覆盖用>）；<code>2>&1</code> 把标准错误(2)重定向到标准输出(1)，确保错误信息也写入日志文件。</p>
+<h6>选择题：</h6>1.C 2.B 3.B<br>
+<h6>实操题：</h6>1.<code>mkdir -p /opt/myapp/{bin,conf,logs,data}</code><br>2.<code>systemctl start nginx && systemctl enable nginx</code><br>3.<code>0 2 * * * /opt/scripts/backup.sh >> /var/log/backup.log 2>&1</code>
 </div>
 </div>
 
@@ -798,30 +479,8 @@ ssh -i ~/.ssh/mykey.pem root@123.123.123.123
 <li>在阿里云控制台购买一台按量付费ECS（最低规格），选择CentOS Stream 9镜像，配置安全组仅开放22/80/443端口。</li>
 <li>为这台ECS配置CPU使用率>80%的报警规则，通知方式选择短信。</li>
 </ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content">
-<h6>选择题：</h6>
-<p><strong>1.B &nbsp; 短期测试学习</strong><br>
-按量付费按秒计费，用多少花多少，随开随停，适合短期测试、学习、临时任务。<br>
-A选项长期正式业务适合包年包月（更便宜）；C选项数据库主钥必须长期稳定运行，用包年包月更划算。</p>
-<p><strong>2.B &nbsp; 虚拟防火墙</strong><br>
-安全组是云平台的虚拟防火墙，通过配置入站/出站规则控制端口和IP访问。比如只开放22(SSH)/80(HTTP)/443(HTTPS)端口。<br>
-A选项数据加密是KMS/SSL的事；C选项负载均衡是SLB；D选项日志收集是云监控/日志服务。</p>
-<h6>实操题：</h6>
-<p><strong>1. ECS购买流程详解</strong><br>
-① 地域：选离自己最近的地域（如华东2上海），延迟更低<br>
-② 计费方式：按量付费（测试用）vs 包年包月（长期用，省30%+）<br>
-③ 实例规格：学习用最低配（1核2G）即可，省成本<br>
-④ 镜像：CentOS Stream 9 是红帽系最新社区版，生产环境主流<br>
-⑤ 安全组：必须放通22端口才能SSH连接，80/443用于网站<br>
-⑥ 登录凭证：密钥对比密码更安全，建议用密钥对</p>
-<p><strong>2. 报警规则配置详解</strong><br>
-云监控→报警规则→创建规则：<br>
-① 产品选择「云服务器ECS」→ 监控项选「CPU使用率」<br>
-② 阈值：>=80%，统计周期5分钟，连续3次触发（避免偶尔尖峰误报）<br>
-③ 通知对象：关联联系人组，选择短信通知方式<br>
-④ 建议配置沉默时间30分钟，防止故障期间反复发短信轰炸</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content"><h6>选择题：</h6>1.B 2.B<br><h6>实操题：</h6>1.按购买流程操作：地域选离自己近的→按量付费→最低规格→CentOS Stream 9→安全组添22/80/443→密钥对→确认<br>2.云监控→报警规则→创建规则→ECS→CPU使用率→>=80%持续3周期→短信通知</div>
 </div>
 
 </div></div>
@@ -967,30 +626,8 @@ tar -xzf apache-tomcat-9.tar.gz -C /opt/
 <li>在ECS上安装conda并创建名为"chatglm"的Python 3.10环境。</li>
 <li>部署JDK11+MySQL8+Tomcat9+Nginx，完成博客系统上线。</li>
 </ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content">
-<h6>选择题：</h6>
-<p><strong>1.B &nbsp; Python环境管理</strong><br>
-conda是开源的包管理和环境管理工具，可以创建多个独立的Python环境，每个环境有不同版本的Python和库，互不干扰。大模型项目经常需要不同版本的Python和PyTorch，conda是标配。<br>
-A选项编辑器是VSCode/PyCharm；C选项数据库管理是Navicat/DBeaver；D选项版本控制是Git。</p>
-<p><strong>2.B &nbsp; 反向代理+静态文件服务</strong><br>
-Nginx在架构中通常承担两个角色：①反向代理——把请求转发给后端Tomcat/Node应用，客户端看不到真实后端；②静态文件服务——直接返回HTML/CSS/JS/图片，性能比Tomcat高10倍以上。<br>
-A选项数据库是MySQL；C选项应用服务器是Tomcat/Spring Boot；D选项缓存是Redis。</p>
-<h6>实操题：</h6>
-<p><strong>1. conda环境配置详解</strong><br>
-① 下载Anaconda安装脚本（或Miniconda，更轻量）<br>
-② 执行 <code>bash Anaconda3-*.sh</code>，按提示一路回车，最后输入yes初始化<br>
-③ 创建环境：<code>conda create -n chatglm python=3.10</code>（-n指定环境名，python=指定版本）<br>
-④ 激活环境：<code>conda activate chatglm</code>（激活后终端前缀会显示环境名）<br>
-⑤ 退出环境：<code>conda deactivate</code>；删除环境：<code>conda remove -n chatglm --all</code></p>
-<p><strong>2. JavaWeb部署顺序详解</strong><br>
-为什么按JDK→MySQL→Tomcat→Nginx的顺序？<br>
-① JDK先装：Tomcat本身是Java程序，依赖JDK运行<br>
-② MySQL其次：应用需要连数据库，先装好确保连接地址端口可用<br>
-③ Tomcat第三：部署war包或jar包，启动后监听8080端口<br>
-④ Nginx最后：反向代理到Tomcat的8080端口，对外只暴露80/443<br>
-这是依赖关系决定的顺序，就像盖楼先打地基再盖楼最后装修。</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content"><h6>选择题：</h6>1.B 2.B<br><h6>实操题：</h6>1.<code>bash Anaconda3-*.sh → conda create -n chatglm python=3.10 → conda activate chatglm</code><br>2.按JDK→MySQL→Tomcat→Nginx顺序部署，最后配置Nginx反向代理到Tomcat 8080</div>
 </div>
 
 </div></div>
@@ -1115,31 +752,8 @@ screen -r mysession    # 重新连接</code></pre>
 <li>为/data/shared目录设置粘滞位，使得多用户可以共享文件但互不删除。</li>
 <li>使用ACL给testuser用户授予/data/project目录的读写权限。</li>
 </ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content"><h6>选择题：</h6>
-<p><strong>1.B &nbsp; 追加到附加组（不覆盖原有组）</strong><br>
-<code>usermod -aG 组名 用户名</code> 中，<code>-a</code>（append）表示追加，<code>-G</code> 指定附加组。不加 <code>-a</code> 直接用 <code>-G</code> 会覆盖用户原来的所有附加组，非常危险！<br>
-A选项添加用户是 <code>useradd</code>；C选项删除用户是 <code>userdel</code>；D选项改密码是 <code>passwd</code>。</p>
-<p><strong>2.B &nbsp; 用户只能删除自己的文件</strong><br>
-粘滞位（Sticky Bit，权限t）作用于目录时，用户只能删除自己创建的文件，不能删别人的。/tmp目录默认就设置了粘滞位，大家都能写但不能互相删。<br>
-A选项任何人可读写是777权限，不是粘滞位；C选项提高性能无关；D选项加密是别的机制。</p>
-<h6>实操题：</h6>
-<p><strong>1. 创建用户并加入组详解</strong><br>
-<code>useradd -m devops</code>：创建用户devops，<code>-m</code> 同时创建/home/devops家目录<br>
-<code>passwd devops</code>：设置密码，交互输入两次<br>
-<code>usermod -aG wheel devops</code>：追加到wheel组（RedHat系wheel组默认有sudo权限）<br>
-验证：<code>id devops</code> 查看用户所属组</p>
-<p><strong>2. 设置粘滞位详解</strong><br>
-<code>chmod +t /data/shared</code> 或 <code>chmod 1777 /data/shared</code><br>
-数字权限1表示粘滞位，2是SGID，4是SUID<br>
-验证：<code>ls -ld /data/shared</code>，权限最后一位会显示 <code>t</code><br>
-常见场景：/tmp、多用户共享上传目录</p>
-<p><strong>3. ACL权限设置详解</strong><br>
-<code>setfacl -m u:testuser:rw /data/project</code><br>
-<code>-m</code> 修改；<code>u:用户名:权限</code> 用户ACL格式；<code>g:组名:权限</code> 组ACL<br>
-查看ACL：<code>getfacl /data/project</code><br>
-注意：设置了ACL的文件，ls -l显示权限最后会有个 <code>+</code> 号</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content"><h6>选择题：</h6>1.B 2.B<br><h6>实操题：</h6>1.<code>useradd -m devops && passwd devops && usermod -aG wheel devops</code><br>2.<code>chmod +t /data/shared</code><br>3.<code>setfacl -m u:testuser:rw /data/project</code></div>
 </div>
 
 </div></div>
@@ -1283,19 +897,8 @@ xfs_growfs /data/mysql</code></pre>
 <li>搭建NFS服务，将serverA的/data/shared目录共享给serverB挂载。</li>
 <li>在新磁盘上创建LVM：PV→VG→LV→格式化XFS→挂载到/data/mysql。</li>
 </ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content"><h6>选择题：</h6>
-<p><strong>1.B &nbsp; 私钥从不经过网络传输</strong><br>
-密钥对登录的核心安全原理：私钥只存在本地，公钥可以公开分发。登录时服务器用公钥加密随机数，客户端用私钥解密后发回，整个过程私钥永远不出本地。<br>
-A选项更快不是主要原因；C选项不需要密码是结果不是原因。</p>
-<p><strong>2.B &nbsp; 支持在线动态扩容</strong><br>
-LVM最大的优势是可以在线扩展/缩小分区大小，不用卸载、不用停机。传统分区改大小要备份→删分区→重建→恢复，非常麻烦。<br>
-A选项速度差不多；C选项不省空间（反而有少量开销）；D选项不自动备份。</p>
-<h6>实操题参考：</h6>
-<p><strong>1. SSH密钥对免密登录流程：</strong>① ssh-keygen生成密钥对 ② ssh-copy-id把公钥传到对端 ③ ssh免密登录验证。注意.ssh目录权限700，authorized_keys权限600。</p>
-<p><strong>2. NFS搭建：</strong>服务端装nfs-utils→配/etc/exports→启动nfs-server；客户端装nfs-utils→mount挂载→写fstab开机挂载。</p>
-<p><strong>3. LVM创建流程：</strong>PV→VG→LV→格式化→挂载。PV是物理卷（底层磁盘），VG是卷组（存储池），LV是逻辑卷（真正用的分区）。扩容用lvextend -r在线扩。</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content"><h6>选择题：</h6>1.B 2.B<br><h6>实操题参考：</h6>见上文对应代码块。</div>
 </div>
 
 </div></div>
@@ -1402,18 +1005,8 @@ telnet 192.168.1.100 3306</code></pre>
 <li>使用Wireshark抓取一次完整的HTTP请求-响应过程，识别TCP三次握手和HTTP请求头。</li>
 <li>在eNSP中搭建一个VLAN隔离+单臂路由+NAT上网的拓扑。</li>
 </ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content"><h6>选择题：</h6>
-<p><strong>1.B &nbsp; 逻辑隔离广播域</strong><br>
-VLAN通过在交换机上逻辑划分端口，把一个物理交换机变成多个虚拟交换机，不同VLAN之间不能直接通信，隔离广播风暴，提高安全性。<br>
-A选项不提高网速；C选项不加密（加密是VPN）；D选项自动分配IP是DHCP。</p>
-<p><strong>2.B &nbsp; 让内网设备访问互联网</strong><br>
-SNAT（源地址转换）把内网IP的源地址改成公网IP，让内网设备可以访问互联网，多个内网设备共享一个公网IP。<br>
-A选项端口映射是DNAT（目标地址转换）；C选项防火墙过滤是filter表；D选项负载均衡是别的技术。</p>
-<h6>实操题：</h6>
-<p><strong>1. Wireshark抓HTTP包步骤：</strong>选网卡→过滤器输http→开始抓包→浏览器访问HTTP网站→看三次握手（SYN/SYN-ACK/ACK）→HTTP请求→HTTP响应→Follow HTTP Stream看完整内容。</p>
-<p><strong>2. VLAN+单臂路由+NAT拓扑：</strong>① 交换机划VLAN，access口接PC，trunk口连路由器 ② 路由器子接口封装dot1Q做各VLAN网关（单臂路由） ③ 配置NAPT让内网共享公网IP上网 ④ PC测试ping通外网。</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content"><h6>选择题：</h6>1.B 2.B<br><h6>实操题：</h6>1.打开Wireshark→选网卡→过滤http→浏览器访问网站→停止抓包→Follow TCP Stream查看完整会话<br>2.eNSP拖入交换机/路由器/PC→配置VLAN→配置子接口→配置NAT→测试PC ping通外网</div>
 </div>
 
 </div></div>
@@ -1591,19 +1184,8 @@ log "服务器初始化完成！"</code></pre>
 <li>使用awk统计nginx access.log中每个状态码的出现次数和百分比。</li>
 <li>编写服务器初始化脚本，实现新服务器到手后的一键标准化配置。</li>
 </ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content"><h6>选择题：</h6>
-<p><strong>1.C &nbsp; $?</strong><br>
-Shell特殊变量：<code>$?</code> 保存上一条命令的退出码（0=成功，非0=失败），是脚本中判断命令是否成功最常用的变量。<br>
-A选项 <code>$0</code> 是脚本名；B选项 <code>$#</code> 是参数个数；D选项 <code>$$</code> 是当前进程PID。</p>
-<p><strong>2.B &nbsp; NR</strong><br>
-awk内置变量：<code>NR</code>（Number of Record）当前行号；<code>NF</code> 当前行字段数；<code>FS</code> 字段分隔符；<code>RS</code> 记录分隔符。<br>
-经典用法：<code>awk 'NR==3{print $2}'</code> 打印第3行第2列。</p>
-<h6>实操题参考：</h6>
-<p><strong>1. 进程监控脚本思路：</strong>pgrep检测进程→不存在则systemctl start启动→记录日志→发邮件告警。配合crontab每分钟执行。</p>
-<p><strong>2. awk统计状态码：</strong><code>awk '{code[$9]++} END{for(c in code) print c, code[c]}' access.log</code> 用数组累加，END块输出。</p>
-<p><strong>3. 服务器初始化脚本包含：</strong>关SELinux/防火墙→换yum源→装基础工具→设主机名静态IP→时间同步→文件描述符优化→内核参数→建运维用户→禁root登录→装监控Agent。</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content"><h6>选择题：</h6>1.C 2.B<br><h6>实操题参考：</h6>见上文代码块。</div>
 </div>
 
 </div></div>
@@ -1747,20 +1329,8 @@ vrrp_instance VI_1 {
 <li>搭建Nginx反向代理，将所有/api/请求转发到后端Tomcat集群（3台8080端口）。</li>
 <li>申请免费SSL证书并为网站启用HTTPS，配置HTTP自动跳转HTTPS。</li>
 </ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content"><h6>选择题：</h6>
-<p><strong>1.B &nbsp; root追加路径，alias替换路径</strong><br>
-<code>root</code>：URL路径拼接到root路径后面。如location /img/ + root /var/www → 实际访问/var/www/img/<br>
-<code>alias</code>：URL路径被alias替换掉。如location /img/ + alias /var/www/pic/ → 实际访问/var/www/pic/<br>
-简单记：root是"追加"，alias是"别名替换"。alias必须以/结尾。</p>
-<p><strong>2.C &nbsp; VRRP</strong><br>
-Keepalived基于VRRP（虚拟路由冗余协议）实现故障切换。主节点宕机时，备节点通过VRRP协议检测到后自动接管虚拟IP，实现秒级切换。<br>
-A选项HTTP是应用层协议；B选项ICMP是ping用的；D选项DNS是域名解析。</p>
-<h6>实操题参考：</h6>
-<p><strong>1. 虚拟主机配置：</strong>两个server块，分别监听80端口，server_name区分www和api，root指向不同目录。靠Host头匹配哪个server块。</p>
-<p><strong>2. 反向代理+负载均衡：</strong>upstream定义后端3台Tomcat→location /api/里proxy_pass指向upstream名。默认轮询模式。</p>
-<p><strong>3. SSL证书配置：</strong>certbot一键申请Let's Encrypt免费证书→配置443端口server块加ssl_certificate和ssl_certificate_key→80端口配置301重定向到HTTPS。</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content"><h6>选择题：</h6>1.B 2.C<br><h6>实操题参考：</h6>见上文配置示例。</div>
 </div>
 
 </div></div>
@@ -1896,25 +1466,8 @@ FLUSH PRIVILEGES;</code></pre>
 <li>设计一个博客系统数据库：用户表、文章表、评论表，写出CREATE TABLE语句并标注关系。</li>
 <li>创建一个只读用户，仅允许从内网（192.168.1.%）查询mydb数据库。</li>
 </ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content"><h6>选择题：</h6>
-<p><strong>1.B &nbsp; LEFT JOIN左表所有行都保留</strong><br>
-INNER JOIN：只返回两边都匹配的行（交集）<br>
-LEFT JOIN：左表全部行+右表匹配的行，右表不匹配的字段为NULL（左集为主）<br>
-RIGHT JOIN：右表全部行+左表匹配的行<br>
-运维最常用LEFT JOIN——比如"查所有用户及其订单"，没有订单的用户也要显示。</p>
-<p><strong>2.C &nbsp; REPEATABLE READ</strong><br>
-MySQL InnoDB默认隔离级别是可重复读（RR），这是MySQL和其他数据库不一样的地方（Oracle、PostgreSQL默认是读已提交RC）。<br>
-四个级别从低到高：读未提交→读已提交→可重复读→串行化，级别越高越安全但性能越差。</p>
-<h6>实操题：</h6>
-<p><strong>1. 博客系统数据库设计：</strong><br>
-users表(id, username, password, created_at) 主键id<br>
-posts表(id, user_id, title, content, created_at) 主键id，外键user_id关联users.id，一对多<br>
-comments表(id, post_id, user_id, content, created_at) 主键id，外键post_id关联posts.id，一对多<br>
-关系：users 1:N posts 1:N comments</p>
-<p><strong>2. 创建只读用户：</strong><code>GRANT SELECT ON mydb.* TO 'reader'@'192.168.1.%' IDENTIFIED BY '密码';</code><br>
-格式：GRANT 权限 ON 库.表 TO '用户'@'来源IP'; 192.168.1.%表示整个C段内网。最后FLUSH PRIVILEGES刷新权限。</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content"><h6>选择题：</h6>1.B 2.C<br><h6>实操题：</h6>1.users(id,name) - 1:N - posts(id,user_id,title,content) - 1:N - comments(id,post_id,user_id,content)。2.见上文GRANT示例。</div>
 </div>
 
 </div></div>
@@ -2029,26 +1582,8 @@ db.users.find({age:{$gt:25}})</code></pre>
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>使用Redis Sorted Set实现游戏排行榜，支持TOP10查询和玩家排名查询。</li>
 <li>搭建MongoDB副本集（3节点），验证故障自动切换。</li></ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content"><h6>选择题：</h6>
-<p><strong>1.B &nbsp; 过期时间加随机值</strong><br>
-缓存雪崩：大量key同一时间集体过期，导致请求全打到数据库，数据库崩了。<br>
-解决方案：①过期时间加随机值（比如基础1小时+0-300秒随机），避免集体过期 ②多级缓存 ③服务降级熔断<br>
-A选项加数据库没用反而更崩；C选项关缓存因噎废食；D选项减少实例没用。</p>
-<p><strong>2.C &nbsp; 3</strong><br>
-Redis Sentinel（哨兵）最少需要3个节点：1主+2从+3哨兵？不，是哨兵节点本身最少3个。<br>
-为什么3个？因为哨兵需要选举，要过半数（quorum）同意才能故障转移。2个节点的话，挂了一个就剩1个，达不到半数，无法选举。3个节点允许挂1个，4个节点也只能挂1个（2/4不超半数），所以生产环境一般3或5个哨兵。</p>
-<h6>实操题：</h6>
-<p><strong>1. Redis排行榜实现：</strong><br>
-用Sorted Set（有序集合）：<br>
-- 加分数：<code>ZADD game_rank 1000 player1</code><br>
-- 查TOP10：<code>ZREVRANGE game_rank 0 9 WITHSCORES</code>（倒序取前10）<br>
-- 查某玩家排名：<code>ZRANK game_rank player1</code>（0开始，倒序用ZREVRANK）<br>
-- 加分：<code>ZINCRBY game_rank 50 player1</code></p>
-<p><strong>2. MongoDB副本集：</strong><br>
-3个节点：1主(primary)+2从(secondary)。配置rs.initiate()初始化副本集→添加从节点→rs.status()验证。<br>
-测试故障转移：停掉主节点→观察从节点中是否自动选举出新主节点（一般10秒内完成）。</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.B 2.C<br>实操题：1.ZADD→ZREVRANGE查TOP10→ZRANK查排名。2.rs.initiate配置→停主节点→观察选举。</div>
 </div>
 
 </div></div>
@@ -2185,18 +1720,8 @@ finally:
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>编写Python脚本批量检测10台服务器的CPU/内存/磁盘，超过80%标红输出。</li>
 <li>编写脚本通过paramiko收集所有服务器日志中的ERROR行。</li></ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content"><h6>选择题：</h6>
-<p><strong>1.B &nbsp; paramiko</strong><br>
-paramiko是Python中最常用的SSH库，基于SSHv2协议，可以远程执行命令、上传下载文件（SFTP），是Python运维自动化的基础库。<br>
-A选项requests是HTTP请求库；C选项psutil是系统监控（CPU/内存/磁盘）库；D选项pandas是数据分析库。</p>
-<p><strong>2.B &nbsp; 自动关闭文件</strong><br>
-<code>with open() as f:</code> 是Python的上下文管理器语法，with块结束时自动调用f.close()关闭文件，即使中间发生异常也会关闭，避免资源泄漏。<br>
-A选项不更快；C选项支持正则是re库的事；D选项不加密。</p>
-<h6>实操题参考：</h6>
-<p><strong>1. 批量检测服务器资源：</strong>用paramiko连每台服务器→执行top/free/df等命令→解析输出→CPU/内存/磁盘超80%标红打印。可以配合threading或concurrent.futures并发执行提高效率。</p>
-<p><strong>2. 日志ERROR收集：</strong>paramiko登录服务器→tail或grep取日志中ERROR行→按服务器分组汇总→输出报告。建议用非阻塞读取处理大日志。</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.B 2.B<br>实操题参考：见上文代码示例。</div>
 </div>
 
 </div></div>
@@ -2273,17 +1798,8 @@ hourly.columns = ['请求数', '平均响应时间ms', '5xx错误数']</code></p
 <li>Pandas分组聚合使用哪个方法？<br>A.pivot B.merge C.groupby D.stack</li></ol></div>
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>读取一份服务器日志CSV，清洗空值和异常数据，按服务器分组统计CPU/内存/磁盘的平均值和最大值。</li></ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content"><h6>选择题：</h6>
-<p><strong>1.B &nbsp; 二维表格</strong><br>
-Pandas的DataFrame是二维表格数据结构，有行有列，类似Excel表格或SQL表。每列可以是不同的数据类型（数值、字符串、日期等）。<br>
-A选项一维数组是Series（DataFrame的一列就是一个Series）；C选项字典是原始数据结构；D选项集合是set。</p>
-<p><strong>2.C &nbsp; groupby</strong><br>
-<code>df.groupby('列名').聚合函数()</code> 是Pandas分组聚合的标准用法。比如 <code>df.groupby('server')['cpu'].mean()</code> 按服务器分组计算CPU平均值。<br>
-A选项pivot是透视表；B选项merge是合并两个表；D选项stack是堆叠。</p>
-<h6>实操题参考：</h6>
-<p>完整流程：pd.read_csv读取→df.dropna()/fillna()处理空值→df[df.cpu.between(0,100)]过滤异常值→df.groupby('server')[['cpu','memory','disk']].agg(['mean','max'])分组统计。</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.B 2.C</div>
 </div>
 
 </div></div>
@@ -2336,21 +1852,8 @@ fig.write_html('dashboard.html')</code></pre>
 <div class="ex-section"><h6>实操题</h6>
 <ol><li>读取服务器监控CSV，用Matplotlib画出CPU和内存的趋势图（双Y轴）。</li>
 <li>用Plotly做一个交互式Dashboard，展示多台服务器的资源使用对比。</li></ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content"><h6>实操题：</h6>
-<p><strong>1. Matplotlib双Y轴趋势图：</strong><br>
-① import matplotlib.pyplot as plt<br>
-② fig, ax1 = plt.subplots()  # 第一个Y轴（左）<br>
-③ ax1.plot(df['time'], df['cpu'], 'b-', label='CPU%')<br>
-④ ax2 = ax1.twinx()  # 创建双Y轴（右）<br>
-⑤ ax2.plot(df['time'], df['mem'], 'r-', label='内存%')<br>
-⑥ 加标题、图例、网格，plt.show()显示</p>
-<p><strong>2. Plotly交互式Dashboard：</strong><br>
-① import plotly.express as px<br>
-② fig = px.bar(df, x='server', y=['cpu','memory','disk'], barmode='group')<br>
-③ fig.update_layout(title='服务器资源对比')<br>
-④ fig.write_html('dashboard.html') 生成可交互的HTML文件，鼠标悬停看数值、缩放、点击图例切换显示</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">1.用twinx()创建双Y轴。2.用px.bar分组柱状图。</div>
 </div>
 
 </div></div>
@@ -2407,19 +1910,8 @@ class ArticleItem(scrapy.Item):
 <h5>课后练习 — 第4章 Scrapy爬虫</h5>
 <div class="ex-section"><h6>实操题</h6>
 <ol><li>编写Scrapy爬虫，抓取某技术博客的文章标题、链接、发布时间，存入CSV。</li></ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content"><h6>实操题：</h6>
-<p><strong>Scrapy爬虫完整流程：</strong></p>
-<p>① <code>scrapy startproject myblog</code> 创建项目骨架</p>
-<p>② 定义Item（items.py）：定义要抓取的字段，如title、url、publish_date</p>
-<p>③ 写Spider类（spiders/目录下）：<br>
-&nbsp;&nbsp;- name属性给蜘蛛起名<br>
-&nbsp;&nbsp;- start_urls是起始URL列表<br>
-&nbsp;&nbsp;- parse(response)方法解析响应：用CSS选择器或XPath提取数据，yield item返回<br>
-&nbsp;&nbsp;- 如果有翻页，构造下一页Request，yield出去继续爬</p>
-<p>④ <code>scrapy crawl 蜘蛛名 -o output.csv</code> 运行爬虫并输出到CSV（也支持json、xml、mysql等）</p>
-<p>运维常用场景：爬技术博客更新、监控竞品价格、收集漏洞公告等。</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">scrapy startproject→定义Item→写Spider类parse方法→scrapy crawl -o output.csv。</div>
 </div>
 
 </div></div>
@@ -2503,15 +1995,8 @@ tools = [{"type":"function","function":{
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>编写Python脚本调用大模型API，输入一段Nginx错误日志，让AI分析异常原因并给出修复建议。</li>
 <li>实现一个告警播报系统：收到告警→调大模型总结→TTS转语音→播放。</li></ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content"><h6>选择题：</h6>
-<p><strong>1.B &nbsp; 设定AI行为背景</strong><br>
-system角色消息用于设定AI的身份、行为模式和背景知识。比如"你是一个资深运维专家，请用简洁的语言回答问题"，之后的所有对话AI都会遵循这个设定。<br>
-A选项发送消息是user角色；C选项存储历史是整个messages数组的功能；D选项调用函数是function/tool角色。</p>
-<h6>实操题参考：</h6>
-<p><strong>1. AI日志分析脚本：</strong>读取日志文件→拼接prompt（日志内容+分析要求）→调用chat.completions.create→打印AI分析结果。建议设置temperature=0让输出更稳定。</p>
-<p><strong>2. 告警播报系统：</strong>收到告警webhook→调用大模型API总结告警内容→调用TTS API（如阿里云TTS/腾讯云TTS）转语音→播放语音或打电话。注意要做告警收敛避免骚扰。</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.B</div>
 </div>
 
 </div></div>
@@ -2605,19 +2090,8 @@ docker run -d --name app1 --network mynet myapp</code></pre>
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>用Docker启动一个MySQL 8.0容器，数据持久化到命名卷，限制内存512MB。</li>
 <li>创建自定义Docker网络，启动两个容器使它们能互相通信。</li></ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content"><h6>选择题：</h6>
-<p><strong>1.B &nbsp; 容器共享宿主机内核</strong><br>
-容器和虚拟机的本质区别：容器是进程级隔离，共享宿主机操作系统内核，启动快（毫秒级）、体积小（MB级）；虚拟机是硬件级隔离，每个VM有自己的完整OS内核，启动慢（分钟级）、体积大（GB级）。<br>
-A选项更快是表现不是本质；C选项容器更便宜；D选项容器可以用Volume持久化。</p>
-<p><strong>2.A &nbsp; Volume</strong><br>
-Docker数据持久化用Volume（数据卷），它独立于容器生命周期，容器删除数据还在。支持命名卷和挂载宿主机目录两种方式。<br>
-B选项Network是网络；C选项Image是镜像（只读模板）；D选项Layer是镜像层。</p>
-<h6>实操题参考：</h6>
-<p><strong>1. MySQL容器：</strong><code>docker run -d --name mysql -e MYSQL_ROOT_PASSWORD=密码 -v mysql_data:/var/lib/mysql -m 512m mysql:8.0</code><br>
--v 命名卷持久化数据，-m 限制内存，-d后台运行。</p>
-<p><strong>2. 自定义网络：</strong><code>docker network create mynet</code>→两个容器都用<code>--network mynet</code>加入→容器之间可以用容器名互相访问（Docker内置DNS解析）。</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.B 2.A</div>
 </div>
 
 </div></div>
@@ -2708,18 +2182,8 @@ volumes:
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>编写Dockerfile构建Python Flask应用，使用多阶段构建减小镜像体积。</li>
 <li>编写docker-compose.yml编排Nginx+Flask+MySQL+Redis四个服务。</li></ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content"><h6>选择题：</h6>
-<p><strong>1.B &nbsp; 指定基础镜像</strong><br>
-<code>FROM</code> 是Dockerfile的第一条指令，指定基于哪个基础镜像构建。所有后续指令都在这个基础镜像之上叠加。<br>
-A选项复制文件是COPY/ADD；C选项运行命令是RUN；D选项暴露端口是EXPOSE。</p>
-<p><strong>2.B &nbsp; 减小最终镜像体积</strong><br>
-多阶段构建（multi-stage build）可以在一个Dockerfile里用多个FROM，前几个阶段编译构建（有完整编译环境），最后一个阶段只拷贝编译产物，最终镜像里没有编译工具，体积大大减小。Go语言项目从几百MB可以降到十几MB。<br>
-A选项更快不是主要目的（甚至可能更慢）；C选项多平台是buildx；D选项自动测试不对。</p>
-<h6>实操题参考：</h6>
-<p><strong>1. Flask应用Dockerfile（多阶段）：</strong>第一阶段python:3.10-slim装依赖→第二阶段python:3.10-alpine拷贝前一阶段的site-packages和代码→CMD启动。最终镜像从1GB降到100MB左右。</p>
-<p><strong>2. docker-compose.yml四服务：</strong>services里定义nginx/flask/mysql/redis四个服务→每个配image/ports/volumes/environment→depends_on定义启动依赖→networks统一网络→docker compose up一键启动。</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.B 2.B</div>
 </div>
 
 </div></div>
@@ -2801,17 +2265,8 @@ spec:
 <li>kubectl describe pod的作用是？<br>A.创建Pod B.查看Pod详情和事件 C.删除Pod D.扩缩Pod</li></ol></div>
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>用minikube搭一个K8s集群，写YAML创建一个Nginx Pod并通过kubectl验证运行状态。</li></ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content"><h6>选择题：</h6>
-<p><strong>1.B &nbsp; Pod</strong><br>
-Pod是K8s中最小的调度单元，一个Pod里可以有1个或多个容器（通常1个，多个的是sidecar模式，比如日志采集代理）。Pod是短命的，随时可能被销毁重建。<br>
-A选项Container是容器，不是K8s调度单元（K8s不直接调度容器）；C选项Node是节点（物理机/虚拟机）；D选项Deployment是控制器，管理Pod副本。</p>
-<p><strong>2.B &nbsp; 查看Pod详情和事件</strong><br>
-<code>kubectl describe pod 名字</code> 查看Pod的详细信息，包括状态、事件、容器状态、挂载卷等。排错时最常用的命令——Pod起不来先describe看事件。<br>
-A选项创建Pod是kubectl apply/create；C选项删除是kubectl delete；D选项扩缩是kubectl scale。</p>
-<h6>实操题参考：</h6>
-<p>Nginx Pod验证流程：minikube start启动集群→写pod.yaml（apiVersion:v1, kind:Pod, spec.containers配nginx镜像）→kubectl apply -f pod.yaml→kubectl get pods看状态→kubectl describe pod nginx看详情→kubectl exec -it nginx -- /bin/bash进容器验证。</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.B 2.B</div>
 </div>
 
 </div></div>
@@ -2995,18 +2450,8 @@ spec:
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>创建Deployment跑Nginx，执行滚动更新到新版本，然后回滚。</li>
 <li>创建CronJob实现每天凌晨备份MySQL数据库。</li></ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content"><h6>实操题：</h6>
-<p><strong>1. NodePort Service：</strong><br>
-写service.yaml：kind: Service，type: NodePort，selector匹配Pod的labels，ports定义端口（port是Service端口，targetPort是容器端口，nodePort是节点端口30000-32767范围）。<br>
-创建后：<code>kubectl get svc</code> 查看端口 → 用节点IP:3000X访问验证。<br>
-NodePort的特点：每个节点开一个端口，外部可以通过任意节点IP+端口访问，适合测试和小规模场景。生产环境一般用LoadBalancer或Ingress。</p>
-<p><strong>2. PVC挂载到MySQL：</strong><br>
-① 先有StorageClass（集群管理员配置，minikube默认有standard）<br>
-② 写PVC：apiVersion: v1, kind: PersistentVolumeClaim，spec.accessModes: ReadWriteOnce，resources.requests.storage: 10Gi<br>
-③ Deployment的Pod模板里volumeMounts挂载到/var/lib/mysql，volumes引用PVC<br>
-④ 验证：kubectl exec进MySQL建库建表→删Pod重建→再进去看数据还在不在</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.A 2.B</div>
 </div>
 
 </div></div>
@@ -3095,21 +2540,8 @@ stage('Deploy to K8s') {
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>部署Prometheus+Grafana监控K8s集群，创建一个CPU使用率Dashboard。</li>
 <li>编写Jenkins Pipeline实现Docker构建→推送→K8s部署的CI/CD流程。</li></ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content"><h6>选择题：</h6>
-<p><strong>1.A &nbsp; 最多多1个Pod</strong><br>
-滚动更新的两个关键参数：<br>
-<code>maxSurge</code>：更新过程中最多能比期望副本数多几个Pod。设为1表示先启动新Pod，再删旧Pod，保证服务不中断。<br>
-<code>maxUnavailable</code>：更新过程中最多能有几个Pod不可用。<br>
-两个参数配合控制滚动更新的节奏——maxSurge越大更新越快但资源占用多。</p>
-<p><strong>2.B &nbsp; StatefulSet</strong><br>
-Deployment适合无状态应用（如Web服务），Pod没有固定身份，随时可以替换。<br>
-StatefulSet适合有状态应用（如MySQL、Redis、Kafka等数据库/中间件），每个Pod有固定的名字和网络标识（hostname-0, hostname-1），有序启动和销毁，数据卷也是一一对应的。<br>
-C选项DaemonSet是每个节点跑一个；D选项Job是一次性任务。</p>
-<h6>实操题参考：</h6>
-<p><strong>1. 滚动更新与回滚：</strong>kubectl set image deployment/nginx nginx=nginx:1.25→kubectl rollout status 看状态→kubectl rollout history 看历史→kubectl rollout undo 回滚到上一版本。</p>
-<p><strong>2. CronJob备份MySQL：</strong>schedule: "0 2 * * *"每天凌晨2点→jobTemplate里运行mysqldump命令→挂载PVC存备份文件→记得设restartPolicy: OnFailure。</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.B 2.B</div>
 </div>
 
 </div></div>
@@ -3194,16 +2626,8 @@ docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword</code></p
 <ol><li>CI（持续集成）的核心目标是？<br>A.部署到生产 B.频繁合并代码+自动测试 C.写文档 D.做备份</li></ol></div>
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>用Docker部署Jenkins，编写Pipeline脚本实现：拉代码→构建Docker镜像→推送到私有仓库→部署到K8s。</li></ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content"><h6>选择题：</h6>
-<p><strong>1.B &nbsp; Pull拉取</strong><br>
-Prometheus默认采用Pull（拉取）模式：Prometheus Server主动去各个目标（exporter）的/metrics接口拉取指标数据。<br>
-为什么用Pull不用Push？① Prometheus主动控制采集节奏，避免被监控端过载 ② 服务发现更方便 ③ 可以从多个Prometheus实例拉取同一个目标。<br>
-Push模式也有（PushGateway），用于短生命周期的批处理任务。</p>
-<h6>实操题参考：</h6>
-<p><strong>1. Prometheus+Grafana监控K8s：</strong>用kube-prometheus-stack一键部署→包含Prometheus Server、Alertmanager、node-exporter、kube-state-metrics、Grafana→Grafana导入K8s官方Dashboard ID 3119→就能看到集群节点、Pod、网络、存储的完整监控大盘。</p>
-<p><strong>2. Jenkins CI/CD流水线：</strong>Pipeline分阶段：①Checkout（拉代码）②Build（docker build镜像）③Push（推送到镜像仓库）④Deploy（kubectl apply或helm upgrade部署到K8s）。用Jenkinsfile存在代码仓库里，Pipeline as Code。</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.B</div>
 </div>
 
 </div></div>
@@ -3612,24 +3036,8 @@ ansible web -m service -a "name=nginx state=started enabled=yes"</code></pre>
 <li>Ansible的"幂等性"是指？<br>A.执行快 B.重复执行结果一致 C.并行执行 D.自动重试</li></ol></div>
 <div class="ex-section"><h6>二、实操题</h6>
 <ol><li>编写Ansible Playbook批量部署Nginx到3台Web服务器，使用Jinja2模板动态生成配置。</li></ol></div>
-<button class="answer-toggle">显示/隐藏参考答案</button>
-<div class="answer-content"><h6>选择题：</h6>
-<p><strong>1.B &nbsp; 频繁合并代码+自动测试</strong><br>
-CI（持续集成）的核心：开发者频繁（每天多次）把代码合并到主干，每次合并都通过自动化构建和测试来验证，尽早发现问题，避免后期"集成地狱"。<br>
-A选项部署到生产是CD（持续部署/持续交付）的事；C选项写文档不是CI的事；D选项做备份完全不相关。</p>
-<h6>实操题参考：</h6>
-<p><strong>Jenkins完整CI/CD流水线：</strong></p>
-<p>① Jenkins用Docker部署：docker run -d -p 8080:8080 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts</p>
-<p>② 安装必要插件：Git、Docker、Kubernetes CLI、Pipeline</p>
-<p>③ 配置凭据：Git凭据、Docker仓库凭据、K8s kubeconfig</p>
-<p>④ 写Jenkinsfile（Pipeline as Code）：<br>
-&nbsp;&nbsp;- Stage 1: Checkout SCM → 拉取代码<br>
-&nbsp;&nbsp;- Stage 2: Build &amp; Unit Test → 编译+单测<br>
-&nbsp;&nbsp;- Stage 3: Build Image → docker build打镜像<br>
-&nbsp;&nbsp;- Stage 4: Push Image → docker push推私有仓库<br>
-&nbsp;&nbsp;- Stage 5: Deploy to K8s → kubectl apply或helm部署</p>
-<p>⑤ 配置Webhook：代码提交自动触发构建</p>
-</div>
+<button class="answer-toggle" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">显示/隐藏参考答案</button>
+<div class="answer-content">选择题：1.B 2.B</div>
 </div>
 
 </div></div>
